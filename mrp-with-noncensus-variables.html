@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 MRP with Noncensus Variables | Multilevel Regression and Poststratification Case Studies</title>
+  <meta name="description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 MRP with Noncensus Variables | Multilevel Regression and Poststratification Case Studies" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 MRP with Noncensus Variables | Multilevel Regression and Poststratification Case Studies" />
+  
+  <meta name="twitter:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  
+
+<meta name="author" content="Juan Lopez-Martin, Justin H. Phillips, and Andrew Gelman" />
+
+
+<meta name="date" content="2020-12-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-mrp.html"/>
+<link rel="next" href="ideal-point-mrp.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MRP Case Studies</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Notes</a></li>
+<li class="chapter" data-level="2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html"><i class="fa fa-check"></i><b>2</b> Introduction to MRP</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#the-data"><i class="fa fa-check"></i><b>2.1</b> The Data</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#survey-data"><i class="fa fa-check"></i><b>2.1.1</b> Survey data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#poststratification-table"><i class="fa fa-check"></i><b>2.1.2</b> Poststratification table</a></li>
+<li class="chapter" data-level="2.1.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#group-level-predictors"><i class="fa fa-check"></i><b>2.1.3</b> Group-level predictors</a></li>
+<li class="chapter" data-level="2.1.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>2.1.4</b> Exploratory data analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#first-stage-estimating-the-individual-response-model"><i class="fa fa-check"></i><b>2.2</b> First stage: Estimating the Individual-Response Model</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#second-stage-poststratification"><i class="fa fa-check"></i><b>2.3</b> Second Stage: Poststratification</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-at-the-national-level"><i class="fa fa-check"></i><b>2.3.1</b> Estimation at the national level</a></li>
+<li class="chapter" data-level="2.3.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-sub-national-units"><i class="fa fa-check"></i><b>2.3.2</b> Estimation for sub-national units</a></li>
+<li class="chapter" data-level="2.3.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-subgroups-within-sub-national-units"><i class="fa fa-check"></i><b>2.3.3</b> Estimation for subgroups within sub-national units</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#adjusting-for-nonrepresentative-surveys"><i class="fa fa-check"></i><b>2.4</b> Adjusting for Nonrepresentative Surveys</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#practical-considerations"><i class="fa fa-check"></i><b>2.5</b> Practical Considerations</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#census-incompletness-and-uncertainty"><i class="fa fa-check"></i><b>2.5.1</b> Census incompletness and uncertainty</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#nonreponse-and-missing-data"><i class="fa fa-check"></i><b>2.5.2</b> Nonreponse and missing data</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#model-complexity"><i class="fa fa-check"></i><b>2.5.3</b> Model complexity</a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#empty-cells-in-the-poststratification-table"><i class="fa fa-check"></i><b>2.5.4</b> Empty cells in the poststratification table</a></li>
+<li class="chapter" data-level="2.5.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#subnational-units-not-represented-in-the-survey"><i class="fa fa-check"></i><b>2.5.5</b> Subnational units not represented in the survey</a></li>
+<li class="chapter" data-level="2.5.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#computational-issues"><i class="fa fa-check"></i><b>2.5.6</b> Computational issues</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#appendix-data-preprocessing-for-cces-and-census-data"><i class="fa fa-check"></i><b>2.6</b> Appendix: Data Preprocessing for CCES and Census Data</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#cces"><i class="fa fa-check"></i><b>2.6.1</b> CCES</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#american-community-survey"><i class="fa fa-check"></i><b>2.6.2</b> American Community Survey</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html"><i class="fa fa-check"></i><b>3</b> MRP with Noncensus Variables</a><ul>
+<li class="chapter" data-level="3.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#model-based-extension-of-the-poststratification-table"><i class="fa fa-check"></i><b>3.1</b> Model-based Extension of the Poststratification Table</a></li>
+<li class="chapter" data-level="3.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#adjusting-for-nonresponse-bias"><i class="fa fa-check"></i><b>3.2</b> Adjusting for Nonresponse Bias</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#setting-up-example-with-an-artificially-nonrepresentative-sample"><i class="fa fa-check"></i><b>3.2.1</b> Setting up example with an artificially nonrepresentative sample</a></li>
+<li class="chapter" data-level="3.2.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#standard-mrp"><i class="fa fa-check"></i><b>3.2.2</b> Standard MRP</a></li>
+<li class="chapter" data-level="3.2.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#non-census-mrp-with-partisanship-as-a-predictor"><i class="fa fa-check"></i><b>3.2.3</b> Non-census MRP with partisanship as a predictor</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#obtaining-estimates-for-non-census-variable-subgroups"><i class="fa fa-check"></i><b>3.3</b> Obtaining Estimates for Non-census Variable Subgroups</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html"><i class="fa fa-check"></i><b>4</b> Ideal Point MRP</a><ul>
+<li class="chapter" data-level="4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#introduction-and-literature"><i class="fa fa-check"></i><b>4.1</b> Introduction and Literature</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abc-of-irt"><i class="fa fa-check"></i><b>4.1.1</b> The ABC of IRT</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#ideal-point-models-and-estimating-public-opinion"><i class="fa fa-check"></i><b>4.1.2</b> Ideal point models and estimating public opinion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-two-parameter-irt-model-with-latent-multilevel-regression"><i class="fa fa-check"></i><b>4.2</b> A Two-Parameter IRT Model with Latent Multilevel Regression</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#bayesian-estimation"><i class="fa fa-check"></i><b>4.2.1</b> Bayesian estimation</a></li>
+<li class="chapter" data-level="4.2.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#initial-results"><i class="fa fa-check"></i><b>4.2.2</b> Initial Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abortion-opposition-index-for-us-states"><i class="fa fa-check"></i><b>4.3</b> The Abortion Opposition Index for US States</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparison-with-simple-sum"><i class="fa fa-check"></i><b>4.3.1</b> Comparison with simple sum</a></li>
+<li class="chapter" data-level="4.3.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#fake-data-simulation"><i class="fa fa-check"></i><b>4.3.2</b> Fake-data simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#estimating-support-for-individual-questions"><i class="fa fa-check"></i><b>4.4</b> Estimating Support for Individual Questions</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#mind-the-jensens-gap"><i class="fa fa-check"></i><b>4.4.1</b> Mind the (Jensen’s) gap</a></li>
+<li class="chapter" data-level="4.4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#results-from-standard-and-ideal-point-mrp"><i class="fa fa-check"></i><b>4.4.2</b> Results from Standard and Ideal Point MRP</a></li>
+<li class="chapter" data-level="4.4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparing-ideal-point-and-standard-mrp-using-fake-data-simulation"><i class="fa fa-check"></i><b>4.4.3</b> Comparing ideal point and standard MRP using fake-data simulation</a></li>
+<li class="chapter" data-level="4.4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-note-of-caution"><i class="fa fa-check"></i><b>4.4.4</b> A note of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#concluding-remarks"><i class="fa fa-check"></i><b>4.5</b> Concluding remarks</a></li>
+<li class="chapter" data-level="4.6" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#appendix"><i class="fa fa-check"></i><b>4.6</b> Appendix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Multilevel Regression and Poststratification Case Studies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="mrp-with-noncensus-variables" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> MRP with Noncensus Variables</h1>
+<style type="text/css">
+h1.title {
+  font-size: 32px;
+  text-align: center;
+}
+
+h2 {
+  padding-bottom: 4px;
+}
+
+h4.author {
+  padding-top: 22px;
+  text-align: center;
+  font-style: italic;
+}
+h4.date {
+  padding-top: 14px;
+  font-size: 14px;
+  text-align: center;
+  font-style: italic;
+  padding-bottom: 20px;
+}
+</style>
+<script>
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+function myFunction2() {
+    var x = document.getElementById("myDIV2");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+function myFunction3() {
+    var x = document.getElementById("myDIV3");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+<style>
+#myDIV {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+
+#myDIV2 {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton2{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+
+#myDIV3 {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton3{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+</style>
+<p>When our sample population is different than our target population, MRP can only adjust for the predictors included in the model. As these are restricted by the variables in the poststratification table, which in turn are limited by the questions asked in the census, the characteristics that we can use for poststratification are quite reduced. This is the reason researchers tend to use simple demographic and geographic variables, which unfortunately do not provide much help if the bias in the survey originates from non-response in voters of a certain party, for instance. As a potential solution, <span class="citation">Kastellec et al. (<a href="#ref-kastellec2015polarizing" role="doc-biblioref">2015</a>)</span> propose extending the postratification table using a survey that contains one or multiple non-census variables that could help adjusting for the differences between the sample and the target population. For instance, if our survey asked for partisanship, we could use the CCES to extend the poststratification table such as that it also contains this variable. The extension is done in two steps. First, we fit a multilevel model in which we try to predict partisanship in the CCES based on the variables available in the census. Second, we use this model to predict, for each cell in the original poststratification table, what proportion of subjects are Democrats, Republicans, or Independents. This extended poststratification table that contains partisanship will allow us to (a) generate MRP estimates that adjust for differential party nonresponse in the original survey; and/or (b) obtain estimates outcome of interest by party.</p>
+<p>For this case study we will continue using the previous example of studying support for the right of employers to exclude abortion coverage.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co">## Read CCES data with the same outcome variable and predictors, but also including </span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="co">## party</span></a>
+<a class="sourceLine" id="cb21-3" title="3">df_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;cces18_common_vv.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb21-4" title="4">list_states_abb &lt;-<span class="st"> </span>datasets<span class="op">::</span>state.abb</a>
+<a class="sourceLine" id="cb21-5" title="5">list_states_num &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,<span class="dv">25</span>,<span class="dv">26</span>,</a>
+<a class="sourceLine" id="cb21-6" title="6">                     <span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,<span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,</a>
+<a class="sourceLine" id="cb21-7" title="7">                     <span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>)</a>
+<a class="sourceLine" id="cb21-8" title="8"><span class="co"># Preprocessing. The clean_cces2 function also reads party</span></a>
+<a class="sourceLine" id="cb21-9" title="9">df_all &lt;-<span class="st"> </span><span class="kw">clean_cces2</span>(df_all, list_states_abb, list_states_num)</a>
+<a class="sourceLine" id="cb21-10" title="10"></a>
+<a class="sourceLine" id="cb21-11" title="11"><span class="co">## Read poststratification table</span></a>
+<a class="sourceLine" id="cb21-12" title="12">poststrat_df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;postrat_data.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb21-13" title="13">poststrat_df<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(poststrat_df<span class="op">$</span>state, </a>
+<a class="sourceLine" id="cb21-14" title="14">                             <span class="dt">levels =</span> list_states_num, </a>
+<a class="sourceLine" id="cb21-15" title="15">                             <span class="dt">labels =</span> list_states_abb)</a>
+<a class="sourceLine" id="cb21-16" title="16"></a>
+<a class="sourceLine" id="cb21-17" title="17"><span class="co">## Read state-level predictors and add them to the CCES and poststratification table</span></a>
+<a class="sourceLine" id="cb21-18" title="18">statelevel_predictors &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;statelevel_predictors.csv&#39;</span>)</a>
+<a class="sourceLine" id="cb21-19" title="19">statelevel_predictors<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(statelevel_predictors<span class="op">$</span>state, </a>
+<a class="sourceLine" id="cb21-20" title="20">                                      <span class="dt">levels =</span> list_states_abb, </a>
+<a class="sourceLine" id="cb21-21" title="21">                                      <span class="dt">labels =</span> list_states_abb)</a>
+<a class="sourceLine" id="cb21-22" title="22">df_all &lt;-<span class="st"> </span><span class="kw">left_join</span>(df_all, statelevel_predictors, </a>
+<a class="sourceLine" id="cb21-23" title="23">                    <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>, <span class="dt">keep =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb21-24" title="24">poststrat_df &lt;-<span class="st"> </span><span class="kw">left_join</span>(poststrat_df, statelevel_predictors, </a>
+<a class="sourceLine" id="cb21-25" title="25">                          <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>, <span class="dt">keep =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div id="model-based-extension-of-the-poststratification-table" class="section level2">
+<h2><span class="header-section-number">3.1</span> Model-based Extension of the Poststratification Table</h2>
+<p>As we have described, we start fitting a multilevel model to predict partisanship as a function of the same demographic and geographic variables used in the standard MRP model, which will allow us to predict the proportion of Republicans, Democrats, and Independents in each row of the poststratification table. As there are three levels for partisanship, we use a Bayesian multinomial (i.e. unordered) logistic regression which can be fitted in <code>brms</code> (currently, <code>rstanarm</code> does not support multinomial logistic regression).</p>
+<p>For this extension step we should use a survey that we think is to some degree representative with respect to the variable that we are trying to include in the poststratification table. In our example, if we extended our census-based poststratification table using a highly non-representative survey with respect to party, we would indeed generated a biased poststratification table and ultimately obtain compromised MRP estimates. In other words, this is our opportunity to bring outside information in order to generate a richer poststratification table that can adjust for potential biases in the main survey, so we need to make sure that the survey we use to extend the poststratification table is trustworthy with respect to the non-census variable.</p>
+<p>In this example, we will use a 5,000-person sample of the CCES to extend the poststratification table to include partisanship, which is addressed in the CCES:</p>
+<blockquote>
+<p>Generally speaking, do you think of yourself as a …? (Democrat, Republican, Independent, Other, Not Sure)</p>
+</blockquote>
+<p>For simplicity, we included the few respondents that indicated “Other” or “Not Sure” as Independents.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co"># Setting seed to arbitrary number for reproducibility</span></a>
+<a class="sourceLine" id="cb22-2" title="2"><span class="kw">set.seed</span>(<span class="dv">1010</span>)</a>
+<a class="sourceLine" id="cb22-3" title="3"></a>
+<a class="sourceLine" id="cb22-4" title="4"><span class="co"># Taking random sample from the CCES survey</span></a>
+<a class="sourceLine" id="cb22-5" title="5">df_random &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb22-6" title="6"></a>
+<a class="sourceLine" id="cb22-7" title="7"><span class="co"># fit_party &lt;- brm(party ~ (1 | state) + (1 | eth) + (1 | age) + (1 | educ) + male +</span></a>
+<a class="sourceLine" id="cb22-8" title="8"><span class="co">#                    (1 | male:eth) + (1 | educ:age) + (1 | educ:eth) +</span></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="co">#                    repvote + factor(region),</span></a>
+<a class="sourceLine" id="cb22-10" title="10"><span class="co">#    family = &quot;categorical&quot;,</span></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="co">#    data = df_random,</span></a>
+<a class="sourceLine" id="cb22-12" title="12"><span class="co">#    prior = c(prior(normal(0, 5), class = Intercept),</span></a>
+<a class="sourceLine" id="cb22-13" title="13"><span class="co">#              prior(normal(0, 1), class = b),</span></a>
+<a class="sourceLine" id="cb22-14" title="14"><span class="co">#              prior(exponential(0.5), class = sd, dpar = muIndependent),</span></a>
+<a class="sourceLine" id="cb22-15" title="15"><span class="co">#              prior(exponential(0.5), class = sd, dpar = muRepublican)),</span></a>
+<a class="sourceLine" id="cb22-16" title="16"><span class="co">#    control = list(adapt_delta = 0.9, max_treedepth  = 10),</span></a>
+<a class="sourceLine" id="cb22-17" title="17"><span class="co">#    seed = 1010)</span></a>
+<a class="sourceLine" id="cb22-18" title="18"><span class="co">#   </span></a>
+<a class="sourceLine" id="cb22-19" title="19"><span class="co"># saveRDS(fit_party, file = &quot;fit_party_example.rds&quot;)</span></a>
+<a class="sourceLine" id="cb22-20" title="20">fit_party &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;fit_party_example.rds&quot;</span>)</a></code></pre></div>
+<p>This model gives us, for each poststratification cell <span class="math inline">\(j\)</span>, an estimate for the proportion of Democrats (<span class="math inline">\(\hat{\theta}_{{\rm Democrat}, j}\)</span>), Republicans (<span class="math inline">\(\hat{\theta}_{{\rm Republican}, j}\)</span>), and Independents (<span class="math inline">\(\hat{\theta}_{{\rm Independent}, j}\)</span>). We can multiply these quantities by the number of people in cell <span class="math inline">\(j\)</span> to estimate the number of Democrats (<span class="math inline">\(N_j \: \hat{\theta}_{{\rm Democrat}, j}\)</span>), Republicans (<span class="math inline">\(N_j \: \hat{\theta}_{{\rm Republican}, j}\)</span>), and Independents (<span class="math inline">\(N_j \: \hat{\theta}_{{\rm Independent}, j}\)</span>), obtaining an extended poststratification table in which each cell has been expanded into three. That is, if the original poststratification table had <span class="math inline">\(J\)</span> rows (e.g. 12,000 in our case), the new one will have <span class="math inline">\(3 J\)</span> (e.g. 36,000). There is, however, a certain complication that must be taken into account. The model-based estimates for the proportion of Democrats, Republicans, and Independents are not single numbers, but several draws from the posterior distribution that capture the uncertainty about these estimates. For instance, if we have 500 draws for <span class="math inline">\(\hat{\theta}_{{\rm Democrat}, j}\)</span>, <span class="math inline">\(\hat{\theta}_{{\rm Republican}, j}\)</span>, and <span class="math inline">\(\hat{\theta}_{{\rm Independent}, j}\)</span>, we can imagine 500 poststratification tables with different numbers for each cell.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="co">## Use pp_expect to predict partisanship for original poststratification table</span></a>
+<a class="sourceLine" id="cb23-2" title="2">posmat_party &lt;-<span class="st"> </span><span class="kw">pp_expect</span>(fit_party, <span class="dt">newdata =</span> poststrat_df, <span class="dt">transform =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb23-3" title="3"></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="co"># pp_expect does not allow us to select the number of draws. Therefore, we </span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="co"># take a random sample of 500 draws from posterior distribution</span></a>
+<a class="sourceLine" id="cb23-6" title="6">posmat_party &lt;-<span class="st"> </span>posmat_party[<span class="kw">sample</span>(<span class="kw">nrow</span>(posmat_party), <span class="dt">size=</span><span class="dv">500</span>, <span class="dt">replace=</span><span class="ot">TRUE</span>),,]</a>
+<a class="sourceLine" id="cb23-7" title="7"></a>
+<a class="sourceLine" id="cb23-8" title="8"><span class="co"># Extend poststratification table</span></a>
+<a class="sourceLine" id="cb23-9" title="9">poststrat_df_threefold &lt;-<span class="st"> </span>poststrat_df[<span class="kw">rep</span>(<span class="kw">seq_len</span>(<span class="kw">nrow</span>(poststrat_df)), <span class="dt">each =</span> <span class="dv">3</span>), ]</a>
+<a class="sourceLine" id="cb23-10" title="10">poststrat_df_threefold<span class="op">$</span>party &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;Democrat&quot;</span>, <span class="st">&quot;Republican&quot;</span>, <span class="st">&quot;Independent&quot;</span>), <span class="kw">nrow</span>(poststrat_df))</a>
+<a class="sourceLine" id="cb23-11" title="11"></a>
+<a class="sourceLine" id="cb23-12" title="12"><span class="co"># Calculate new numbers for the cells of the new poststratification table. K </span></a>
+<a class="sourceLine" id="cb23-13" title="13"><span class="co"># is a matrix containing 36000 rows (one for each cell of the poststratification table) </span></a>
+<a class="sourceLine" id="cb23-14" title="14"><span class="co"># and 500 columns (corresponding to the 500 draws).</span></a>
+<a class="sourceLine" id="cb23-15" title="15">K_theta &lt;-<span class="st"> </span><span class="kw">apply</span>(posmat_party, <span class="dv">1</span>, <span class="cf">function</span>(x){<span class="kw">as.vector</span>(<span class="kw">t</span>(x))})</a>
+<a class="sourceLine" id="cb23-16" title="16">K &lt;-<span class="st"> </span>K_theta <span class="op">*</span><span class="st"> </span><span class="kw">rep</span>(poststrat_df<span class="op">$</span>n, <span class="dt">each =</span> <span class="dv">3</span>)</a></code></pre></div>
+<button id="myButton" onclick="myFunction()">
+Show code explanation
+</button>
+<div id="myDIV" style="display:none">
+<p>More generally, let’s say that for each <span class="math inline">\(\hat{\theta}_{{\rm Democrat}, j}\)</span>, <span class="math inline">\(\hat{\theta}_{{\rm Republican}, j}\)</span>, and <span class="math inline">\(\hat{\theta}_{{\rm Independent}, j}\)</span> we have a vector that contains <span class="math inline">\(D_1\)</span> draws from the posterior distribution. In the code <span class="math inline">\(D_1 = 500\)</span>, as we have randomly selected 500 draws from the <code>posmat_party</code> matrix. Therefore, <code>pp_expect</code> (the <code>brms</code> equivalent to <code>posterior_epred</code>) will return an array with <span class="math inline">\(J\)</span> (number of rows of the original poststratification table) <span class="math inline">\(\times D_1\)</span> (number of draws from posterior distribution) <span class="math inline">\(\times 3\)</span> (estimates for Democrats, Republicans, and Independents) dimensions.</p>
+<p>The first step is to take this <span class="math inline">\(J \times D_1 \times 3\)</span> array and transform it to a <span class="math inline">\(3J \times D_1\)</span> matrix. Then, we multiply each row of the matrix by the corresponding <span class="math inline">\(N_j\)</span> of the original poststratification table. This gives us a new <span class="math inline">\(3J \times D_1\)</span> matrix that we will call <span class="math inline">\(K\)</span>, and which contains the <span class="math inline">\(D_1\)</span> draws for each of the <span class="math inline">\(3J\)</span> cells of the new poststratification table.</p>
+</div>
+<p><br></p>
+<p>In sum, we started with a poststratification table with 12,000 rows. Here we can see the first three rows:</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:left;">
+eth
+</th>
+<th style="text-align:right;">
+male
+</th>
+<th style="text-align:left;">
+age
+</th>
+<th style="text-align:left;">
+educ
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+No HS
+</td>
+<td style="text-align:right;">
+23948
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+HS
+</td>
+<td style="text-align:right;">
+59378
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+Some college
+</td>
+<td style="text-align:right;">
+104855
+</td>
+</tr>
+</tbody>
+</table>
+<p>We have used a model-based approach to include partisanship in this poststratification table, that now has 36,000 rows (again, each row in the original table has been split into three). However, in order to consider the uncertainty in these model-based estimates we have actually built 500 different poststratification tables. Here we show the first 9 rows of one of these 500 poststratification tables:</p>
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+state
+</th>
+<th style="text-align:left;">
+eth
+</th>
+<th style="text-align:right;">
+male
+</th>
+<th style="text-align:left;">
+age
+</th>
+<th style="text-align:left;">
+educ
+</th>
+<th style="text-align:left;">
+party
+</th>
+<th style="text-align:right;">
+n
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+No HS
+</td>
+<td style="text-align:left;">
+Democrat
+</td>
+<td style="text-align:right;">
+2937.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+No HS
+</td>
+<td style="text-align:left;">
+Republican
+</td>
+<td style="text-align:right;">
+11304.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+No HS
+</td>
+<td style="text-align:left;">
+Independent
+</td>
+<td style="text-align:right;">
+9706.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+HS
+</td>
+<td style="text-align:left;">
+Democrat
+</td>
+<td style="text-align:right;">
+11157.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+HS
+</td>
+<td style="text-align:left;">
+Republican
+</td>
+<td style="text-align:right;">
+27019.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+HS
+</td>
+<td style="text-align:left;">
+Independent
+</td>
+<td style="text-align:right;">
+21201.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+Some college
+</td>
+<td style="text-align:left;">
+Democrat
+</td>
+<td style="text-align:right;">
+22402.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+Some college
+</td>
+<td style="text-align:left;">
+Republican
+</td>
+<td style="text-align:right;">
+44411.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AL
+</td>
+<td style="text-align:left;">
+White
+</td>
+<td style="text-align:right;">
+-0.5
+</td>
+<td style="text-align:left;">
+18-29
+</td>
+<td style="text-align:left;">
+Some college
+</td>
+<td style="text-align:left;">
+Independent
+</td>
+<td style="text-align:right;">
+38041.6
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="adjusting-for-nonresponse-bias" class="section level2">
+<h2><span class="header-section-number">3.2</span> Adjusting for Nonresponse Bias</h2>
+<p>We have described how to extend the poststratification table by including partisanship. Now, we will use this poststratification table to adjust for differential party nonresponse.</p>
+<div id="setting-up-example-with-an-artificially-nonrepresentative-sample" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Setting up example with an artificially nonrepresentative sample</h3>
+<p>To demostraty how non-census MRP can adjust for party, we will use a survey that is biased with respect to party. As we are already familiar with the CCES dataset, what we are going to do is to take a different sample of 5,000 respondents that simulates a high nonresponse rate among Republicans and, to a lesser degree, Independents.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="co"># Random sample of 5,000 that weights by party</span></a>
+<a class="sourceLine" id="cb24-2" title="2">df_nonrepresentative &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">5000</span>, <span class="dt">weight =</span> <span class="kw">I</span>((df_all<span class="op">$</span>party<span class="op">==</span><span class="st">&quot;Democrat&quot;</span>)<span class="op">*</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-3" title="3"><span class="st">                                                    </span>(df_all<span class="op">$</span>party<span class="op">==</span><span class="st">&quot;Independent&quot;</span>)<span class="op">*</span><span class="fl">0.75</span> <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb24-4" title="4"><span class="st">                                                    </span>(df_all<span class="op">$</span>party<span class="op">==</span><span class="st">&quot;Republican&quot;</span>)<span class="op">*</span><span class="fl">0.5</span>))</a></code></pre></div>
+<p>Previously, we saw that the national average support for requiring companies to cover abortion in their insurance plans was around 43.4% according to the CCES. Comparatively, this biased sample of the CCES gives an estimate of 36.7%. This is not surprising, as missing Republicans and Independents in the survey should reduce support for the employers’ right to decline abortion coverage.</p>
+</div>
+<div id="standard-mrp" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> Standard MRP</h3>
+<p>We fit a standard MRP (i.e. without including party) on the nonrepresentative sample, using the same model as in the MRP introduction and the non-extended poststratification table.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co"># fit_abortion_standard &lt;- stan_glmer(abortion ~ (1 | state) + (1 | eth) + (1 | age) + (1 | educ) + male + </span></a>
+<a class="sourceLine" id="cb25-2" title="2"><span class="co">#                       (1 | male:eth) + (1 | educ:age) + (1 | educ:eth) + </span></a>
+<a class="sourceLine" id="cb25-3" title="3"><span class="co">#                       repvote + factor(region),</span></a>
+<a class="sourceLine" id="cb25-4" title="4"><span class="co">#     family = binomial(link = &quot;logit&quot;),</span></a>
+<a class="sourceLine" id="cb25-5" title="5"><span class="co">#     data = df_nonrepresentative,</span></a>
+<a class="sourceLine" id="cb25-6" title="6"><span class="co">#     prior = normal(0, 1, autoscale = TRUE),</span></a>
+<a class="sourceLine" id="cb25-7" title="7"><span class="co">#     prior_covariance = decov(scale = 0.50),</span></a>
+<a class="sourceLine" id="cb25-8" title="8"><span class="co">#     adapt_delta = 0.99,</span></a>
+<a class="sourceLine" id="cb25-9" title="9"><span class="co">#     seed = 1010)</span></a>
+<a class="sourceLine" id="cb25-10" title="10"><span class="co"># </span></a>
+<a class="sourceLine" id="cb25-11" title="11"><span class="co"># saveRDS(fit_abortion_standard, file = &quot;fit_abortionstandard_example.rds&quot;)</span></a>
+<a class="sourceLine" id="cb25-12" title="12">fit_abortion_standard &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;fit_abortionstandard_example.rds&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">P_standardMRP &lt;-<span class="st"> </span>rstanarm<span class="op">::</span><span class="kw">posterior_epred</span>(fit_abortion_standard, <span class="dt">newdata =</span> poststrat_df, <span class="dt">draws =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb26-2" title="2">national_standardMRP &lt;-<span class="st"> </span>(P_standardMRP <span class="op">%*%</span><span class="st"> </span>poststrat_df<span class="op">$</span>n)<span class="op">/</span><span class="kw">sum</span>(poststrat_df<span class="op">$</span>n)</a></code></pre></div>
+<p>The standard MRP with the nonrepresentative sample gives a national-level estimate of 38.7% (<span class="math inline">\(\pm\)</span> 0.7%). As this estimate does not consider partisanship, standard MRP is not being able to adjust for the smaller statement support that results from oversampling Democrats.</p>
+</div>
+<div id="non-census-mrp-with-partisanship-as-a-predictor" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> Non-census MRP with partisanship as a predictor</h3>
+<p>In the first section we have created a poststratification table that contains partisanship. After doing this, the next step of the non-census MRP approach is to fit the same model as we did in the standard MRP, but also including party as a predictor:</p>
+<p><span class="math display">\[
+Pr(y_i = 1) = logit^{-1}(
+\alpha_{\rm s[i]}^{\rm state}
++ \alpha_{\rm a[i]}^{\rm age}
++ \alpha_{\rm r[i]}^{\rm eth}
++ \alpha_{\rm e[i]}^{\rm educ}
++ \beta^{\rm male} \cdot {\rm Male}_{\rm i} 
++ \alpha_{\rm g[i], r[i]}^{\rm male.eth}
++ \alpha_{\rm e[i], a[i]}^{\rm educ.age}
++ \alpha_{\rm e[i], r[i]}^{\rm educ.eth}
++ \alpha_{\rm p[i]}^{\rm party}
+)
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\alpha_{\rm s}^{\rm state} &amp;\sim {\rm Normal}(\gamma^0 + \gamma^{\rm south} \cdot {\rm South}_{\rm s} + \gamma^{\rm midwest} \cdot {\rm Midwest}_{\rm s} + \gamma^{\rm west} \cdot {\rm West}_{\rm s} + \gamma^{\rm repvote} \cdot {\rm RepVote}_{\rm s}, \sigma_{\rm state}) \textrm{ for s = 1,...,50}\\
+\alpha_{\rm a}^{\rm age} &amp; \sim {\rm Normal}(0,\sigma_{\rm age}) \textrm{ for a = 1,...,6}\\
+\alpha_{\rm r}^{\rm eth} &amp; \sim {\rm Normal}(0,\sigma_{\rm eth}) \textrm{ for r = 1,...,4}\\
+\alpha_{\rm e}^{\rm educ} &amp; \sim {\rm Normal}(0,\sigma_{\rm educ}) \textrm{ for e = 1,...,5}\\
+\alpha_{\rm g,r}^{\rm male.eth} &amp; \sim {\rm Normal}(0,\sigma_{\rm male.eth}) \textrm{ for g = 1,2 and r = 1,...,4}\\
+\alpha_{\rm e,a}^{\rm educ.age} &amp; \sim {\rm Normal}(0,\sigma_{\rm educ.age}) \textrm{ for e = 1,...,5 and a = 1,...,6}\\
+\alpha_{\rm e,r}^{\rm educ.eth} &amp; \sim {\rm Normal}(0,\sigma_{\rm educ.eth}) \textrm{ for e = 1,...,5 and r = 1,...,4}\\
+\alpha_{\rm p}^{\rm party} &amp; \sim {\rm Normal}(0,\sigma_{\rm party}) \textrm{ for p = 1,2,3}\\
+\end{align*}
+\]</span></p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co"># fit_abortion_noncensus &lt;- stan_glmer(abortion ~ (1 | state) + (1 | eth) + (1 | age) + (1 | educ) + male +</span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="co">#                      (1 | male:eth) + (1 | educ:age) + (1 | educ:eth) +</span></a>
+<a class="sourceLine" id="cb27-3" title="3"><span class="co">#                      repvote + factor(region) + (1 | party),</span></a>
+<a class="sourceLine" id="cb27-4" title="4"><span class="co">#    family = binomial(link = &quot;logit&quot;),</span></a>
+<a class="sourceLine" id="cb27-5" title="5"><span class="co">#    data = df_nonrepresentative,</span></a>
+<a class="sourceLine" id="cb27-6" title="6"><span class="co">#    prior = normal(0, 1, autoscale = TRUE),</span></a>
+<a class="sourceLine" id="cb27-7" title="7"><span class="co">#    prior_covariance = decov(scale = 0.50),</span></a>
+<a class="sourceLine" id="cb27-8" title="8"><span class="co">#    adapt_delta = 0.99,</span></a>
+<a class="sourceLine" id="cb27-9" title="9"><span class="co">#    seed = 1010)</span></a>
+<a class="sourceLine" id="cb27-10" title="10"><span class="co"># </span></a>
+<a class="sourceLine" id="cb27-11" title="11"><span class="co"># saveRDS(fit_abortion_noncensus, file = &quot;fit_abortionnoncensus_example.rds&quot;)</span></a>
+<a class="sourceLine" id="cb27-12" title="12">fit_abortion_noncensus &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;fit_abortionnoncensus_example.rds&quot;</span>)</a></code></pre></div>
+<p>Using <code>posterior_epred</code> allows us to estimate abortion coverage support for each of the cells in the extended poststratification table. As we set <code>draws = 500</code>, we obtain 500 estimates for each cell. In standard MRP, we will weight each the statement support estimates for each poststratification cell by the number of people in that cell according to the model-based estimates obtained in the previous section. However, as in this case the number of people in each cell was estimated with uncertainty, we need to propagate the uncertainty in the first (party prediction) model to the final MRP estimates. Essentially, what we can do is randomly pick one of the 500 statement support estimates for each poststratification cell (i.e. a 36,000 vector) we have just obtained and weight it by one of the 500 poststratification tables that resulted from the first model. Repeating the process for the remaining draws gives us a distribution of 500 MRP estimates for national support that correctly captures the uncertainty in the two models.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" title="1"><span class="co"># Use posterior_epred to predict stance on abortion insurance coverage for extended poststratification table </span></a>
+<a class="sourceLine" id="cb28-2" title="2">P &lt;-<span class="st"> </span>rstanarm<span class="op">::</span><span class="kw">posterior_epred</span>(fit_abortion_noncensus, <span class="dt">newdata =</span> poststrat_df_threefold, <span class="dt">draws =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb28-3" title="3"></a>
+<a class="sourceLine" id="cb28-4" title="4"><span class="co"># Calculate national MRP estimates propagating uncertainty from the two models</span></a>
+<a class="sourceLine" id="cb28-5" title="5">national_noncensusMRP &lt;-<span class="st"> </span><span class="kw">colSums</span>(<span class="kw">t</span>(P)<span class="op">*</span>K) <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(K[,<span class="dv">1</span>])</a></code></pre></div>
+<button id="myButton2" onclick="myFunction2()">
+Show code explanation
+</button>
+<div id="myDIV2" style="display:none">
+<p>More generally, <code>posterior_epred</code> returns a <span class="math inline">\(D_2 \times 3J\)</span> matrix we name <span class="math inline">\(P\)</span>, where <span class="math inline">\(D_2\)</span> is the number of draws and <span class="math inline">\(3J\)</span> is, again, the number of cells in the extended poststratification table that includes partisanship.</p>
+<p>With the two matrices <span class="math inline">\(P\)</span> a <span class="math inline">\(K\)</span>, the poststratification step becomes:</p>
+<p><span class="math display">\[\hat{\theta}_{MRP} = \frac{P \times K}{\sum_j^{3J} k_{j 1}} {\rm \: where \:} K = (k_{jd})\]</span></p>
+<p>Were <span class="math inline">\(\hat{\theta}_{MRP}\)</span> is a matrix containing <span class="math inline">\(D_2 \times D_1\)</span> estimates for the proportion of statement support.</p>
+<p>In case of <span class="math inline">\(D_1 = D_2\)</span>, we can do an elementwise operation such that <span class="math inline">\(\hat{\theta}_{MRP} = \frac{\sum_j^{3J} (P^T \odot K)_{jd}}{\sum_j^{3J} k_{j1}}\)</span> in order for the operation to be less computationally expensive, as we only combine each draw (i.e. column) in matrix <span class="math inline">\(P\)</span> with one draw (i.e. column) in matrix <span class="math inline">\(K\)</span> (instead with all the draws in matrix <span class="math inline">\(K\)</span>). This more efficient method, which is the one we implement, returns a vector of length <span class="math inline">\(D_1 = D_2\)</span>. The only consideration is that we must make sure that <span class="math inline">\(D_1 = D_2\)</span>, which in this case required randomly picking 500 draws from <span class="math inline">\(K\)</span> and only obtaining another 500 draws for <span class="math inline">\(P\)</span> (by specifying <code>draws = 500</code>).</p>
+</div>
+<p><br></p>
+<p>Our national-level estimate for the right to exclude abortion coverage from employer-sponsored insurance resulting from this non-census variable MRP is 43.1% (0.7%). Unsurprisingly, this is much closer to the full (unbiased) 60,000 participant survey (43.4 <span class="math inline">\(\pm\)</span> 0.2%) than the standard MRP estimate (38.7 <span class="math inline">\(\pm\)</span> 0.7%). Using an extended poststratification table that contained partisanship allowed us to adjust for differential partisan nonresponse.</p>
+<p>Of course, we can also obtain state-level estimates and compare standard MRP with non-census MRP.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1">n_states &lt;-<span class="st"> </span><span class="kw">length</span>(<span class="kw">unique</span>(poststrat_df_threefold<span class="op">$</span>state))</a>
+<a class="sourceLine" id="cb29-2" title="2"></a>
+<a class="sourceLine" id="cb29-3" title="3">state_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb29-4" title="4">  <span class="dt">state =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-5" title="5">  <span class="dt">standardMRP_mean =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-6" title="6">  <span class="dt">standardMRP_se =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-7" title="7">  <span class="dt">noncensusMRP_mean =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-8" title="8">  <span class="dt">noncensusMRP_se =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-9" title="9">  <span class="dt">all_mean =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states),</a>
+<a class="sourceLine" id="cb29-10" title="10">  <span class="dt">all_se =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_states)</a>
+<a class="sourceLine" id="cb29-11" title="11">)</a>
+<a class="sourceLine" id="cb29-12" title="12"></a>
+<a class="sourceLine" id="cb29-13" title="13"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>n_states){</a>
+<a class="sourceLine" id="cb29-14" title="14">  state &lt;-<span class="st"> </span><span class="kw">unique</span>(poststrat_df_threefold<span class="op">$</span>state)[i]</a>
+<a class="sourceLine" id="cb29-15" title="15">  state_df<span class="op">$</span>state[i] &lt;-<span class="st"> </span><span class="kw">as.character</span>(state)</a>
+<a class="sourceLine" id="cb29-16" title="16">    </a>
+<a class="sourceLine" id="cb29-17" title="17">  standardMRP_vector &lt;-<span class="st"> </span>(P_standardMRP[, poststrat_df<span class="op">$</span>state<span class="op">==</span>state] <span class="op">%*%</span><span class="st"> </span>poststrat_df[poststrat_df<span class="op">$</span>state<span class="op">==</span>state, <span class="st">&quot;n&quot;</span>])<span class="op">/</span></a>
+<a class="sourceLine" id="cb29-18" title="18"><span class="st">    </span><span class="kw">sum</span>(poststrat_df[poststrat_df<span class="op">$</span>state<span class="op">==</span>state, <span class="st">&quot;n&quot;</span>])</a>
+<a class="sourceLine" id="cb29-19" title="19">  state_df<span class="op">$</span>standardMRP_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(standardMRP_vector)</a>
+<a class="sourceLine" id="cb29-20" title="20">  state_df<span class="op">$</span>standardMRP_se[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(standardMRP_vector)</a>
+<a class="sourceLine" id="cb29-21" title="21">  </a>
+<a class="sourceLine" id="cb29-22" title="22">  noncensusMRP_vector &lt;-<span class="st"> </span><span class="kw">colSums</span>(<span class="kw">t</span>(P[ ,poststrat_df_threefold<span class="op">$</span>state<span class="op">==</span>state]) <span class="op">*</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb29-23" title="23"><span class="st">                                 </span>K[poststrat_df_threefold<span class="op">$</span>state<span class="op">==</span>state, ]) <span class="op">/</span></a>
+<a class="sourceLine" id="cb29-24" title="24"><span class="st">                          </span><span class="kw">sum</span>(K[poststrat_df_threefold<span class="op">$</span>state<span class="op">==</span>state, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb29-25" title="25">  state_df<span class="op">$</span>noncensusMRP_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(noncensusMRP_vector)</a>
+<a class="sourceLine" id="cb29-26" title="26">  state_df<span class="op">$</span>noncensusMRP_se[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(noncensusMRP_vector)</a>
+<a class="sourceLine" id="cb29-27" title="27">  </a>
+<a class="sourceLine" id="cb29-28" title="28">  state_df<span class="op">$</span>all_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(df_all[df_all<span class="op">$</span>state<span class="op">==</span>state,<span class="st">&quot;abortion&quot;</span>])</a>
+<a class="sourceLine" id="cb29-29" title="29">  state_df<span class="op">$</span>all_se[i] &lt;-<span class="st"> </span><span class="kw">sqrt</span>(state_df<span class="op">$</span>all_mean[i]<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span>state_df<span class="op">$</span>all_mean[i])<span class="op">/</span><span class="kw">nrow</span>(df_all[df_all<span class="op">$</span>state<span class="op">==</span>state,]))</a>
+<a class="sourceLine" id="cb29-30" title="30">}</a></code></pre></div>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-48-1.png" width="960" /></p>
+<p>In general, we see that the estimates from the standard MRP are upwardly biased with respect to the 60,000 survey estimates. Conversely, the MRP with non-census variables is able to adjust for the differential partisan nonresponse.</p>
+</div>
+</div>
+<div id="obtaining-estimates-for-non-census-variable-subgroups" class="section level2">
+<h2><span class="header-section-number">3.3</span> Obtaining Estimates for Non-census Variable Subgroups</h2>
+<p>Even if we do not suspect that our survey population is different from our target population with respect to a non-census variable, using non-census MRP can allow us to obtain different estimates for the levels of the non-census variable. Here, we obtain and plot support for declining coverage of abortions by state and party within state.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" title="1">state_df &lt;-<span class="st"> </span>df_nonrepresentative <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">expand</span>(state, party) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb30-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model_mean =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb30-3" title="3">         <span class="dt">model_sd =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb30-4" title="4"></a>
+<a class="sourceLine" id="cb30-5" title="5"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(state_df)){</a>
+<a class="sourceLine" id="cb30-6" title="6">  filtering_condition &lt;-<span class="st"> </span><span class="kw">which</span>(poststrat_df_threefold<span class="op">$</span>state <span class="op">==</span><span class="st"> </span>state_df<span class="op">$</span>state[i] <span class="op">&amp;</span></a>
+<a class="sourceLine" id="cb30-7" title="7"><span class="st">                                 </span>poststrat_df_threefold<span class="op">$</span>party <span class="op">==</span><span class="st"> </span>state_df<span class="op">$</span>party[i])</a>
+<a class="sourceLine" id="cb30-8" title="8">  </a>
+<a class="sourceLine" id="cb30-9" title="9">  noncensusMRP_vector &lt;-<span class="st"> </span><span class="kw">colSums</span>(<span class="kw">t</span>(P[ ,filtering_condition]) <span class="op">*</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb30-10" title="10"><span class="st">                                   </span>K[filtering_condition, ]) <span class="op">/</span></a>
+<a class="sourceLine" id="cb30-11" title="11"><span class="st">                                    </span><span class="kw">sum</span>(K[filtering_condition, <span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb30-12" title="12">  </a>
+<a class="sourceLine" id="cb30-13" title="13">  state_df<span class="op">$</span>model_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(noncensusMRP_vector)</a>
+<a class="sourceLine" id="cb30-14" title="14">  state_df<span class="op">$</span>model_sd[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(noncensusMRP_vector)</a>
+<a class="sourceLine" id="cb30-15" title="15">}</a></code></pre></div>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-50-1.png" width="384" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-kastellec2015polarizing">
+<p>Kastellec, Jonathan P, Jeffrey R Lax, Michael Malecki, and Justin H Phillips. 2015. “Polarizing the Electoral Connection: Partisan Representation in Supreme Court Confirmation Politics.” <em>The Journal of Politics</em> 77 (3): 787–804.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-mrp.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="ideal-point-mrp.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 1
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

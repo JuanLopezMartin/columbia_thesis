@@ -1,0 +1,436 @@
+{
+  "version": 1,
+  "locale": "en_US",
+  "platform": "3.6.3",
+  "metadata": {
+    "appmode": "static",
+    "primary_rmd": null,
+    "primary_html": "index.html",
+    "content_category": "site",
+    "has_parameters": false
+  },
+  "packages": null,
+  "files": {
+    "ideal-point-mrp-1.html": {
+      "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "ideal-point-mrp.html": {
+      "checksum": "860159a015b1a3158a7c50b019b4ae08"
+    },
+    "index.html": {
+      "checksum": "7eb57b5fadfba692c573d630be4e7418"
+    },
+    "introduction-to-mrp.html": {
+      "checksum": "8ab24e89ae32772fc105d2c0cb823a10"
+    },
+    "libs/gitbook-2.6.7/css/fontawesome/fontawesome-webfont.ttf": {
+      "checksum": "b06871f281fee6b241d60582ae9369b9"
+    },
+    "libs/gitbook-2.6.7/css/plugin-bookdown.css": {
+      "checksum": "44444d0f3eb8064760ba1976976a7101"
+    },
+    "libs/gitbook-2.6.7/css/plugin-clipboard.css": {
+      "checksum": "e4a3bdc1e3d5590f47cbac67976f3961"
+    },
+    "libs/gitbook-2.6.7/css/plugin-fontsettings.css": {
+      "checksum": "76af8c23a8138a4b66aa6959ca5c3a8e"
+    },
+    "libs/gitbook-2.6.7/css/plugin-highlight.css": {
+      "checksum": "467fbe4b6b5a4b88fdd75c463f8626ec"
+    },
+    "libs/gitbook-2.6.7/css/plugin-search.css": {
+      "checksum": "0d7a6bb6a50e00c7358cf61027f099f0"
+    },
+    "libs/gitbook-2.6.7/css/plugin-table.css": {
+      "checksum": "8cb82f94ce1446fa4bafe7a3933e6c65"
+    },
+    "libs/gitbook-2.6.7/css/style.css": {
+      "checksum": "11f13a161c95d0e8257d673dc27f9251"
+    },
+    "libs/gitbook-2.6.7/js/app.min.js": {
+      "checksum": "395a8093ce46450cabfaa545a0705a3b"
+    },
+    "libs/gitbook-2.6.7/js/clipboard.min.js": {
+      "checksum": "be72101c8c16ba95fd8b69760d5ebc56"
+    },
+    "libs/gitbook-2.6.7/js/jquery.highlight.js": {
+      "checksum": "999424d32e03b9857098d2c7f53928c2"
+    },
+    "libs/gitbook-2.6.7/js/lunr.js": {
+      "checksum": "fbc747c6143aabb39b0ea7c0524b7057"
+    },
+    "libs/gitbook-2.6.7/js/plugin-bookdown.js": {
+      "checksum": "36b5487b9c1020c0de1352b8f26b8a8e"
+    },
+    "libs/gitbook-2.6.7/js/plugin-clipboard.js": {
+      "checksum": "a30f95fcd3fde10637ace1fb691b7475"
+    },
+    "libs/gitbook-2.6.7/js/plugin-fontsettings.js": {
+      "checksum": "4f57689705fdfa3eabfb7b7b92614f33"
+    },
+    "libs/gitbook-2.6.7/js/plugin-search.js": {
+      "checksum": "2d4c4d47ba34946b8ebcbe41aa522756"
+    },
+    "libs/gitbook-2.6.7/js/plugin-sharing.js": {
+      "checksum": "799a983ef24c1cbe315d020a65aa1644"
+    },
+    "libs/jquery-2.2.3/jquery.min.js": {
+      "checksum": "33cabfa15c1060aaa3d207c653afb1ee"
+    },
+    "libs/kePrint-0.0.1/kePrint.js": {
+      "checksum": "03b791fcaee0a40c261c3c14f3d85d27"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-10-1.png": {
+      "checksum": "3bbbedb943e628688bfdb3a1884b7da9"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-100-1.png": {
+      "checksum": "9b08ae5e55cfc4705aef0beb10bb3fcb"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-11-1.png": {
+      "checksum": "25f6bf1c5a2fb2f8ee3c84360f0e41bf"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-12-1.png": {
+      "checksum": "2b7827480d31c8389cab517edf54354e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-13-1.png": {
+      "checksum": "d73f43737a2ad992be1530b2620bf80a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-14-1.png": {
+      "checksum": "a8b5a03c808e02189aa5910b26e99444"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-15-1.png": {
+      "checksum": "d9b3cdde16b629616a22b9c582aa3360"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-16-1.png": {
+      "checksum": "d7d18d134b061641e78ff0ca9cb20c85"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-17-1.png": {
+      "checksum": "6a37658a3b7bffec805b7604e727adb1"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-177-1.png": {
+      "checksum": "ac233d8861fc832487176b0c22d10265"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-178-1.png": {
+      "checksum": "e493ea8d1b38f6ff874cd33306569db0"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-18-1.png": {
+      "checksum": "ddaeb33b061d39043d9442cc4c51154d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-185-1.png": {
+      "checksum": "4f077157da122ca6b78087e2b0e6f704"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-186-1.png": {
+      "checksum": "7f17f8cae237ce6d389aab7e323b1902"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-187-1.png": {
+      "checksum": "667d82aee9d95d54d08250c9c2d8a094"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-188-1.png": {
+      "checksum": "6a37658a3b7bffec805b7604e727adb1"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-19-1.png": {
+      "checksum": "d30127678e701b4c4772c73c98d6624e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-190-1.png": {
+      "checksum": "d30127678e701b4c4772c73c98d6624e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-192-1.png": {
+      "checksum": "4c408719a4ef805b00dce9d287651836"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-194-1.png": {
+      "checksum": "9c27dc59c2183d6800baa1b985a57b58"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-195-1.png": {
+      "checksum": "c81a84bf32079f1189b776cf57df4b63"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-198-1.png": {
+      "checksum": "7a9c30da42aee66ea57d170f04690c50"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-199-1.png": {
+      "checksum": "fec4a063b83beaf539e1cb51ee9fd47b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-2-1.png": {
+      "checksum": "9dda190165d94b27d1e677e12ec0f0db"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-20-1.png": {
+      "checksum": "82e0675ad28112db3e722a44df4571b9"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-200-1.png": {
+      "checksum": "19c27254fa1f0447e2ddce062afc1c8a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-21-1.png": {
+      "checksum": "8439c4365c40bd692f66e6a6d62277c2"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-218-1.png": {
+      "checksum": "c77e738c99f9cf0a615aa8ac61a46db5"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-22-1.png": {
+      "checksum": "3f1ff29e8767e6b3ab1cac8939a73aa5"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-220-1.png": {
+      "checksum": "5f4b6e6f48deb7a8727c6b1e6f5a18a4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-23-1.png": {
+      "checksum": "4abb812f7183ad9a9f5555e762a04d0b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-238-1.png": {
+      "checksum": "c0fe435238648ada18b9da1de0587170"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-239-1.png": {
+      "checksum": "f98d18a27f1b8ec84b6fe6c77a6320b8"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-24-1.png": {
+      "checksum": "1b05b7ce269f7f2fecbe2b7e77659211"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-241-1.png": {
+      "checksum": "06755a076ea7be0a89a799054ab048eb"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-242-1.png": {
+      "checksum": "946710b70f7ec878e1ded6df4f2a9dca"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-243-1.png": {
+      "checksum": "cf827105ab94f5765ea465770c6ff79a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-244-1.png": {
+      "checksum": "c81bc794e1e726944e15483c8cc40f01"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-25-1.png": {
+      "checksum": "8eb77e2b999094e58e88e89b3073e20d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-250-1.png": {
+      "checksum": "a8968694dbd48d360343f665e8e40f2a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-253-1.png": {
+      "checksum": "c7f6c9053d9dc217d70077c8294d86b0"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-256-1.png": {
+      "checksum": "93feaf27a01acdd2d76a6528449922ed"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-259-1.png": {
+      "checksum": "cb20a18c4d9dbc83a87e713abc8d3a46"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-26-1.png": {
+      "checksum": "560cfec45e8f2b2cedb9f7d3ce9e908e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-262-1.png": {
+      "checksum": "c41e8ea85477b0f150cb7229cfa2f09e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-27-1.png": {
+      "checksum": "cf71bbe15362111121cb58e7e4ce1b4e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-28-1.png": {
+      "checksum": "4b9d75c7ea8474fecb63c54d72fa6cdd"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-29-1.png": {
+      "checksum": "6e9e580c521e2824e9d66cc177c6097a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-30-1.png": {
+      "checksum": "d7d18d134b061641e78ff0ca9cb20c85"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-31-1.png": {
+      "checksum": "6a37658a3b7bffec805b7604e727adb1"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-32-1.png": {
+      "checksum": "93c69d1f24bbef1b7b99456ac2c8affa"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-33-1.png": {
+      "checksum": "d30127678e701b4c4772c73c98d6624e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-34-1.png": {
+      "checksum": "534126f95fdbfa0c90d3c4d4277f38e4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-35-1.png": {
+      "checksum": "8439c4365c40bd692f66e6a6d62277c2"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-36-1.png": {
+      "checksum": "701633c4d697b92c9d417dbdd3851f96"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-37-1.png": {
+      "checksum": "4abb812f7183ad9a9f5555e762a04d0b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-38-1.png": {
+      "checksum": "1b05b7ce269f7f2fecbe2b7e77659211"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-41-1.png": {
+      "checksum": "cf71bbe15362111121cb58e7e4ce1b4e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-42-1.png": {
+      "checksum": "4b9d75c7ea8474fecb63c54d72fa6cdd"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-43-1.png": {
+      "checksum": "6e9e580c521e2824e9d66cc177c6097a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-47-1.png": {
+      "checksum": "321f66bc204254d90a156510a794fe05"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-48-1.png": {
+      "checksum": "321f66bc204254d90a156510a794fe05"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-49-1.png": {
+      "checksum": "5f4b6e6f48deb7a8727c6b1e6f5a18a4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-5-1.png": {
+      "checksum": "ae6362a26af03cfe8de052888e8111ea"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-50-1.png": {
+      "checksum": "5f4b6e6f48deb7a8727c6b1e6f5a18a4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-52-1.png": {
+      "checksum": "9dda190165d94b27d1e677e12ec0f0db"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-55-1.png": {
+      "checksum": "0b9b1a7af22beb9bd1fa977296e3d58b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-56-1.png": {
+      "checksum": "d927005e3dd08660c7ff6b6db1afb8c2"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-57-1.png": {
+      "checksum": "50dbe9d0584b293540afaad32f9ae9a8"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-58-1.png": {
+      "checksum": "38607a6d44c5c0510f165a117df957ac"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-59-1.png": {
+      "checksum": "9dcf940a18f0cc33d6f9b5dc7b1bac0c"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-6-1.png": {
+      "checksum": "82e0675ad28112db3e722a44df4571b9"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-60-1.png": {
+      "checksum": "3bbbedb943e628688bfdb3a1884b7da9"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-61-1.png": {
+      "checksum": "25f6bf1c5a2fb2f8ee3c84360f0e41bf"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-62-1.png": {
+      "checksum": "321f66bc204254d90a156510a794fe05"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-63-1.png": {
+      "checksum": "d73f43737a2ad992be1530b2620bf80a"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-64-1.png": {
+      "checksum": "1cee4b421e5446b35370f5cbcbc2b28b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-65-1.png": {
+      "checksum": "8b5d17bb264fe591dad8540e925393ec"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-66-1.png": {
+      "checksum": "8b5d17bb264fe591dad8540e925393ec"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-67-1.png": {
+      "checksum": "c0fe435238648ada18b9da1de0587170"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-68-1.png": {
+      "checksum": "ddaeb33b061d39043d9442cc4c51154d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-69-1.png": {
+      "checksum": "c5a08d83cc81dca88d9342fd845e57ed"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-7-1.png": {
+      "checksum": "5f7fb9667611db4422bd928b9b93065e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-70-1.png": {
+      "checksum": "76c26c0245a44f534ca4b0bba37f1111"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-71-1.png": {
+      "checksum": "50dbe9d0584b293540afaad32f9ae9a8"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-72-1.png": {
+      "checksum": "3f1ff29e8767e6b3ab1cac8939a73aa5"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-73-1.png": {
+      "checksum": "9dcf940a18f0cc33d6f9b5dc7b1bac0c"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-74-1.png": {
+      "checksum": "3bbbedb943e628688bfdb3a1884b7da9"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-75-1.png": {
+      "checksum": "8eb77e2b999094e58e88e89b3073e20d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-76-1.png": {
+      "checksum": "560cfec45e8f2b2cedb9f7d3ce9e908e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-77-1.png": {
+      "checksum": "231abda816089103709ce8622a816a6c"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-78-1.png": {
+      "checksum": "6fa7322c41e3ab959e48559ad9a40f10"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-79-1.png": {
+      "checksum": "76ff60baa1e17f1e9337e6714973601f"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-8-1.png": {
+      "checksum": "38607a6d44c5c0510f165a117df957ac"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-80-1.png": {
+      "checksum": "808b08d8854a3584b503f3508de2dc25"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-81-1.png": {
+      "checksum": "759e2f4c325bb9d0435e175e00d3ab80"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-82-1.png": {
+      "checksum": "ddaeb33b061d39043d9442cc4c51154d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-83-1.png": {
+      "checksum": "a48f8b693ecb4c9a2f8696c926f82eee"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-84-1.png": {
+      "checksum": "534126f95fdbfa0c90d3c4d4277f38e4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-85-1.png": {
+      "checksum": "8e2b16addf8c3f191c4ee4272dd9f715"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-86-1.png": {
+      "checksum": "9b08ae5e55cfc4705aef0beb10bb3fcb"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-87-1.png": {
+      "checksum": "9a2a0b0f9fe02570d9e8a0f69e4abe9b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-88-1.png": {
+      "checksum": "9a2a0b0f9fe02570d9e8a0f69e4abe9b"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-89-1.png": {
+      "checksum": "8eb77e2b999094e58e88e89b3073e20d"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-9-1.png": {
+      "checksum": "9dcf940a18f0cc33d6f9b5dc7b1bac0c"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-90-1.png": {
+      "checksum": "560cfec45e8f2b2cedb9f7d3ce9e908e"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-91-1.png": {
+      "checksum": "231abda816089103709ce8622a816a6c"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-92-1.png": {
+      "checksum": "6fa7322c41e3ab959e48559ad9a40f10"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-93-1.png": {
+      "checksum": "76ff60baa1e17f1e9337e6714973601f"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-94-1.png": {
+      "checksum": "808b08d8854a3584b503f3508de2dc25"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-98-1.png": {
+      "checksum": "534126f95fdbfa0c90d3c4d4277f38e4"
+    },
+    "MRP-case-studies_files/figure-html/unnamed-chunk-99-1.png": {
+      "checksum": "8e2b16addf8c3f191c4ee4272dd9f715"
+    },
+    "mrp-with-noncensus-variables.html": {
+      "checksum": "84083e848383daa6270d7f76cb33b3f4"
+    },
+    "reference-keys.txt": {
+      "checksum": "20fa021ab5c3b676fca81b74f8fce5d8"
+    },
+    "references.html": {
+      "checksum": "d8cc95315a433c6250111ed4c57021be"
+    },
+    "search_index.json": {
+      "checksum": "def74078bbd79dd68f36db431d9aabe7"
+    },
+    "style.css": {
+      "checksum": "8664d2947c38d03d592b49afbf2fbc46"
+    }
+  },
+  "users": null
+}

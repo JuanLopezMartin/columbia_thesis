@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 Introduction to MRP | Multilevel Regression and Poststratification Case Studies</title>
+  <meta name="description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 Introduction to MRP | Multilevel Regression and Poststratification Case Studies" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 Introduction to MRP | Multilevel Regression and Poststratification Case Studies" />
+  
+  <meta name="twitter:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  
+
+<meta name="author" content="Juan Lopez-Martin, Justin H. Phillips, and Andrew Gelman" />
+
+
+<meta name="date" content="2020-12-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="mrp-with-noncensus-variables.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MRP Case Studies</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Notes</a></li>
+<li class="chapter" data-level="2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html"><i class="fa fa-check"></i><b>2</b> Introduction to MRP</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#the-data"><i class="fa fa-check"></i><b>2.1</b> The Data</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#survey-data"><i class="fa fa-check"></i><b>2.1.1</b> Survey data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#poststratification-table"><i class="fa fa-check"></i><b>2.1.2</b> Poststratification table</a></li>
+<li class="chapter" data-level="2.1.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#group-level-predictors"><i class="fa fa-check"></i><b>2.1.3</b> Group-level predictors</a></li>
+<li class="chapter" data-level="2.1.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>2.1.4</b> Exploratory data analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#first-stage-estimating-the-individual-response-model"><i class="fa fa-check"></i><b>2.2</b> First stage: Estimating the Individual-Response Model</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#second-stage-poststratification"><i class="fa fa-check"></i><b>2.3</b> Second Stage: Poststratification</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-at-the-national-level"><i class="fa fa-check"></i><b>2.3.1</b> Estimation at the national level</a></li>
+<li class="chapter" data-level="2.3.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-sub-national-units"><i class="fa fa-check"></i><b>2.3.2</b> Estimation for sub-national units</a></li>
+<li class="chapter" data-level="2.3.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-subgroups-within-sub-national-units"><i class="fa fa-check"></i><b>2.3.3</b> Estimation for subgroups within sub-national units</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#adjusting-for-nonrepresentative-surveys"><i class="fa fa-check"></i><b>2.4</b> Adjusting for Nonrepresentative Surveys</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#practical-considerations"><i class="fa fa-check"></i><b>2.5</b> Practical Considerations</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#census-incompletness-and-uncertainty"><i class="fa fa-check"></i><b>2.5.1</b> Census incompletness and uncertainty</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#nonreponse-and-missing-data"><i class="fa fa-check"></i><b>2.5.2</b> Nonreponse and missing data</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#model-complexity"><i class="fa fa-check"></i><b>2.5.3</b> Model complexity</a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#empty-cells-in-the-poststratification-table"><i class="fa fa-check"></i><b>2.5.4</b> Empty cells in the poststratification table</a></li>
+<li class="chapter" data-level="2.5.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#subnational-units-not-represented-in-the-survey"><i class="fa fa-check"></i><b>2.5.5</b> Subnational units not represented in the survey</a></li>
+<li class="chapter" data-level="2.5.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#computational-issues"><i class="fa fa-check"></i><b>2.5.6</b> Computational issues</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#appendix-data-preprocessing-for-cces-and-census-data"><i class="fa fa-check"></i><b>2.6</b> Appendix: Data Preprocessing for CCES and Census Data</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#cces"><i class="fa fa-check"></i><b>2.6.1</b> CCES</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#american-community-survey"><i class="fa fa-check"></i><b>2.6.2</b> American Community Survey</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html"><i class="fa fa-check"></i><b>3</b> MRP with Noncensus Variables</a><ul>
+<li class="chapter" data-level="3.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#model-based-extension-of-the-poststratification-table"><i class="fa fa-check"></i><b>3.1</b> Model-based Extension of the Poststratification Table</a></li>
+<li class="chapter" data-level="3.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#adjusting-for-nonresponse-bias"><i class="fa fa-check"></i><b>3.2</b> Adjusting for Nonresponse Bias</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#setting-up-example-with-an-artificially-nonrepresentative-sample"><i class="fa fa-check"></i><b>3.2.1</b> Setting up example with an artificially nonrepresentative sample</a></li>
+<li class="chapter" data-level="3.2.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#standard-mrp"><i class="fa fa-check"></i><b>3.2.2</b> Standard MRP</a></li>
+<li class="chapter" data-level="3.2.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#non-census-mrp-with-partisanship-as-a-predictor"><i class="fa fa-check"></i><b>3.2.3</b> Non-census MRP with partisanship as a predictor</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#obtaining-estimates-for-non-census-variable-subgroups"><i class="fa fa-check"></i><b>3.3</b> Obtaining Estimates for Non-census Variable Subgroups</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html"><i class="fa fa-check"></i><b>4</b> Ideal Point MRP</a><ul>
+<li class="chapter" data-level="4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#introduction-and-literature"><i class="fa fa-check"></i><b>4.1</b> Introduction and Literature</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abc-of-irt"><i class="fa fa-check"></i><b>4.1.1</b> The ABC of IRT</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#ideal-point-models-and-estimating-public-opinion"><i class="fa fa-check"></i><b>4.1.2</b> Ideal point models and estimating public opinion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-two-parameter-irt-model-with-latent-multilevel-regression"><i class="fa fa-check"></i><b>4.2</b> A Two-Parameter IRT Model with Latent Multilevel Regression</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#bayesian-estimation"><i class="fa fa-check"></i><b>4.2.1</b> Bayesian estimation</a></li>
+<li class="chapter" data-level="4.2.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#initial-results"><i class="fa fa-check"></i><b>4.2.2</b> Initial Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abortion-opposition-index-for-us-states"><i class="fa fa-check"></i><b>4.3</b> The Abortion Opposition Index for US States</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparison-with-simple-sum"><i class="fa fa-check"></i><b>4.3.1</b> Comparison with simple sum</a></li>
+<li class="chapter" data-level="4.3.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#fake-data-simulation"><i class="fa fa-check"></i><b>4.3.2</b> Fake-data simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#estimating-support-for-individual-questions"><i class="fa fa-check"></i><b>4.4</b> Estimating Support for Individual Questions</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#mind-the-jensens-gap"><i class="fa fa-check"></i><b>4.4.1</b> Mind the (Jensen’s) gap</a></li>
+<li class="chapter" data-level="4.4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#results-from-standard-and-ideal-point-mrp"><i class="fa fa-check"></i><b>4.4.2</b> Results from Standard and Ideal Point MRP</a></li>
+<li class="chapter" data-level="4.4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparing-ideal-point-and-standard-mrp-using-fake-data-simulation"><i class="fa fa-check"></i><b>4.4.3</b> Comparing ideal point and standard MRP using fake-data simulation</a></li>
+<li class="chapter" data-level="4.4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-note-of-caution"><i class="fa fa-check"></i><b>4.4.4</b> A note of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#concluding-remarks"><i class="fa fa-check"></i><b>4.5</b> Concluding remarks</a></li>
+<li class="chapter" data-level="4.6" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#appendix"><i class="fa fa-check"></i><b>4.6</b> Appendix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Multilevel Regression and Poststratification Case Studies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="introduction-to-mrp" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> Introduction to MRP</h1>
+<style type="text/css">
+h1.title {
+  font-size: 32px;
+  text-align: center;
+}
+
+h2 {
+  padding-bottom: 4px;
+}
+
+h4.author {
+  padding-top: 22px;
+  text-align: center;
+  font-style: italic;
+}
+h4.date {
+  padding-top: 14px;
+  font-size: 14px;
+  text-align: center;
+  font-style: italic;
+  padding-bottom: 20px;
+}
+</style>
+<script>
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+function myFunction2() {
+    var x = document.getElementById("myDIV2");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+function myFunction3() {
+    var x = document.getElementById("myDIV3");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+<style>
+#myDIV {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+
+#myDIV2 {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton2{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+
+#myDIV3 {
+  width: 100%;
+  padding: 20px 30px;
+  background-color: rgba(192,192,192,0.15);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+#myButton3{
+border-color: #008CBA;
+background-color: rgba(192,192,192,0.05);
+color: #008CBA;
+border-radius: 4px;
+}
+</style>
+<p>Multilevel Modeling and Poststratification (MRP) has become widely used in two closely related applications:</p>
+<ol style="list-style-type: decimal">
+<li><p>Small-area estimation: Sub-national surveys are not always available, and even then finding comparable surveys across sub-national units is rare. However, public views at the sub-national level are often central, as many policies are decided by local goverments or sub-national area representatives at national assemblies. MRP allows us to use national surveys to generate reliable estimates of sub-national opinion (<span class="citation">Park, Gelman, and Bafumi (<a href="#ref-park2004bayesian" role="doc-biblioref">2004</a>)</span>, <span class="citation">Lax and Phillips (<a href="#ref-lax2009gay" role="doc-biblioref">2009</a><a href="#ref-lax2009gay" role="doc-biblioref">a</a>)</span>, <span class="citation">Lax and Phillips (<a href="#ref-lax2009states" role="doc-biblioref">2009</a><a href="#ref-lax2009states" role="doc-biblioref">b</a>)</span>, <span class="citation">Kiewiet de Jonge, Langer, and Sinozich (<a href="#ref-kiewiet2018predicting" role="doc-biblioref">2018</a>)</span>).</p></li>
+<li><p>Using nonrepresentative surveys: Many surveys face serious difficulties in recruiting representative samples of participants (e.g. because of non-response bias). However, with proper statistical adjustment, nonrepresentative surveys can be used to generate accurate opinion estimates (<span class="citation">Wang et al. (<a href="#ref-wang2015xbox" role="doc-biblioref">2015</a>)</span>, <span class="citation">Downes et al. (<a href="#ref-downes2018multilevel" role="doc-biblioref">2018</a>)</span>).</p></li>
+</ol>
+<p>In this case study, we will show how to use MRP to estimate public opinion. In the first section we introduce the data. Then, we describe the two essential stages of MRP: building an individual-response model and using poststratification. That is, first, we take individual responses to national surveys and use multilevel modeling in order to predict opinion estimates based on demographic-geographic subgroups (e.g. middle-aged white female with postgraduate education in California). Secondly, these opinion estimates by subgroups are weighted by the frequency of these subgroups at the (national or subnational) unit of interest. In the fourth section we show how MRP can be used to obtain accurate national estimates from a biased sample. Lastly, the five section introduces some practical considerations.</p>
+<p>All the code is also available in the <a href="link%20pending">Rmarkdown file on GitHub</a>.</p>
+<div id="the-data" class="section level2">
+<h2><span class="header-section-number">2.1</span> The Data</h2>
+<div id="survey-data" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Survey data</h3>
+<p>The first step is to gather and recode raw survey data. These surveys should include some respondent demographic information and some type of geographic indicator (e.g. state, congressional district). In this case, we will use data from the 2018 Cooperative Congressional Election Study (CCES), a US nationwide survey designed by a consortium of 60 research teams and administered by YouGov. The outcome of interest in this introduction is a dichotomous question:</p>
+<blockquote>
+<p>Allow employers to decline coverage of abortions in insurance plans (Support / Oppose)</p>
+</blockquote>
+<p>Apart from the outcome measure, we will consider a set of factors that will be used as predictors in the first stage and that will be used to define the geographic-demographic subgroups for the second stage. Even though some of these variables may be continous (e.g. age, income), we must make sure to split them into intervals to create a factor with different levels. Importantly, and as we will see in a moment, these factors and their corresponding levels need to match the ones in the postratification table. In this case, we will use the following demographic-geographic factors with the indicated levels:</p>
+<ul>
+<li>State: 50 US states (<span class="math inline">\(S = 50\)</span>).</li>
+<li>Age: 18-29, 30-39, 40-49, 50-59, 60-69, 70+ (<span class="math inline">\(A = 6\)</span>).</li>
+<li>Gender: Female, Male (<span class="math inline">\(G = 2\)</span>).</li>
+<li>Ethnicity: (Non-hispanic) White, Black, Hispanic, Other (which also includes Mixed) (<span class="math inline">\(R = 4\)</span>).</li>
+<li>Education: No HS, HS, Some college, 4-year college, Post-grad (<span class="math inline">\(E = 5\)</span>).</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">df_all &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;cces18_common_vv.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Vector containing the abbreviated names for the 50 states under consideration</span></a>
+<a class="sourceLine" id="cb1-4" title="4">list_states_abb &lt;-<span class="st"> </span>datasets<span class="op">::</span>state.abb</a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co"># FIPS code for the 50 states. The CCES data uses FIPS codes to identify states,</span></a>
+<a class="sourceLine" id="cb1-6" title="6"><span class="co"># and therefore we need these to read the data and transform the FIPS codes</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># to abbreviated names</span></a>
+<a class="sourceLine" id="cb1-8" title="8">list_states_num &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>,<span class="dv">24</span>,</a>
+<a class="sourceLine" id="cb1-9" title="9">                     <span class="dv">25</span>,<span class="dv">26</span>,<span class="dv">27</span>,<span class="dv">28</span>,<span class="dv">29</span>,<span class="dv">30</span>,<span class="dv">31</span>,<span class="dv">32</span>,<span class="dv">33</span>,<span class="dv">34</span>,<span class="dv">35</span>,<span class="dv">36</span>,<span class="dv">37</span>,<span class="dv">38</span>,<span class="dv">39</span>,<span class="dv">40</span>,<span class="dv">41</span>,<span class="dv">42</span>,</a>
+<a class="sourceLine" id="cb1-10" title="10">                     <span class="dv">44</span>,<span class="dv">45</span>,<span class="dv">46</span>,<span class="dv">47</span>,<span class="dv">48</span>,<span class="dv">49</span>,<span class="dv">50</span>,<span class="dv">51</span>,<span class="dv">53</span>,<span class="dv">54</span>,<span class="dv">55</span>,<span class="dv">56</span>)</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co"># Preprocessing</span></a>
+<a class="sourceLine" id="cb1-13" title="13">df_all &lt;-<span class="st"> </span><span class="kw">clean_cces</span>(df_all, list_states_abb, list_states_num)</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="co"># Population and states estimates for all the respondents</span></a>
+<a class="sourceLine" id="cb1-16" title="16">pop_estimate_all &lt;-<span class="st"> </span><span class="kw">mean</span>(df_all<span class="op">$</span>abortion)</a>
+<a class="sourceLine" id="cb1-17" title="17">state_estimates_all &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">estimate =</span> <span class="kw">mean</span>(abortion))</a>
+<a class="sourceLine" id="cb1-18" title="18">state_n_all &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(state) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">summarise</span>(<span class="dt">N_all =</span> <span class="kw">n</span>())</a></code></pre></div>
+<p>Details about how we preprocess the CCES data using the <code>clean_cces()</code> function can be found in the appendix.</p>
+<p>The full 2018 CCES consist of almost 60,000 respondents. However, most studies work with a smaller national survey. To show how MRP works in these cases, we will take a random sample of 5,000 participants of the CCES and work with the sample instead of the full CCES. Obviously, in a more realistic setting we would always use all the data that we have available.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co"># For clarity, we will call the full survey with 60,000 respondents df_all,</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># while the 5,000 person sample will be called df (which stands for data frame).</span></a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">set.seed</span>(<span class="dv">1010</span>) <span class="co"># We set the seed to an arbitrary number for reproducibility.</span></a>
+<a class="sourceLine" id="cb2-5" title="5">df &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">5000</span>)</a>
+<a class="sourceLine" id="cb2-6" title="6">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(df), <span class="dt">format =</span> <span class="st">&#39;markdown&#39;</span>)</a></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">abortion</th>
+<th align="left">state</th>
+<th align="left">eth</th>
+<th align="right">male</th>
+<th align="left">age</th>
+<th align="left">educ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">WI</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">60-69</td>
+<td align="left">4-Year College</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">NJ</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">60-69</td>
+<td align="left">HS</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">FL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">40-49</td>
+<td align="left">HS</td>
+</tr>
+<tr class="even">
+<td align="right">1</td>
+<td align="left">FL</td>
+<td align="left">White</td>
+<td align="right">0.5</td>
+<td align="left">70+</td>
+<td align="left">Some college</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="left">IL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">50-59</td>
+<td align="left">Some college</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="left">OK</td>
+<td align="left">Other</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">Some college</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="poststratification-table" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Poststratification table</h3>
+<p>The poststratification table reflects the number of people in the population of interest that, according to a large survey, corresponds to each combination of the demographic-geographic factors. In the US context it is typical to use Decennial Census data or the American Community Survey, although we can of course use any other large-scale surveys that reflects the frequency of the different demographic types within any geographic variables of interest. The poststratification table will be used in the second stage to poststratify the estimates obtained for each subgroup. For this, it is central that the factors (and their levels) used in the survey match the factors obtained in the census. Therefore, MRP is in principle limited to use individual-level variables that are present both the survey and the census, although in the next chapter we will relax this requirement. For instance, the CCES includes information on respondent’s religion, but as this information is not available in the census we are not able to use this variable. Similarly, the levels of the factors in the census are required to match the ones in the census. For instance, in our case the CCES included ‘Middle Eastern’ as an option for ethnicity, while the large-scale survey we used did not include it. Therefore, people who identified as ‘Middle Eastern’ in the CCES need to be included in the ‘Other’ category.</p>
+<p>In this case, we will base our poststratification table in the 2014-2018 American Community Survey (ACS), a set of yearly surveys conducted by the US Census that provides estimates of the number of US residents according to a series of variables that include our poststratification variables. As we defined the levels for these variables, the poststratification table must have <span class="math inline">\(50 \times 6 \times 2 \times 4 \times 5 = 12,000\)</span> rows. This means we actually have more rows in the poststratification table than observed units, which necessarily implies that there are some combinations in the poststratification table that we don’t observe in the CCES sample.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># Load data frame created in the appendix. The data frame that contains the poststratification</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># table is called postrat_df</span></a>
+<a class="sourceLine" id="cb3-3" title="3">postrat_df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;postrat_data.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4">postrat_df<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(postrat_df<span class="op">$</span>state, <span class="dt">levels =</span> list_states_num, <span class="dt">labels =</span> list_states_abb)</a>
+<a class="sourceLine" id="cb3-5" title="5">knitr<span class="op">::</span><span class="kw">kable</span>(<span class="kw">head</span>(postrat_df), <span class="dt">format =</span> <span class="st">&#39;markdown&#39;</span>)</a></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">X</th>
+<th align="left">state</th>
+<th align="left">eth</th>
+<th align="right">male</th>
+<th align="left">age</th>
+<th align="left">educ</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">No HS</td>
+<td align="right">23948</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">HS</td>
+<td align="right">59378</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">Some college</td>
+<td align="right">104855</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">4-Year College</td>
+<td align="right">37066</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">18-29</td>
+<td align="left">Post-grad</td>
+<td align="right">9378</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="left">AL</td>
+<td align="left">White</td>
+<td align="right">-0.5</td>
+<td align="left">30-39</td>
+<td align="left">No HS</td>
+<td align="right">14303</td>
+</tr>
+</tbody>
+</table>
+<p>For instance, the first row in the poststratification table indicates that there are 23,948 Alabamians that are white, male, between 18 and 29 years old, and without a high school degree.</p>
+<p>Every MRP study requires some degree of data wrangling in order to make the factors in the survey of interest match the factors available in the census. The code shown in the Appendix can be used as a template to download the ACS data and make it match with a given survey of interest.</p>
+</div>
+<div id="group-level-predictors" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Group-level predictors</h3>
+<p>The individual-response model used in the first stage can include group-level predictors, which tend to reduce unexplained group level variation by accounting for structured differences among the states. For instance, most national-level surveys in the US tend to include many participants from a state such as New York, but few from a small state like Vermont. This can result in noisy estimates for the effect of being from Vermont. The intuition is that by including state-level predictors, such as the Republican voteshare in a previous election or the percentage of Evangelicals at each state, the model is able to account for how similar is Vermont is to New York and other populous states, and therefore to produce more precise estimates. These group-level predictors do not need to be available in the census nor they have to be converted to factors, and in many cases are readily available. A more detailed discussion on the importance of builidng a reasonable model for predicting opinion, and how state-level predictors can be a key element in this regard, can be found in <span class="citation">Lax and Phillips (<a href="#ref-lax2009states" role="doc-biblioref">2009</a><a href="#ref-lax2009states" role="doc-biblioref">b</a>)</span> and <span class="citation">Buttice and Highton (<a href="#ref-buttice2013mrp" role="doc-biblioref">2013</a>)</span>.</p>
+<p>In our example, we will include two state-level predictors: the geographical region (Northeast, North Central, South, and West) and the Republican vote share in the 2016 presidential election.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># Read statelevel_predictors.csv in a dataframe called statelevel_predictors</span></a>
+<a class="sourceLine" id="cb4-2" title="2">statelevel_predictors &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;statelevel_predictors.csv&#39;</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co"># Clean factor levels</span></a>
+<a class="sourceLine" id="cb4-5" title="5">statelevel_predictors<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(statelevel_predictors<span class="op">$</span>state, </a>
+<a class="sourceLine" id="cb4-6" title="6">                                      <span class="dt">levels =</span> list_states_abb, <span class="dt">labels =</span> list_states_abb)</a></code></pre></div>
+</div>
+<div id="exploratory-data-analysis" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> Exploratory data analysis</h3>
+<p>In the previous steps we have obtained a 5,000-person sample from the CCES survey and also generated a poststratification table using census data. As a first exploratory step, we will check if the frequencies for the different levels for the factors considered in the CCES data are similar to the frequencies reported in the census. If this was not the case, we will start suspecting some degree of nonresponse bias in the CCES survey.</p>
+<p>For clarity, the levels in the plots follow their natural order in the case of age and education, ordering the others by the approximate proportion of Republican support.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-6-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-7-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<p>We see that our 5,000-participant CCES sample does not differ too much from the target population according to the American Community Survey. This should not be surprising, as the CCES intends to use a representative sample.</p>
+<p>In general, we recommend checking the differences between the sample and the target population. In this case, the comparison has been based on the factors that are going to be used in MRP. However, even if some non-response bias existed for any of these factors MRP would be able to adjust for it, as we will see more in detail in subsection 4. Therefore, it may be especially important to compare the sample and target population with respect to the variables that are <em>not</em> going to be used in MRP – and, consequently, where we will not be able to correct any outcome measure bias due to differential non-response in these non-MRP variables.</p>
+</div>
+</div>
+<div id="first-stage-estimating-the-individual-response-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> First stage: Estimating the Individual-Response Model</h2>
+<p>The first stage is to use a multilevel logistic regression model to predict the outcome measure given the different factors we are considering. Having a plausible model to predict opinion is central for MRP to work well.</p>
+<p>The model we use in this example is described below. It includes varying intercepts for age, ethnicity, and state, where the variation for the state intercepts is in turn influenced by the region effects (coded as indicator variables) and the Republican vote share in the 2016 election. As there are only two levels for gender, it is preferable to model it as a predictor for computational efficiency. Additionally, we include varying intercepts for the interaction between male and ethnicity, education and age, and education and ethnicity (see <span class="citation">Ghitza and Gelman (<a href="#ref-ghitza2013deep" role="doc-biblioref">2013</a>)</span> for an in-depth discussion on the advantages of including interactions).</p>
+<p><span class="math display">\[
+Pr(y_i = 1) = logit^{-1}(
+\alpha_{\rm s[i]}^{\rm state}
++ \alpha_{\rm a[i]}^{\rm age}
++ \alpha_{\rm r[i]}^{\rm eth}
++ \alpha_{\rm e[i]}^{\rm educ}
++ \beta^{\rm male} \cdot {\rm Male}_{\rm i} 
++ \alpha_{\rm g[i], r[i]}^{\rm male.eth}
++ \alpha_{\rm e[i], a[i]}^{\rm educ.age}
++ \alpha_{\rm e[i], r[i]}^{\rm educ.eth}
+)
+\]</span>
+where:</p>
+<p><span class="math display">\[
+\begin{align*}
+\alpha_{\rm s}^{\rm state} &amp;\sim {\rm Normal}(\gamma^0 + \gamma^{\rm south} \cdot {\rm South}_{\rm s} + \gamma^{\rm northcentral} \cdot {\rm NorthCentral}_{\rm s} + \gamma^{\rm west} \cdot {\rm West}_{\rm s} + \gamma^{\rm repvote} \cdot {\rm RepVote}_{\rm s}, \sigma^{\rm state}) \textrm{ for s = 1,...,50}\\
+\alpha_{\rm a}^{\rm age} &amp; \sim {\rm Normal}(0,\sigma^{\rm age}) \textrm{ for a = 1,...,6}\\
+\alpha_{\rm r}^{\rm eth} &amp; \sim {\rm Normal}(0,\sigma^{\rm eth}) \textrm{ for r = 1,...,4}\\
+\alpha_{\rm e}^{\rm educ} &amp; \sim {\rm Normal}(0,\sigma^{\rm educ}) \textrm{ for e = 1,...,5}\\
+\alpha_{\rm g,r}^{\rm male.eth} &amp; \sim {\rm Normal}(0,\sigma^{\rm male.eth}) \textrm{ for g = 1,2 and r = 1,...,4}\\
+\alpha_{\rm e,a}^{\rm educ.age} &amp; \sim {\rm Normal}(0,\sigma^{\rm educ.age}) \textrm{ for e = 1,...,5 and a = 1,...,6}\\
+\alpha_{\rm e,r}^{\rm educ.eth} &amp; \sim {\rm Normal}(0,\sigma^{\rm educ.eth}) \textrm{ for e = 1,...,5 and r = 1,...,4}\\
+\end{align*}
+\]</span></p>
+<button id="myButton" onclick="myFunction()">
+Show model explanation
+</button>
+<div id="myDIV" style="display:none">
+<p>People without a background in multilevel modeling may be surprised to see this formulation. Why are we using terms such as <span class="math inline">\(\alpha_{\rm eth}^{\rm eth}\)</span> instead of the much more common method of creating an indicator variable for each state (e.g. <span class="math inline">\(\beta^{\rm white} \cdot {\rm White}_{i} + \beta^{\rm black} \cdot {\rm Black}_{i} + ...\)</span>)? The answer is that this approach allows to share information between the levels of each variable (e.g. different ethnicities), preventing levels with less data from being too sensitive to the few observed values. For instance, it could happen that we only surveyed ten Hispanics, and that none of them turned out to agree that employers should be able to decline abortion coverage in insurance plans. Under the typical approach, the model would take this data too seriously and consider that Hispanics necessarily oppose this statement (i.e. <span class="math inline">\(\beta^{\rm hispanic} = - \infty\)</span>). We know, however, that this is not the case. It may be that Hispanics are less likely to support the statement, but from such a small sample size it is impossible to know. What the multilevel model will do is to partially pool the varying intercept for Hispanics towards the average accross all ethnicities (i.e. in our model, the average across all ethnicities is fixed at zero), making it negative but far from the unrealistic negative infinity. This pooling will be data-dependent, meaning that it will pool the varying intercept towards the average more strongly the smaller the sample size in that level. In fact, if the sample size for a certain level is zero, the estimate varying intercept would be the average coefficient for all the other levels.</p>
+<ul>
+<li><p><span class="math inline">\(\alpha_{\rm a}^{\rm age}\)</span>: The effect of subject <span class="math inline">\(i\)</span>’s age on the probability of supporting the statement.</p></li>
+<li><p><span class="math inline">\(\alpha_{\rm r}^{\rm eth}\)</span>: The effect of subject <span class="math inline">\(i\)</span>’s ethnicity on the probability of supporting the statement.</p></li>
+<li><p><span class="math inline">\(\alpha_{\rm e}^{\rm educ}\)</span>: The effect of subject <span class="math inline">\(i\)</span>’s education on the probability of supporting the statement.</p></li>
+<li><p><span class="math inline">\(\alpha_{\rm s}^{\rm state}\)</span>: The effect of subject <span class="math inline">\(i\)</span>’s state on the probability of supporting the statement. As we have a state-level predictor (the Republican vote share in the 2016 election), we need to build another model in which <span class="math inline">\(\alpha_{\rm s}^{\rm state}\)</span> is the outcome of a linear regression with an expected value determined by an intercept <span class="math inline">\(\gamma^0\)</span>, the effect of the region coded as indicator variables (with Northeast as the baseline level), and the effect of the Republican vote share <span class="math inline">\(\gamma^{\rm demvote}\)</span>.</p></li>
+<li><p><span class="math inline">\(\beta^{\rm male}\)</span>: The average effect of being male on the probability of supporting abortion. We could have used a similar formulation as in the previous cases (i.e. <span class="math inline">\(\alpha_{\rm g}^{\rm gender} \sim N(0, \sigma^{\rm gender})\)</span>), but having only two levels (i.e. male and female) can create some estimation problems.</p></li>
+<li><p><span class="math inline">\(\alpha_{\rm e,r}^{\rm male.eth}\)</span> and <span class="math inline">\(\alpha_{\rm e,r}^{\rm educ.age}\)</span>: In the survey literature it is common practice to include these two interactions.</p></li>
+<li><p><span class="math inline">\(\alpha_{\rm e,r}^{\rm educ.eth}\)</span>: In the next section we will explore public opinion on required abortion coverage at the different levels of education and ethnicity. It is, therefore, a good idea to also include this interaction.</p></li>
+</ul>
+<p>See <span class="citation">Gelman and Hill (<a href="#ref-gelman2007data" role="doc-biblioref">2007</a>)</span> for an introduction to multilevel modeling.</p>
+</div>
+<p><br></p>
+<p>The <code>rstanarm</code> package allows the user to conduct complicated regression analyses in Stan with the simplicity of standard formula notation in R. <code>stan_glmer()</code>, the function that allows to fit generalized linear multilevel models, uses the same notation as the <code>lme4</code> package (see documentation <a href="https://cran.r-project.org/web/packages/lme4/vignettes/lmer.pdf">here</a>). That is, we specify the varying intercepts as <code>(1 | group)</code> and the interactions are expressed as <code>(1 | group1:group2)</code>, where the <code>:</code> operator creates a new grouping factor that consists of the combined levels of the two groups (i.e. this is the same as pasting together the levels of both factors). However, this syntax only accepts predictors at the individual level, and thus the two state-level predictors must be expanded to the individual level (see [p. 265-266]<span class="citation">Gelman and Hill (<a href="#ref-gelman2007data" role="doc-biblioref">2007</a>)</span>). Notice that:</p>
+<p><span class="math display">\[
+\begin{align*}
+\alpha_{\rm s}^{\rm state} &amp;\sim {\rm Normal}(\gamma^0 + \gamma^{\rm south} \cdot {\rm South}_{\rm s} + \gamma^{\rm northcentral} \cdot {\rm NorthCentral}_{\rm s} + \gamma^{\rm west} \cdot {\rm West}_{\rm s} + \gamma^{\rm repvote} \cdot {\rm RepVote}_{\rm s}, \sigma^{\rm state}) \\
+&amp;= \underbrace{\gamma^0}_\text{Intercept} + 
+\underbrace{{\rm Normal}(0, \sigma^{\rm state})}_\text{State varying intercept} + 
+\underbrace{\gamma^{\rm south} \cdot {\rm South}_{\rm s} + \gamma^{\rm northcentral} \cdot {\rm NorthCentral}_{\rm s} + \gamma^{\rm west} \cdot {\rm West}_{\rm s} + \gamma^{\rm repvote} \cdot {\rm RepVote}_{\rm s}}_\text{State-level predictors expanded to the individual level}
+\end{align*}
+\]</span></p>
+<p>Consequently, we can then reexpress the model as:</p>
+<p><span class="math display">\[
+Pr(y_i = 1) = logit^{-1}(
+\gamma^0
++ \alpha_{\rm s[i]}^{\rm state}
++ \alpha_{\rm a[i]}^{\rm age}
++ \alpha_{\rm r[i]}^{\rm eth}
++ \alpha_{\rm e[i]}^{\rm educ}
++ \beta^{\rm male} \cdot {\rm Male}_{\rm i} 
++ \alpha_{\rm g[i], r[i]}^{\rm male.eth}
++ \alpha_{\rm e[i], a[i]}^{\rm educ.age}
++ \alpha_{\rm e[i], r[i]}^{\rm educ.eth}
++ \gamma^{\rm south} \cdot {\rm South}_{\rm s} \\
++ \gamma^{\rm northcentral} \cdot {\rm NorthCentral}_{\rm s} 
++ \gamma^{\rm west} \cdot {\rm West}_{\rm s} 
++ \gamma^{\rm repvote} \cdot {\rm RepVote}_{\rm s})
+\]</span></p>
+<p>In the previous version of the model, <span class="math inline">\(\alpha_{\rm s[i]}^{\rm state}\)</span> was informed by several state-level predictors. This reparametrization expands the state-level predictors at the individual level, and thus <span class="math inline">\(\alpha_{\rm s[i]}^{\rm state}\)</span> now represents the variance introduced by the state adjusting for the region and 2016 Republican vote share. Similarly, <span class="math inline">\(\gamma^0\)</span>, which previously represented the state-level intercept, now becomes the individual-level intercept. The two parameterizations of the multilevel model are mathematically equivalent, and using one or the other is simply a matter of preference. The former one highlights the role that state-level predictos have in accounting for structured differences among the states, while the later is closer to the <code>rstanarm</code> syntax.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># Expand state-level predictors  to the individual level</span></a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co"># df &lt;- left_join(df, statelevel_predictors, by = &quot;state&quot;, keep = TRUE)</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co"># </span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co"># Fit in stan_glmer</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co"># fit &lt;- stan_glmer(abortion ~ (1 | state) + (1 | eth) + (1 | educ) + male +</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#                     (1 | male:eth) + (1 | educ:age) + (1 | educ:eth) +</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#                     repvote + factor(region),</span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#   family = binomial(link = &quot;logit&quot;),</span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#   data = df,</span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#   prior = normal(0, 1, autoscale = TRUE),</span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#   prior_covariance = decov(scale = 0.50),</span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#   adapt_delta = 0.99,</span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#   refresh = 0,</span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#   seed = 1010)</span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co"># </span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co"># saveRDS(fit, file = &quot;fit_mrp_1.rds&quot;)</span></a>
+<a class="sourceLine" id="cb5-17" title="17">fit &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;fit_mrp_1.rds&quot;</span>)</a></code></pre></div>
+<p>As a first pass to check whether the model is performing well, we must check that there are no warnings about divergences, failure to converge or tree depth. Fitting the model with the default settings produced a few divergent transitions, and thus we decided to try increasing <code>adapt_delta</code> to 0.99 and introducing stronger priors than the <code>rstanarm</code> defaults. After doing this, the divergences dissapeared. In the <a href="">Computational Issues</a> subsection of this case study we provide more details about divergent transitions and potential solutions.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">print</span>(fit)</a></code></pre></div>
+<pre><code>## stan_glmer
+##  family:       binomial [logit]
+##  formula:      abortion ~ (1 | state) + (1 | eth) + (1 | educ) + male + (1 | 
+##     male:eth) + (1 | educ:age) + (1 | educ:eth) + repvote + factor(region)
+##  observations: 5000
+## ------
+##                         Median MAD_SD
+## (Intercept)             -1.2    0.4  
+## male                     0.4    0.1  
+## repvote                  1.6    0.5  
+## factor(region)Northeast -0.1    0.2  
+## factor(region)South      0.2    0.1  
+## factor(region)West      -0.1    0.1  
+## 
+## Error terms:
+##  Groups   Name        Std.Dev.
+##  state    (Intercept) 0.202   
+##  educ:age (Intercept) 0.200   
+##  educ:eth (Intercept) 0.083   
+##  male:eth (Intercept) 0.229   
+##  educ     (Intercept) 0.216   
+##  eth      (Intercept) 0.386   
+## Num. levels: state 50, educ:age 30, educ:eth 20, male:eth 8, educ 5, eth 4 
+## 
+## ------
+## * For help interpreting the printed output see ?print.stanreg
+## * For info on the priors used see ?prior_summary.stanreg</code></pre>
+<button id="myButton2" onclick="myFunction2()">
+Show model interpretation
+</button>
+<div id="myDIV2" style="display:none">
+<ul>
+<li><p><code>Intercept</code> (<span class="math inline">\(\gamma^0\)</span>): The global intercept corresponds to the expected outcome in the logit scale when having all the predictors equal to zero. In this case, this does not have a clear interpretation, as it is then influenced by the varying intercepts for state, age, ethnicity, education, and interactions. Furthermore, it corresponds to the impractical scenario of someone in a state with zero Republican vote share.</p></li>
+<li><p><code>male</code> (<span class="math inline">\(\beta^{\rm male}\)</span>): The median estimate for this coefficient is 0.4, with a standard error (measured using the Mean Absolute Deviation) of 0.1. Using the divide-by-four rule (<span class="citation">Gelman, Hill, and Vehtari (<a href="#ref-gelman2020raos" role="doc-biblioref">2020</a>)</span>, Chapter 13), we see that, adjusting for the other covariates, males present up to a <span class="math inline">\(10\% \pm 2.5\%\)</span> higher probability of supporting the right of employers to decline coverage of abortions relative to females.</p></li>
+<li><p><code>repvote</code> (<span class="math inline">\(\gamma^{\rm repvote}\)</span>): As the scale of <code>repvote</code> was between 0 and 1, this coefficient corresponds to the difference in probability of supporting the statement between someone that was in a state in which no one voted Republican to someone whose state voted all Republican. This is not reasonable, and therefore we start by dividing the median coefficient by 10. Doing this, we consider a difference of a 10% increase in Republican vote share. This means that we expect that someone from a state with a 55% Republican vote share has approximately <span class="math inline">\(\frac{1.5}{10}/4 = 4\%\)</span> (<span class="math inline">\(\pm 1\%\)</span>) higher probability of supporting the statement relative to another individual with similar characteristics from a state in which Republicans received 45% of the vote.</p></li>
+<li><p><code>regionSouth</code> (<span class="math inline">\(\gamma^{\rm south}\)</span>): According to the model, we expect that someone from a state in the south has, adjusting for the other covariates, up to a 0.1/4 = 2.5% (<span class="math inline">\(\pm 2.5\%\)</span>) higher probability of supporting the statement relative to someone from the Northeast, which was the baseline category. The interpretation for <code>regionNorthCentral</code> and <code>regionWest</code> is similar.</p></li>
+<li><p><code>Error terms</code> (<span class="math inline">\(\sigma^{\rm state}\)</span>, <span class="math inline">\(\sigma^{\rm age}\)</span>, <span class="math inline">\(\sigma^{\rm eth}\)</span>, <span class="math inline">\(\sigma^{\rm educ}\)</span>, <span class="math inline">\(\sigma^{\rm male.eth}\)</span>, <span class="math inline">\(\sigma^{\rm educ.age}\)</span>, <span class="math inline">\(\sigma^{\rm educ.eth}\)</span>): Remember that the intercepts for the different levels of state, age, ethnicity, education, and the specified interactions are distributed following a normal distribution centered at zero and with a standard deviation that is estimated from the data. The <code>Error terms</code> section gives us the estimates for these group-level standard deviations. For instance, <span class="math inline">\(\alpha_{\rm r}^{\rm ethnicity} \sim {\rm Normal}(0, \sigma^{\rm ethnicity})\)</span>, where the median estimate for <span class="math inline">\(\sigma^{\rm ethnicity}\)</span> is 0.43. In other words, the variyng intercepts for the different ethnicity groups have a standard deviation that is estimated to be 0.43 on the logit scale, or 0.43/4 = 0.11 on the probability scale. In some cases, we may also want to check the intercepts corresponding to the individual levels of a factor. In <code>rstanarm</code>, this can be done using <code>fit$coefficients</code>. For instance, the median values for the varying intercepts of race are <span class="math inline">\(\alpha^{\rm eth}_{r = {\rm White}}\)</span> = 0.14, <span class="math inline">\(\alpha^{\rm eth}_{r = {\rm Black}}\)</span> = -0.28, <span class="math inline">\(\alpha^{\rm eth}_{r = {\rm Hispanic}}\)</span> = 0.04, <span class="math inline">\(\alpha^{\rm eth}_{r = {\rm Other}}\)</span> = 0.08.</p></li>
+</ul>
+</div>
+<p><br></p>
+</div>
+<div id="second-stage-poststratification" class="section level2">
+<h2><span class="header-section-number">2.3</span> Second Stage: Poststratification</h2>
+<div id="estimation-at-the-national-level" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Estimation at the national level</h3>
+<p>Currently, all we have achieved is a model that predicts support on the option for declining abortion coverage given a number of factor-type predictors. To go from this model to a national or sub-national estimate, we need to weight the model predictions for the different subgroups by the actual frequency of these subgroups. This idea can be expressed as:</p>
+<p><span class="math display">\[
+\theta^{MRP} = \frac{\sum N_{\rm subgroup} \theta_{\rm subgroup}}{\sum N_{\rm subgroup}}
+\]</span></p>
+<p>where <span class="math inline">\(\theta^{MRP}\)</span> is the MRP estimate, <span class="math inline">\(\theta_{\rm subgroup}\)</span> corresponds to the model estimate for a specific subgroup (e.g. young Hispanic men with a High School diploma in Arkansas), and <span class="math inline">\(N_{\rm subgroup}\)</span> corresponds to the number of people in that subgroup according to the ACS. For a more in-depth review of poststratification, see Chapter 13 of <span class="citation">Gelman, Hill, and Vehtari (<a href="#ref-gelman2020raos" role="doc-biblioref">2020</a>)</span>.</p>
+<p>The values of <span class="math inline">\(\theta_{subgroup}\)</span> for the different subgroups can be obtained with the <code>posterior_epred()</code> function. Of course, as <code>stan_glmer()</code> performs Bayesian inference, <span class="math inline">\(\theta_{subgroup}\)</span> for any given subgroup will not be a single point estimate but a vector of posterior draws.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Expand state level predictors  to the individual level</span></a>
+<a class="sourceLine" id="cb8-2" title="2">postrat_df &lt;-<span class="st"> </span><span class="kw">left_join</span>(postrat_df, statelevel_predictors, <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>, <span class="dt">keep =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4"><span class="co"># posterior_epred returns the posterior estimates for the different subgroups stored in the postrat_df</span></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co"># dataframe. </span></a>
+<a class="sourceLine" id="cb8-6" title="6">P &lt;-<span class="st"> </span><span class="kw">posterior_epred</span>(fit, <span class="dt">newdata =</span> postrat_df, <span class="dt">draws =</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb8-7" title="7">mrp_estimates &lt;-<span class="st"> </span>P <span class="op">%*%</span><span class="st"> </span>postrat_df<span class="op">$</span>n <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n)</a>
+<a class="sourceLine" id="cb8-8" title="8">model_popn_pref &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(mrp_estimates), <span class="dt">sd =</span> <span class="kw">sd</span>(mrp_estimates))</a>
+<a class="sourceLine" id="cb8-9" title="9"><span class="kw">print</span>(<span class="kw">round</span>(model_popn_pref, <span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## mean   sd 
+## 0.43 0.01</code></pre>
+<button id="myButton3" onclick="myFunction3()">
+Show code explanation
+</button>
+<div id="myDIV3" style="display:none">
+<p><code>posterior_epred()</code> returns a matrix <span class="math inline">\(P\)</span> with <span class="math inline">\(D\)</span> rows and <span class="math inline">\(J\)</span> columns, where <span class="math inline">\(D\)</span> corresponds to the number of draws from the posterior distribution (in this case 1000, as we specified <code>draws = 1000</code>) and <span class="math inline">\(J\)</span> is the number of subgroups in the poststratification table (i.e. 12,000). This matrix is multiplied by a vector <span class="math inline">\(k\)</span> of length <span class="math inline">\(J\)</span> that contains the number of people in each subgroup of the poststratification table. This results in a vector of length <span class="math inline">\(D\)</span> that is then divided by the total number of people considered in the poststratification table, a scalar which is calculated by adding all the values in <span class="math inline">\(k\)</span>.</p>
+<p><span class="math display">\[\theta^{MRP} = \frac{P \times k}{\sum_j^J k_j}\]</span></p>
+<p>The end result is a vector that we call <span class="math inline">\(\theta^{MRP}\)</span>, and which contains <span class="math inline">\(D\)</span> estimates for the national-level statement support.</p>
+</div>
+<p><br></p>
+<p>We can compare these results to the 5,000-person unadjusted sample estimate:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1">sample_popn_pref &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(df<span class="op">$</span>abortion), <span class="dt">se =</span> <span class="kw">sqrt</span>(<span class="kw">mean</span>(df<span class="op">$</span>abortion)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>(df<span class="op">$</span>abortion))<span class="op">/</span><span class="kw">nrow</span>(df)))</a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">print</span>(<span class="kw">round</span>(sample_popn_pref, <span class="dv">2</span>))</a></code></pre></div>
+<pre><code>## mean   se 
+## 0.43 0.01</code></pre>
+<p>Additionally, we can compare with the population support estimated by the full survey that included the almost 60,000 participants:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">all_popn_pref &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(df_all<span class="op">$</span>abortion), <span class="dt">se =</span> <span class="kw">sqrt</span>(<span class="kw">mean</span>(df_all<span class="op">$</span>abortion)<span class="op">*</span>(<span class="dv">1</span><span class="op">-</span><span class="kw">mean</span>(df_all<span class="op">$</span>abortion))<span class="op">/</span><span class="kw">nrow</span>(df_all)))</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">round</span>(all_popn_pref, <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## mean   se 
+## 0.43 0.00</code></pre>
+<p>In general, we see that both the unadjusted sample estimate and the MRP estimate are quite close to the results of the full survey. In other words, MRP is not providing a notable advantage against the unadjusted sample national estimates. However, it is important to clarify that we were somewhat lucky in obtaining this result as a product of using data from the CCES, a high quality survey that intends to be representative (and appears to be, at least with respect to the variables considered in our poststratification table). Many real-world surveys are not as representative relative to the variables considered in the poststratification step, and in these cases MRP will help correcting the biased estimates from the unadjusted survey. We will see an example of this in section 4, where we exemplify how MRP adjusts a clearly biased sample.</p>
+</div>
+<div id="estimation-for-sub-national-units" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> Estimation for sub-national units</h3>
+<p>As we mentioned, small area estimation is one of the main applications of MRP. In this case, we will get an estimate of the support for employer’s right to decline coverage of abortions per state:</p>
+<p><span class="math display">\[
+y_{\rm state}^{MRP} = \frac{\sum_{\rm subgroup \in state} N_{\rm subgroup} \theta_{\rm subgroup}}{\sum_{\rm subgroup \in state} N_{\rm subgroup}}
+\]</span></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># Create empty dataframe</span></a>
+<a class="sourceLine" id="cb14-2" title="2">state_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb14-3" title="3">  <span class="dt">state_num =</span> list_states_num,</a>
+<a class="sourceLine" id="cb14-4" title="4">  <span class="dt">state =</span> list_states_abb,</a>
+<a class="sourceLine" id="cb14-5" title="5">  <span class="dt">model_state_pref =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num)),</a>
+<a class="sourceLine" id="cb14-6" title="6">  <span class="dt">model_state_sd =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num)),</a>
+<a class="sourceLine" id="cb14-7" title="7">  <span class="dt">sample_state_pref =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num)),</a>
+<a class="sourceLine" id="cb14-8" title="8">  <span class="dt">all_state_pref =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num)),</a>
+<a class="sourceLine" id="cb14-9" title="9">  <span class="dt">N =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num)),</a>
+<a class="sourceLine" id="cb14-10" title="10">  <span class="dt">N_all =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_num))</a>
+<a class="sourceLine" id="cb14-11" title="11">)</a>
+<a class="sourceLine" id="cb14-12" title="12"></a>
+<a class="sourceLine" id="cb14-13" title="13">state_estimates_all<span class="op">$</span>statename &lt;-<span class="st"> </span>list_states_abb</a>
+<a class="sourceLine" id="cb14-14" title="14"></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="co"># Loop to populate the dataframe</span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">levels</span>(postrat_df<span class="op">$</span>state))) {</a>
+<a class="sourceLine" id="cb14-17" title="17">  <span class="co"># Currently, the matrix P and the poststratification table contain 12,000</span></a>
+<a class="sourceLine" id="cb14-18" title="18">  <span class="co"># rows. We need to filter the ones that correspond to state i for each</span></a>
+<a class="sourceLine" id="cb14-19" title="19">  <span class="co"># iteration of the loop. We do so defining the following condition:</span></a>
+<a class="sourceLine" id="cb14-20" title="20">  filtering_condition &lt;-<span class="st"> </span><span class="kw">which</span>(postrat_df<span class="op">$</span>state <span class="op">==</span><span class="st"> </span>state_df<span class="op">$</span>state[i])</a>
+<a class="sourceLine" id="cb14-21" title="21">  </a>
+<a class="sourceLine" id="cb14-22" title="22">  <span class="co"># Filtering matrix P with filtering_condition</span></a>
+<a class="sourceLine" id="cb14-23" title="23">  P_filtered &lt;-<span class="st"> </span>P[ ,filtering_condition]</a>
+<a class="sourceLine" id="cb14-24" title="24">  </a>
+<a class="sourceLine" id="cb14-25" title="25">  <span class="co"># Filtering poststratification table with filtering_condition</span></a>
+<a class="sourceLine" id="cb14-26" title="26">  k_filtered &lt;-<span class="st"> </span>postrat_df[filtering_condition, ]<span class="op">$</span>n</a>
+<a class="sourceLine" id="cb14-27" title="27"></a>
+<a class="sourceLine" id="cb14-28" title="28">  <span class="co"># Poststratification step</span></a>
+<a class="sourceLine" id="cb14-29" title="29">  poststrat_prob_state &lt;-<span class="st"> </span>P_filtered <span class="op">%*%</span><span class="st"> </span>k_filtered <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(k_filtered)</a>
+<a class="sourceLine" id="cb14-30" title="30">  </a>
+<a class="sourceLine" id="cb14-31" title="31">  <span class="co"># This is the MRP estimate for the state</span></a>
+<a class="sourceLine" id="cb14-32" title="32">  state_df<span class="op">$</span>model_state_pref[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(poststrat_prob_state)</a>
+<a class="sourceLine" id="cb14-33" title="33">  state_df<span class="op">$</span>model_state_sd[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(poststrat_prob_state)</a>
+<a class="sourceLine" id="cb14-34" title="34">  </a>
+<a class="sourceLine" id="cb14-35" title="35">  <span class="co"># This is the 5,000 sample survey estimate for the state, this time filtering df</span></a>
+<a class="sourceLine" id="cb14-36" title="36">  state_df<span class="op">$</span>sample_state_pref[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(df<span class="op">$</span>abortion[df<span class="op">$</span>state <span class="op">==</span><span class="st"> </span>list_states_abb[i]])</a>
+<a class="sourceLine" id="cb14-37" title="37">  </a>
+<a class="sourceLine" id="cb14-38" title="38">  <span class="co"># This is the 60000-person survey estimate for the state</span></a>
+<a class="sourceLine" id="cb14-39" title="39">  state_df<span class="op">$</span>all_state_pref[i] &lt;-<span class="st"> </span>state_estimates_all<span class="op">$</span>estimate[state_estimates_all<span class="op">$</span>statename <span class="op">==</span><span class="st"> </span>list_states_abb[i]]</a>
+<a class="sourceLine" id="cb14-40" title="40">  </a>
+<a class="sourceLine" id="cb14-41" title="41">  <span class="co"># Sample size in state i for the 5,000 sample survey</span></a>
+<a class="sourceLine" id="cb14-42" title="42">  state_df<span class="op">$</span>N[i] &lt;-<span class="st"> </span><span class="kw">nrow</span>(df[df<span class="op">$</span>state <span class="op">==</span><span class="st"> </span>list_states_abb[i], ])</a>
+<a class="sourceLine" id="cb14-43" title="43">  </a>
+<a class="sourceLine" id="cb14-44" title="44">  <span class="co"># Sample size in state i for the full 60,000 survey</span></a>
+<a class="sourceLine" id="cb14-45" title="45">  state_df<span class="op">$</span>N_all[i] &lt;-<span class="st"> </span>state_n_all<span class="op">$</span>N_all[state_n_all<span class="op">$</span>state<span class="op">==</span>list_states_abb[i]]</a>
+<a class="sourceLine" id="cb14-46" title="46">}</a>
+<a class="sourceLine" id="cb14-47" title="47"></a>
+<a class="sourceLine" id="cb14-48" title="48">state_df<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">fct_reorder</span>(state_df<span class="op">$</span>state, states_order)</a></code></pre></div>
+<p>We start visualizing the estimates by state from the unadjusted 5,000-person sample. Again, the states are ordered by Republican vote in the 2016 election, and therefore we expect that statement support will follow an increasing trend.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>In states with small samples, we see considerably wide 95% confidence intervals. We can add the MRP-adjusted estimates to this plot.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>In general, MRP produces less extreme values by partially pooling information across the factor levels. To illustrate this, we can compare the sample and MRP estimates with the results form the full 60,000-respondent CCES. Of course, in any applied situation we would be using the full survey, but as we took a 5,000 person sample the full 60,000-respondent survey serves as a reference point.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Overall, the MRP estimates are closer to the full survey estimates. This is particularly clear for the states with a smaller sample size.</p>
+<p>As a final way of presenting the MRP estimates, we can plot them on a US map. The symmetric color range goes from 10% to 90% support, as this scale allows for comparison with the other maps. However, the MRP estimates for statement support are concentrated in a relatively small range, which makes the colors appear muted.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;" /></p>
+</div>
+<div id="estimation-for-subgroups-within-sub-national-units" class="section level3">
+<h3><span class="header-section-number">2.3.3</span> Estimation for subgroups within sub-national units</h3>
+<p>MRP can also be used to obtain estimates for more complex cases, such as subgroups within states. For instance, we can study support for declining coverage of abortions by state and ethnicity within state. For clarity, we order the races according to their support for the statement.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-19-1.png" width="384" style="display: block; margin: auto;" /></p>
+<p>Similarly, we can look at the outcome in ethnicity-education subgroups by state.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-21-1.png" width="1344" /></p>
+</div>
+</div>
+<div id="adjusting-for-nonrepresentative-surveys" class="section level2">
+<h2><span class="header-section-number">2.4</span> Adjusting for Nonrepresentative Surveys</h2>
+<p>We have already introduced that MRP is an effective statistical adjustment method to correct for differences between the sample and target population for a set of key variables. We start this second example by obtaining an artificially nonrepresentative sample that gives more weight to respondents that are older, male, and from Republican states.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">set.seed</span>(<span class="dv">1010</span>)</a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co"># We add the state-level predictors to df_all</span></a>
+<a class="sourceLine" id="cb15-4" title="4">df_all &lt;-<span class="st"> </span><span class="kw">left_join</span>(df_all, statelevel_predictors, <span class="dt">by =</span> <span class="st">&quot;state&quot;</span>, <span class="dt">keep =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6"><span class="co"># We take a sample from df_all giving extra weight to respondents that re older, male, and from Republican states.</span></a>
+<a class="sourceLine" id="cb15-7" title="7">df &lt;-<span class="st"> </span>df_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">5000</span>, <span class="dt">weight =</span> <span class="kw">I</span>(<span class="dv">5</span><span class="op">*</span>repvote <span class="op">+</span><span class="st"> </span>(age<span class="op">==</span><span class="st">&quot;18-29&quot;</span>)<span class="op">*</span><span class="fl">0.5</span> <span class="op">+</span><span class="st"> </span>(age<span class="op">==</span><span class="st">&quot;30-39&quot;</span>)<span class="op">*</span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="st">                                           </span>(age<span class="op">==</span><span class="st">&quot;40-49&quot;</span>)<span class="op">*</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>(age<span class="op">==</span><span class="st">&quot;50-59&quot;</span>)<span class="op">*</span><span class="dv">4</span> <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-9" title="9"><span class="st">                                           </span>(age<span class="op">==</span><span class="st">&quot;60-69&quot;</span>)<span class="op">*</span><span class="dv">6</span> <span class="op">+</span><span class="st"> </span>(age<span class="op">==</span><span class="st">&quot;70+&quot;</span>)<span class="op">*</span><span class="dv">8</span> <span class="op">+</span><span class="st"> </span>(male<span class="op">==</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">20</span> <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="st">                                           </span>(eth<span class="op">==</span><span class="st">&quot;White&quot;</span>)<span class="op">*</span><span class="fl">1.05</span>))</a>
+<a class="sourceLine" id="cb15-11" title="11"></a>
+<a class="sourceLine" id="cb15-12" title="12">df<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(df<span class="op">$</span>state, <span class="dt">levels =</span> list_states_abb, <span class="dt">labels =</span> list_states_abb)</a></code></pre></div>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-23-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-24-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<p>As expected, our remarkably nonrepresentative sample produces estimates that are lower than what we obtained by using a random sample in the previous section.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-27-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>MRP seems to partially correct for the nonrepresentative sample:</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-28-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Lastly, we see how the MRP national and sub-national estimates based on the nonrepresentative sample are, overall, much closer to the 60,000-person survey than the biased unadjusted sample estimates.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-29-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="practical-considerations" class="section level2">
+<h2><span class="header-section-number">2.5</span> Practical Considerations</h2>
+<div id="census-incompletness-and-uncertainty" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Census incompletness and uncertainty</h3>
+<p>There are two main problems we can encounter when dealing with census data.</p>
+<ul>
+<li><p>It is possible that some variables that we may want to use for poststratification are not available. For instance, party ID is not registered in the US census and ethnicity is not registered in the French census. This additional information can be included in the poststratification table based on other (generally smaller) surveys that contain these variables.</p></li>
+<li><p>A great number of demogaphic-geographic combinations can require a large poststratification table, which in turn can result in unreliable census estimates. The American Community Survey we use in this case study does not only provide estimates of the actual figures that would have been obtained if the entire population was sampled, it also includes a measure of uncertainty around these estimates. Ideally, this uncertainty should be taken into account in the poststratification. For simplicity, this introduction has skipped this step, but this could mean the MRP-based estimates present an underestimated uncertainty.</p></li>
+</ul>
+</div>
+<div id="nonreponse-and-missing-data" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Nonreponse and missing data</h3>
+<p>We have seen that MRP is a method that can mitigate potential biases in the sample, but it is not a substitute for a better data collection effort that tries to minimize systematic nonresponse patterns.</p>
+</div>
+<div id="model-complexity" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Model complexity</h3>
+<p>MRP depends upon the use of a regularized model (i.e. that prevents overfitting by limiting its complexity). Different approaches can be used for this goal (e.g. non-multilevel regression, random forests, or a neural network; see <span class="citation">Bisbee (<a href="#ref-bisbee2019barp" role="doc-biblioref">2019</a>)</span> for an implementation that uses Bayesian Additive Regression Trees), but there are several advantages of using a Bayesian multilevel model. First, the multilevel structure allows for partially pooling information across different levels of a factor, which can be crucial when dealing with certain levels with few samples. Second, the Bayesian approach propagates uncertainty across the modeling, and thus gives more realistic confidence intervals.</p>
+<p>Apart from selecting the factors included in the poststratification table, there are several decisions the modeler should make. As we have already mentioned, adding relevant state-level predictors to the model often improves results, particularly when we have few data about some states. The inclusion of interactions can also be benefitial, especially when studying subgroups within subgroups (e.g. demographic subgroups within states; <span class="citation">Ghitza and Gelman (<a href="#ref-ghitza2013deep" role="doc-biblioref">2013</a>)</span>). Lastly, the use of structured priors can also serve to reduce both bias and variance by sharing information across the levels of a factor (<span class="citation">Gao et al. (<a href="#ref-gao2020structuredpriors" role="doc-biblioref">2020</a>)</span>).</p>
+</div>
+<div id="empty-cells-in-the-poststratification-table" class="section level3">
+<h3><span class="header-section-number">2.5.4</span> Empty cells in the poststratification table</h3>
+<p>It is very frequent that some of the cells in the poststratification table are empty, meaning that there are not anyone that fulfills some specific combination of factors. For instance, in a given poststratification table we might find that there can be no people younger than 20, without a high school degree, and earning more than $500,000 a year in a particularly small state. In our example, we made sure that all the cells in the poststratification table were present even if the weight of that cell was zero, but this was only for illustrative purposes.</p>
+</div>
+<div id="subnational-units-not-represented-in-the-survey" class="section level3">
+<h3><span class="header-section-number">2.5.5</span> Subnational units not represented in the survey</h3>
+<p>It is fairly common for small-sample surveys not to include anyone from a particular subnational unit. For instance, a small national survey in the US may not include any participant from Wyoming. An important advantage of MRP is that we can still produce estimates for this state using the information from the participants in other states. Going back to the first parametrization of the multilevel model that we presented, <span class="math inline">\(\alpha^{\rm state}_{\rm s = Wyoming}\)</span> will be calculated based on the region and Republican voteshare of the 2016 – even in the abscence of information about the effect of residing in Wyoming specifically. As we have already explained, including subnational-level predictors is always recommended, particularly considering that data at the subnational level is easy to obtain in many cases. However, when dealing with subnational units that are not represented in our survey these predictors become even more central, as they are able to capture structured differences among the states and therefore allow for more precise estimation in the missing subnational areas.</p>
+</div>
+<div id="computational-issues" class="section level3">
+<h3><span class="header-section-number">2.5.6</span> Computational issues</h3>
+<p>Stan uses Hamiltonian Monte Carlo to explore the posterior distribution. In some cases, the geometry of the posterior distribution is too complex, making the Hamiltonian Monte Carlo “diverge”. This produces a warning indicating the presence of divergent transitions after warmup, something that implies the model could present biased estimates (see <span class="citation">Betancourt (<a href="#ref-betancourt2017hmc" role="doc-biblioref">2017</a>)</span> for more details). Usually, a few divergent transitions do not indicate a serious problem. There are, in any case, three potential solutions to this problem that do not involve reformulating the model: (i) a non-centered parametization; (ii) increasing the <code>adapt_delta</code> parameter; and (iii) including stronger priors. Fortunately we don’t have to worry about (i), as <code>rstanarm</code> already provides a non-centered parametization for the model. Therefore, we can focus on the other two.</p>
+<ol style="list-style-type: decimal">
+<li><p>Exploring the posterior distribution is somewhat similar as cartographing a mountainous terrain, and a divergent transition is similar to falling down a very steep slope, with the consequence of not being able to correctly map that area. In this analogy, what the cartographer could do is moving through the steep slope giving smaller steps to avoid falling. In Stan, the step size is set up automatically, but we can change a parameter called <code>adapt_delta</code> that controls the step size. By default we have that <code>adapt_delta = .95</code>, but we can increase that number to make Stan take smaller steps, which should reduce the number of divergent transitions. The maximum value we can set for <code>adapt_delta</code> is close (but necessarely less than) 1, with the downside that an increase implies a somewhat slower exploration of the posterior distribution. Usually, an <code>adapt_delta = 0.99</code> works well if we only have a few divergent transitions.</p></li>
+<li><p>However, there are cases in which increasing <code>adapt_delta</code> is not sufficient, and divergent transitions still occur. In this case, introducing weakly informative priors can be extremelly helpful. Although <code>rstanarm</code> provides by default weakly informative priors, in most applications these tend to be too weak. By using more reasonable priors, we make the posterior distribution easier to explore.</p>
+<ul>
+<li>The priors for the scaled coefficients are <span class="math inline">\({\rm Normal}(0, 2.5)\)</span>. When the coefficients are not scaled, <code>rstanarm</code> will automatically adjust the scaling of the priors as detailed in the <a href="https://cran.r-project.org/web/packages/rstanarm/vignettes/priors.html">prior vignette</a>. In most cases, and particularly when we find computational issues, it is reasonable to give stronger priors on the scaled coefficients such as <span class="math inline">\({\rm Normal}(0, 1)\)</span>.</li>
+<li>Multilevel models with multiple group-level standard deviation parameters (e.g. <span class="math inline">\(\sigma^{\rm age}\)</span>, <span class="math inline">\(\sigma^{\rm eth}\)</span>, <span class="math inline">\(\sigma^{\rm educ.eth}\)</span>, etc.) tend to be hard to estimate and sometimes present serious computational issues. The default prior for the covariance matrix is <code>decov(reg. = 1, conc. = 1, shape = 1, scale = 1)</code>. However, in a varying-intercept model such as this one (i.e. with structure <code>(1 | a) + (1 | b) + ... + (1 | n)</code>) the group-level standard deviations are independent of each other, and therefore the prior is simply a gamma distribution with some shape and scale. Consequently, <code>decov(shape = 1, scale = 1)</code> implies a weakly informative prior <span class="math inline">\({\rm Gamma(shape = 1, scale = 1)} = {\rm Exponential(scale = 1)}\)</span> on each group-level standard deviation. This is too weak in most situations, and using something like <span class="math inline">\({\rm Exponential(scale = 0.5)}\)</span> can be crucial for stabilizing computation.</li>
+</ul></li>
+</ol>
+<p>Therefore, something like this has much fewer chances of running into computational issues than simply leaving the defaults:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">fit &lt;-<span class="st"> </span><span class="kw">stan_glmer</span>(abortion <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>state) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>eth) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>educ) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>age) <span class="op">+</span><span class="st"> </span>male <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">                    </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>male<span class="op">:</span>eth) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>educ<span class="op">:</span>age) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>educ<span class="op">:</span>eth) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">                    </span>repvote <span class="op">+</span><span class="st"> </span><span class="kw">factor</span>(region),</a>
+<a class="sourceLine" id="cb16-4" title="4">  <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">&quot;logit&quot;</span>),</a>
+<a class="sourceLine" id="cb16-5" title="5">  <span class="dt">data =</span> df,</a>
+<a class="sourceLine" id="cb16-6" title="6">  <span class="dt">prior =</span> <span class="kw">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">autoscale =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb16-7" title="7">  <span class="dt">prior_covariance =</span> <span class="kw">decov</span>(<span class="dt">scale =</span> <span class="fl">0.50</span>),</a>
+<a class="sourceLine" id="cb16-8" title="8">  <span class="dt">adapt_delta =</span> <span class="fl">0.99</span>,</a>
+<a class="sourceLine" id="cb16-9" title="9">  <span class="dt">refresh =</span> <span class="dv">0</span>,</a>
+<a class="sourceLine" id="cb16-10" title="10">  <span class="dt">seed =</span> <span class="dv">1010</span>)</a></code></pre></div>
+<p>More details about divergent transitions can be found in the <a href="https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup">Brief Guide to Stan’s Warnings</a> and in the <a href="https://mc-stan.org/docs/2_24/reference-manual/divergent-transitions.html">Stan Reference Manual</a>. More information and references about priors can be found in the <a href="https://github.com/stan-dev/stan/wiki/Prior-Choice-Recommendations">Prior Choice Recommendations Wiki</a>.</p>
+</div>
+</div>
+<div id="appendix-data-preprocessing-for-cces-and-census-data" class="section level2">
+<h2><span class="header-section-number">2.6</span> Appendix: Data Preprocessing for CCES and Census Data</h2>
+<div id="cces" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> CCES</h3>
+<p>The code below shows in more detail how the processing of the CCES was done. Notice that age, a continous variable, is split into different levels, and that the levels of some factors are modified in order to match the ACS data.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">clean_cces &lt;-<span class="st"> </span><span class="cf">function</span>(df, list_states_abb, list_states_num){</a>
+<a class="sourceLine" id="cb17-2" title="2">  </a>
+<a class="sourceLine" id="cb17-3" title="3">  <span class="co">## Abortion -- dichotomous (0 - Oppose / 1 - Support)</span></a>
+<a class="sourceLine" id="cb17-4" title="4">  df<span class="op">$</span>abortion &lt;-<span class="st"> </span><span class="kw">abs</span>(df<span class="op">$</span>CC18_321a<span class="dv">-2</span>)</a>
+<a class="sourceLine" id="cb17-5" title="5">  </a>
+<a class="sourceLine" id="cb17-6" title="6">  <span class="co">## State -- factor</span></a>
+<a class="sourceLine" id="cb17-7" title="7">  df<span class="op">$</span>state &lt;-<span class="st"> </span>df<span class="op">$</span>inputstate</a>
+<a class="sourceLine" id="cb17-8" title="8">  df<span class="op">$</span>state &lt;-<span class="st"> </span><span class="kw">factor</span>(df<span class="op">$</span>state, <span class="dt">levels =</span> list_states_num, <span class="dt">labels =</span> list_states_abb)</a>
+<a class="sourceLine" id="cb17-9" title="9">  </a>
+<a class="sourceLine" id="cb17-10" title="10">  <span class="co">## Gender -- dichotomous coded as -0.5 Female and +0.5 Male, as this allows for an intercept that represents a </span></a>
+<a class="sourceLine" id="cb17-11" title="11">  <span class="co">## &#39;midway&#39; point between the two groups.</span></a>
+<a class="sourceLine" id="cb17-12" title="12">  df<span class="op">$</span>male &lt;-<span class="st"> </span><span class="kw">abs</span>(df<span class="op">$</span>gender<span class="dv">-2</span>)</a>
+<a class="sourceLine" id="cb17-13" title="13">  </a>
+<a class="sourceLine" id="cb17-14" title="14">  <span class="co">## Ethnicity -- factor</span></a>
+<a class="sourceLine" id="cb17-15" title="15">  df<span class="op">$</span>eth &lt;-<span class="st"> </span><span class="kw">factor</span>(df<span class="op">$</span>eth, </a>
+<a class="sourceLine" id="cb17-16" title="16">                    <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, </a>
+<a class="sourceLine" id="cb17-17" title="17">                    <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;White&quot;</span>, <span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Hispanic&quot;</span>, <span class="st">&quot;Asian&quot;</span>, <span class="st">&quot;Native American&quot;</span>, <span class="st">&quot;Mixed&quot;</span>, <span class="st">&quot;Other&quot;</span>, <span class="st">&quot;Middle Eastern&quot;</span>))</a>
+<a class="sourceLine" id="cb17-18" title="18">  df<span class="op">$</span>eth &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(df<span class="op">$</span>eth, <span class="st">&quot;Other&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Asian&quot;</span>, <span class="st">&quot;Other&quot;</span>, <span class="st">&quot;Middle Eastern&quot;</span>, <span class="st">&quot;Mixed&quot;</span>, <span class="st">&quot;Native American&quot;</span>))</a>
+<a class="sourceLine" id="cb17-19" title="19">  </a>
+<a class="sourceLine" id="cb17-20" title="20">  <span class="co">## Age -- cut into factor</span></a>
+<a class="sourceLine" id="cb17-21" title="21">  df<span class="op">$</span>age &lt;-<span class="st"> </span><span class="dv">2018</span> <span class="op">-</span><span class="st"> </span>df<span class="op">$</span>birthyr</a>
+<a class="sourceLine" id="cb17-22" title="22">  df<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">as.integer</span>(df<span class="op">$</span>age), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">29</span>, <span class="dv">39</span>, <span class="dv">49</span>, <span class="dv">59</span>, <span class="dv">69</span>, <span class="dv">120</span>), </a>
+<a class="sourceLine" id="cb17-23" title="23">                <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;18-29&quot;</span>,<span class="st">&quot;30-39&quot;</span>,<span class="st">&quot;40-49&quot;</span>,<span class="st">&quot;50-59&quot;</span>,<span class="st">&quot;60-69&quot;</span>,<span class="st">&quot;70+&quot;</span>),</a>
+<a class="sourceLine" id="cb17-24" title="24">                <span class="dt">ordered_result =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb17-25" title="25">  </a>
+<a class="sourceLine" id="cb17-26" title="26">  <span class="co">## Education -- factor</span></a>
+<a class="sourceLine" id="cb17-27" title="27">  df<span class="op">$</span>educ &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">as.integer</span>(df<span class="op">$</span>educ), </a>
+<a class="sourceLine" id="cb17-28" title="28">                    <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, </a>
+<a class="sourceLine" id="cb17-29" title="29">                    <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;No HS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;Some college&quot;</span>, <span class="st">&quot;Associates&quot;</span>, <span class="st">&quot;4-Year College&quot;</span>, <span class="st">&quot;Post-grad&quot;</span>), <span class="dt">ordered =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb17-30" title="30">  df<span class="op">$</span>educ &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(df<span class="op">$</span>educ, <span class="st">&quot;Some college&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Some college&quot;</span>, <span class="st">&quot;Associates&quot;</span>))  </a>
+<a class="sourceLine" id="cb17-31" title="31">  </a>
+<a class="sourceLine" id="cb17-32" title="32">  <span class="co"># Clean and remove NAs</span></a>
+<a class="sourceLine" id="cb17-33" title="33">  df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(abortion, state, eth, male, age, educ) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop_na</span>()</a>
+<a class="sourceLine" id="cb17-34" title="34">  </a>
+<a class="sourceLine" id="cb17-35" title="35">}</a></code></pre></div>
+</div>
+<div id="american-community-survey" class="section level3">
+<h3><span class="header-section-number">2.6.2</span> American Community Survey</h3>
+<p>We start downloading the Public Use Microdata Sample from the American Community Survey <a href="https://www2.census.gov/programs-surveys/acs/data/pums/2018/5-Year/">data repository</a>. The repository contains two .zip files corresponding to each state: one for individual-level variables and other for household-level variables. All the variables considered in our analysis are available in the individual-level files, but we will also download and process the household-level variable income to show how this could be done.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">dir.create</span>(<span class="st">&quot;postrat_data/&quot;</span>)</a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">system</span>(<span class="st">&#39;wget -O postrat_data -e robots=off -nd -A &quot;csv_*.zip&quot; -R &quot;index.html&quot;,&quot;csv_hus.zip&quot;,&quot;csv_pus.zip&quot;  https://www2.census.gov/programs-surveys/acs/data/pums/2018/5-Year/&#39;</span>)</a></code></pre></div>
+<p>Once we have the dataset, there are two main considerations:</p>
+<ul>
+<li><p>Focus on the population of interest: We must take into account that the population of interest for the CCES survey, which only considers US citizens above 18 years of age, is different from the population reflected in the ACS. Therefore, we had to remove the cases of underages and non-US citizens in the ACS.</p></li>
+<li><p>Match the levels of the two datasets: The levels of the variables in the poststratification table must match the levels of the variables in the CCES dataset. In this case, this required preprocessing the variables of the CCES and ACS in a way that the levels were compatible.</p></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1">list_states_abb &lt;-<span class="st"> </span>datasets<span class="op">::</span>state.abb</a>
+<a class="sourceLine" id="cb19-2" title="2">list_states_num &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(list_states_abb))</a>
+<a class="sourceLine" id="cb19-3" title="3"></a>
+<a class="sourceLine" id="cb19-4" title="4">list_of_postrat_df &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb19-5" title="5"></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(list_states_num)){</a>
+<a class="sourceLine" id="cb19-7" title="7">  <span class="co"># Unzip and read household and person files for state i</span></a>
+<a class="sourceLine" id="cb19-8" title="8">  p_name &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;postrat_data/csv_p&quot;</span>, <span class="kw">tolower</span>(list_states_abb[i]),<span class="st">&quot;.zip&quot;</span>)</a>
+<a class="sourceLine" id="cb19-9" title="9">  h_name &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;postrat_data/csv_h&quot;</span>, <span class="kw">tolower</span>(list_states_abb[i]),<span class="st">&quot;.zip&quot;</span>)</a>
+<a class="sourceLine" id="cb19-10" title="10">  p_csv_name &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&#39;</span><span class="ch">\\</span><span class="st">.csv$&#39;</span>, <span class="kw">unzip</span>(p_name, <span class="dt">list=</span><span class="ot">TRUE</span>)<span class="op">$</span>Name, <span class="dt">ignore.case=</span><span class="ot">TRUE</span>, <span class="dt">value=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb19-11" title="11">  temp_df_p_state &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="kw">unzip</span>(p_name, <span class="dt">files =</span> p_csv_name),</a>
+<a class="sourceLine" id="cb19-12" title="12">                           <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">select=</span><span class="kw">c</span>(<span class="st">&quot;SERIALNO&quot;</span>,<span class="st">&quot;ST&quot;</span>,<span class="st">&quot;CIT&quot;</span>,<span class="st">&quot;PWGTP&quot;</span>,<span class="st">&quot;RAC1P&quot;</span>,<span class="st">&quot;HISP&quot;</span>,<span class="st">&quot;SEX&quot;</span>,<span class="st">&quot;AGEP&quot;</span>, <span class="st">&quot;SCHL&quot;</span>))</a>
+<a class="sourceLine" id="cb19-13" title="13">  h_csv_name &lt;-<span class="st"> </span><span class="kw">grep</span>(<span class="st">&#39;</span><span class="ch">\\</span><span class="st">.csv$&#39;</span>, <span class="kw">unzip</span>(h_name, <span class="dt">list=</span><span class="ot">TRUE</span>)<span class="op">$</span>Name, <span class="dt">ignore.case=</span><span class="ot">TRUE</span>, <span class="dt">value=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb19-14" title="14">  temp_df_h_state &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="kw">unzip</span>(h_name, <span class="dt">files =</span> h_csv_name),</a>
+<a class="sourceLine" id="cb19-15" title="15">                         <span class="dt">header=</span><span class="ot">TRUE</span>, <span class="dt">select=</span><span class="kw">c</span>(<span class="st">&quot;SERIALNO&quot;</span>,<span class="st">&quot;FINCP&quot;</span>))</a>
+<a class="sourceLine" id="cb19-16" title="16">  </a>
+<a class="sourceLine" id="cb19-17" title="17">  <span class="co"># Merge the individual and household level variables according to the serial number</span></a>
+<a class="sourceLine" id="cb19-18" title="18">  temp_df &lt;-<span class="st"> </span><span class="kw">merge</span>(temp_df_h_state, temp_df_p_state, <span class="dt">by =</span> <span class="st">&quot;SERIALNO&quot;</span>)</a>
+<a class="sourceLine" id="cb19-19" title="19"></a>
+<a class="sourceLine" id="cb19-20" title="20">  <span class="co"># Update list of state numbers that will be used later</span></a>
+<a class="sourceLine" id="cb19-21" title="21">  list_states_num[i] &lt;-<span class="st">  </span>temp_df<span class="op">$</span>ST[<span class="dv">1</span>]</a>
+<a class="sourceLine" id="cb19-22" title="22"></a>
+<a class="sourceLine" id="cb19-23" title="23">  <span class="co">## Filter by citizenship</span></a>
+<a class="sourceLine" id="cb19-24" title="24">  temp_df &lt;-<span class="st"> </span>temp_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(CIT<span class="op">!=</span><span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb19-25" title="25"></a>
+<a class="sourceLine" id="cb19-26" title="26">  <span class="co">## State</span></a>
+<a class="sourceLine" id="cb19-27" title="27">  temp_df<span class="op">$</span>state &lt;-<span class="st"> </span>temp_df<span class="op">$</span>ST</a>
+<a class="sourceLine" id="cb19-28" title="28"></a>
+<a class="sourceLine" id="cb19-29" title="29">  <span class="co">## Gender</span></a>
+<a class="sourceLine" id="cb19-30" title="30">  temp_df<span class="op">$</span>male &lt;-<span class="st"> </span><span class="kw">abs</span>(temp_df<span class="op">$</span>SEX<span class="dv">-2</span>)<span class="op">-</span><span class="fl">0.5</span></a>
+<a class="sourceLine" id="cb19-31" title="31"></a>
+<a class="sourceLine" id="cb19-32" title="32">  <span class="co">## ethnicity</span></a>
+<a class="sourceLine" id="cb19-33" title="33">  temp_df<span class="op">$</span>RAC1P &lt;-<span class="st"> </span><span class="kw">factor</span>(temp_df<span class="op">$</span>RAC1P, </a>
+<a class="sourceLine" id="cb19-34" title="34">                          <span class="dt">levels =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">9</span>, </a>
+<a class="sourceLine" id="cb19-35" title="35">                          <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;White&quot;</span>, <span class="st">&quot;Black&quot;</span>, <span class="st">&quot;Native Indian&quot;</span>, <span class="st">&quot;Native Alaskan&quot;</span>,</a>
+<a class="sourceLine" id="cb19-36" title="36">                                     <span class="st">&quot;Native Indian or Alaskan&quot;</span>, <span class="st">&quot;Asian&quot;</span>, <span class="st">&quot;Pacific Islander&quot;</span>, <span class="st">&quot;Other&quot;</span>, </a>
+<a class="sourceLine" id="cb19-37" title="37">                                     <span class="st">&quot;Mixed&quot;</span>))</a>
+<a class="sourceLine" id="cb19-38" title="38">  temp_df<span class="op">$</span>eth &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(temp_df<span class="op">$</span>RAC1P, <span class="st">&quot;Native American&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Native Indian&quot;</span>, <span class="st">&quot;Native Alaskan&quot;</span>, </a>
+<a class="sourceLine" id="cb19-39" title="39">                                                                   <span class="st">&quot;Native Indian or Alaskan&quot;</span>))</a>
+<a class="sourceLine" id="cb19-40" title="40">  temp_df<span class="op">$</span>eth &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(temp_df<span class="op">$</span>eth, <span class="st">&quot;Other&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Asian&quot;</span>, <span class="st">&quot;Pacific Islander&quot;</span>, <span class="st">&quot;Other&quot;</span>, </a>
+<a class="sourceLine" id="cb19-41" title="41">                                                       <span class="st">&quot;Native American&quot;</span>, <span class="st">&quot;Mixed&quot;</span>))</a>
+<a class="sourceLine" id="cb19-42" title="42">  <span class="kw">levels</span>(temp_df<span class="op">$</span>eth) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="kw">levels</span>(temp_df<span class="op">$</span>eth), <span class="st">&quot;Hispanic&quot;</span>)</a>
+<a class="sourceLine" id="cb19-43" title="43">  temp_df<span class="op">$</span>eth[(temp_df<span class="op">$</span>HISP<span class="op">!=</span><span class="dv">1</span>) <span class="op">&amp;</span><span class="st"> </span>temp_df<span class="op">$</span>eth<span class="op">==</span><span class="st">&quot;White&quot;</span>] &lt;-<span class="st"> &quot;Hispanic&quot;</span></a>
+<a class="sourceLine" id="cb19-44" title="44"></a>
+<a class="sourceLine" id="cb19-45" title="45">  <span class="co">## Age</span></a>
+<a class="sourceLine" id="cb19-46" title="46">  temp_df<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">as.integer</span>(temp_df<span class="op">$</span>AGEP), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">17</span>, <span class="dv">29</span>, <span class="dv">39</span>, <span class="dv">49</span>, <span class="dv">59</span>, <span class="dv">69</span>, <span class="dv">120</span>),</a>
+<a class="sourceLine" id="cb19-47" title="47">                     <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;0-17&quot;</span>, <span class="st">&quot;18-29&quot;</span>,<span class="st">&quot;30-39&quot;</span>,<span class="st">&quot;40-49&quot;</span>,<span class="st">&quot;50-59&quot;</span>,<span class="st">&quot;60-69&quot;</span>,<span class="st">&quot;70+&quot;</span>),</a>
+<a class="sourceLine" id="cb19-48" title="48">                     <span class="dt">ordered_result =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb19-49" title="49">  <span class="co">## Filter out underages</span></a>
+<a class="sourceLine" id="cb19-50" title="50">  temp_df &lt;-<span class="st"> </span><span class="kw">filter</span>(temp_df, age<span class="op">!=</span><span class="st">&quot;0-17&quot;</span>)</a>
+<a class="sourceLine" id="cb19-51" title="51">  temp_df<span class="op">$</span>age &lt;-<span class="st"> </span><span class="kw">droplevels</span>(temp_df<span class="op">$</span>age)</a>
+<a class="sourceLine" id="cb19-52" title="52"></a>
+<a class="sourceLine" id="cb19-53" title="53">  <span class="co">## Income (not currently used)</span></a>
+<a class="sourceLine" id="cb19-54" title="54">  temp_df<span class="op">$</span>income &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">as.integer</span>(temp_df<span class="op">$</span>FINCP), </a>
+<a class="sourceLine" id="cb19-55" title="55">                        <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="op">-</span><span class="ot">Inf</span>, <span class="dv">9999</span>, <span class="dv">19999</span>, <span class="dv">29999</span>, <span class="dv">39999</span>, <span class="dv">49999</span>, <span class="dv">59999</span>, <span class="dv">69999</span>, <span class="dv">79999</span>, <span class="dv">99999</span>, </a>
+<a class="sourceLine" id="cb19-56" title="56">                                   <span class="dv">119999</span>, <span class="dv">149999</span>, <span class="dv">199999</span>, <span class="dv">249999</span>, <span class="dv">349999</span>, <span class="dv">499999</span>, <span class="ot">Inf</span>),</a>
+<a class="sourceLine" id="cb19-57" title="57">                        <span class="dt">ordered_result =</span> <span class="ot">TRUE</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;&lt;$10,000&quot;</span>, <span class="st">&quot;$10,000 - $19,999&quot;</span>, <span class="st">&quot;$20,000 - $29,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-58" title="58">                                                          <span class="st">&quot;$30,000 - $39,999&quot;</span>, <span class="st">&quot;$40,000 - $49,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-59" title="59">                                                          <span class="st">&quot;$50,000 - $59,999&quot;</span>, <span class="st">&quot;$60,000 - $69,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-60" title="60">                                                          <span class="st">&quot;$70,000 - $79,999&quot;</span>,<span class="st">&quot;$80,000 - $99,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-61" title="61">                                                          <span class="st">&quot;$100,000 - $119,999&quot;</span>, <span class="st">&quot;$120,000 - $149,999&quot;</span>,</a>
+<a class="sourceLine" id="cb19-62" title="62">                                                          <span class="st">&quot;$150,000 - $199,999&quot;</span>,<span class="st">&quot;$200,000 - $249,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-63" title="63">                                                          <span class="st">&quot;$250,000 - $349,999&quot;</span>, <span class="st">&quot;$350,000 - $499,999&quot;</span>, </a>
+<a class="sourceLine" id="cb19-64" title="64">                                                          <span class="st">&quot;&gt;$500,000&quot;</span>))</a>
+<a class="sourceLine" id="cb19-65" title="65">  temp_df<span class="op">$</span>income &lt;-<span class="st"> </span><span class="kw">fct_explicit_na</span>(temp_df<span class="op">$</span>income, <span class="st">&quot;Prefer Not to Say&quot;</span>)</a>
+<a class="sourceLine" id="cb19-66" title="66"></a>
+<a class="sourceLine" id="cb19-67" title="67">  <span class="co">## Education</span></a>
+<a class="sourceLine" id="cb19-68" title="68">  temp_df<span class="op">$</span>educ &lt;-<span class="st"> </span><span class="kw">cut</span>(<span class="kw">as.integer</span>(temp_df<span class="op">$</span>SCHL), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">19</span>, <span class="dv">20</span>, <span class="dv">21</span>, <span class="dv">24</span>), <span class="dt">ordered_result =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb19-69" title="69">                        <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;No HS&quot;</span>, <span class="st">&quot;HS&quot;</span>, <span class="st">&quot;Some college&quot;</span>, <span class="st">&quot;Associates&quot;</span>, <span class="st">&quot;4-Year College&quot;</span>, <span class="st">&quot;Post-grad&quot;</span>))</a>
+<a class="sourceLine" id="cb19-70" title="70">  temp_df<span class="op">$</span>educ &lt;-<span class="st"> </span><span class="kw">fct_collapse</span>(temp_df<span class="op">$</span>educ, <span class="st">&quot;Some college&quot;</span> =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Some college&quot;</span>, <span class="st">&quot;Associates&quot;</span>))</a>
+<a class="sourceLine" id="cb19-71" title="71">  </a>
+<a class="sourceLine" id="cb19-72" title="72">  <span class="co"># Calculate the poststratification table</span></a>
+<a class="sourceLine" id="cb19-73" title="73">  temp_df &lt;-<span class="st"> </span>temp_df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">drop_na</span>(state, eth, male, age, educ, PWGTP) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-74" title="74"><span class="st">    </span><span class="kw">select</span>(state, eth, male, age, educ, PWGTP)</a>
+<a class="sourceLine" id="cb19-75" title="75">  <span class="co">## Trick to &#39;expand&#39; the poststratification table so groupby produces all the rows, even the ones with N = 0</span></a>
+<a class="sourceLine" id="cb19-76" title="76">  temp_df_expanded  &lt;-<span class="st"> </span>temp_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-77" title="77"><span class="st">    </span><span class="kw">expand</span>(state, eth, male, age, educ) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-78" title="78"><span class="st">    </span><span class="kw">mutate</span>(<span class="dt">PWGTP =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb19-79" title="79">  temp_df &lt;-<span class="st"> </span><span class="kw">rbind</span>(temp_df, temp_df_expanded)</a>
+<a class="sourceLine" id="cb19-80" title="80">  <span class="co">## We sum by the inidividual-level weight PWGTP</span></a>
+<a class="sourceLine" id="cb19-81" title="81">  list_of_postrat_df[[i]] &lt;-<span class="st"> </span>temp_df <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-82" title="82"><span class="st">    </span><span class="kw">group_by</span>(state, eth, male, age, educ, <span class="dt">.drop =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb19-83" title="83"><span class="st">    </span><span class="kw">summarise</span>(<span class="dt">n =</span> <span class="kw">sum</span>(<span class="kw">as.numeric</span>(PWGTP)))</a>
+<a class="sourceLine" id="cb19-84" title="84"></a>
+<a class="sourceLine" id="cb19-85" title="85">  <span class="kw">print</span>(<span class="kw">paste0</span>(list_states_abb[i], <span class="st">&quot; completed&quot;</span>))</a>
+<a class="sourceLine" id="cb19-86" title="86">}</a>
+<a class="sourceLine" id="cb19-87" title="87"></a>
+<a class="sourceLine" id="cb19-88" title="88">postrat_df &lt;-<span class="st"> </span><span class="kw">rbindlist</span>(list_of_postrat_df)</a>
+<a class="sourceLine" id="cb19-89" title="89"><span class="kw">write.csv</span>(postrat_df, <span class="st">&quot;postrat_data.csv&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">#library(ipumsr)</span></a>
+<a class="sourceLine" id="cb20-2" title="2"><span class="co">#ddi &lt;- read_ipums_ddi(&#39;C:/Users/Juanl/Documents/GDrive/Columbia/0.Summer/gelman/usa_00001.xml&#39;)</span></a>
+<a class="sourceLine" id="cb20-3" title="3"><span class="co">#acs &lt;- read_ipums_micro(ddi, data_file = &#39;C:/Users/Juanl/Documents/GDrive/Columbia/0.Summer/gelman/usa_00001.dat&#39;)</span></a></code></pre></div>
+
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-betancourt2017hmc">
+<p>Betancourt, Michael. 2017. “A Conceptual Introduction to Hamiltonian Monte Carlo.” <em>arXiv Preprint arXiv:1701.02434</em>.</p>
+</div>
+<div id="ref-bisbee2019barp">
+<p>Bisbee, James. 2019. “BARP: Improving Mister P Using Bayesian Additive Regression Trees.” <em>American Political Science Review</em> 113 (4): 1060–5.</p>
+</div>
+<div id="ref-buttice2013mrp">
+<p>Buttice, Matthew K, and Benjamin Highton. 2013. “How Does Multilevel Regression and Poststratification Perform with Conventional National Surveys?” <em>Political Analysis</em> 21 (4).</p>
+</div>
+<div id="ref-downes2018multilevel">
+<p>Downes, Marnie, Lyle C Gurrin, Dallas R English, Jane Pirkis, Dianne Currier, Matthew J Spittal, and John B Carlin. 2018. “Multilevel Regression and Poststratification: A Modeling Approach to Estimating Population Quantities from Highly Selected Survey Samples.” <em>American Journal of Epidemiology</em> 187 (8): 1780–90.</p>
+</div>
+<div id="ref-gao2020structuredpriors">
+<p>Gao, Yuxiang, Lauren Kennedy, Daniel Simpson, Andrew Gelman, and others. 2020. “Improving Multilevel Regression and Poststratification with Structured Priors.” <em>Bayesian Analysis</em>.</p>
+</div>
+<div id="ref-gelman2007data">
+<p>Gelman, Andrew, and Jennifer Hill. 2007. <em>Data Analysis Using Regression and Multilevelhierarchical Models</em>. Vol. 1. Cambridge University Press New York, NY, USA.</p>
+</div>
+<div id="ref-gelman2020raos">
+<p>Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other Stories</em>. Cambridge University Press.</p>
+</div>
+<div id="ref-ghitza2013deep">
+<p>Ghitza, Yair, and Andrew Gelman. 2013. “Deep Interactions with Mrp: Election Turnout and Voting Patterns Among Small Electoral Subgroups.” <em>American Journal of Political Science</em> 57 (3): 762–76.</p>
+</div>
+<div id="ref-kiewiet2018predicting">
+<p>Kiewiet de Jonge, Chad P, Gary Langer, and Sofi Sinozich. 2018. “Predicting State Presidential Election Results Using National Tracking Polls and Multilevel Regression with Poststratification (Mrp).” <em>Public Opinion Quarterly</em> 82 (3): 419–46.</p>
+</div>
+<div id="ref-lax2009gay">
+<p>Lax, Jeffrey R, and Justin H Phillips. 2009a. “Gay Rights in the States: Public Opinion and Policy Responsiveness.” <em>American Political Science Review</em> 103 (3): 367–86.</p>
+</div>
+<div id="ref-lax2009states">
+<p>Lax, Jeffrey R, and Justin H Phillips. 2009b. “How Should We Estimate Public Opinion in the States?” <em>American Journal of Political Science</em> 53 (1): 107–21.</p>
+</div>
+<div id="ref-park2004bayesian">
+<p>Park, David K, Andrew Gelman, and Joseph Bafumi. 2004. “Bayesian Multilevel Estimation with Poststratification: State-Level Estimates from National Polls.” <em>Political Analysis</em> 12 (4): 375–85.</p>
+</div>
+<div id="ref-wang2015xbox">
+<p>Wang, Wei, David Rothschild, Sharad Goel, and Andrew Gelman. 2015. “Forecasting Elections with Non-Representative Polls.” <em>International Journal of Forecasting</em> 31 (3): 980–91.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="mrp-with-noncensus-variables.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 1
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

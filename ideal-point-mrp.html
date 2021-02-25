@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 Ideal Point MRP | Multilevel Regression and Poststratification Case Studies</title>
+  <meta name="description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 Ideal Point MRP | Multilevel Regression and Poststratification Case Studies" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 Ideal Point MRP | Multilevel Regression and Poststratification Case Studies" />
+  
+  <meta name="twitter:description" content="Introduction to Bayesian Multilevel Modeling and Poststratification using rstanarm, brms, and Stan" />
+  
+
+<meta name="author" content="Juan Lopez-Martin, Justin H. Phillips, and Andrew Gelman" />
+
+
+<meta name="date" content="2020-12-17" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="mrp-with-noncensus-variables.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">MRP Case Studies</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Notes</a></li>
+<li class="chapter" data-level="2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html"><i class="fa fa-check"></i><b>2</b> Introduction to MRP</a><ul>
+<li class="chapter" data-level="2.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#the-data"><i class="fa fa-check"></i><b>2.1</b> The Data</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#survey-data"><i class="fa fa-check"></i><b>2.1.1</b> Survey data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#poststratification-table"><i class="fa fa-check"></i><b>2.1.2</b> Poststratification table</a></li>
+<li class="chapter" data-level="2.1.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#group-level-predictors"><i class="fa fa-check"></i><b>2.1.3</b> Group-level predictors</a></li>
+<li class="chapter" data-level="2.1.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>2.1.4</b> Exploratory data analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#first-stage-estimating-the-individual-response-model"><i class="fa fa-check"></i><b>2.2</b> First stage: Estimating the Individual-Response Model</a></li>
+<li class="chapter" data-level="2.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#second-stage-poststratification"><i class="fa fa-check"></i><b>2.3</b> Second Stage: Poststratification</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-at-the-national-level"><i class="fa fa-check"></i><b>2.3.1</b> Estimation at the national level</a></li>
+<li class="chapter" data-level="2.3.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-sub-national-units"><i class="fa fa-check"></i><b>2.3.2</b> Estimation for sub-national units</a></li>
+<li class="chapter" data-level="2.3.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#estimation-for-subgroups-within-sub-national-units"><i class="fa fa-check"></i><b>2.3.3</b> Estimation for subgroups within sub-national units</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#adjusting-for-nonrepresentative-surveys"><i class="fa fa-check"></i><b>2.4</b> Adjusting for Nonrepresentative Surveys</a></li>
+<li class="chapter" data-level="2.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#practical-considerations"><i class="fa fa-check"></i><b>2.5</b> Practical Considerations</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#census-incompletness-and-uncertainty"><i class="fa fa-check"></i><b>2.5.1</b> Census incompletness and uncertainty</a></li>
+<li class="chapter" data-level="2.5.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#nonreponse-and-missing-data"><i class="fa fa-check"></i><b>2.5.2</b> Nonreponse and missing data</a></li>
+<li class="chapter" data-level="2.5.3" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#model-complexity"><i class="fa fa-check"></i><b>2.5.3</b> Model complexity</a></li>
+<li class="chapter" data-level="2.5.4" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#empty-cells-in-the-poststratification-table"><i class="fa fa-check"></i><b>2.5.4</b> Empty cells in the poststratification table</a></li>
+<li class="chapter" data-level="2.5.5" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#subnational-units-not-represented-in-the-survey"><i class="fa fa-check"></i><b>2.5.5</b> Subnational units not represented in the survey</a></li>
+<li class="chapter" data-level="2.5.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#computational-issues"><i class="fa fa-check"></i><b>2.5.6</b> Computational issues</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#appendix-data-preprocessing-for-cces-and-census-data"><i class="fa fa-check"></i><b>2.6</b> Appendix: Data Preprocessing for CCES and Census Data</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#cces"><i class="fa fa-check"></i><b>2.6.1</b> CCES</a></li>
+<li class="chapter" data-level="2.6.2" data-path="introduction-to-mrp.html"><a href="introduction-to-mrp.html#american-community-survey"><i class="fa fa-check"></i><b>2.6.2</b> American Community Survey</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html"><i class="fa fa-check"></i><b>3</b> MRP with Noncensus Variables</a><ul>
+<li class="chapter" data-level="3.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#model-based-extension-of-the-poststratification-table"><i class="fa fa-check"></i><b>3.1</b> Model-based Extension of the Poststratification Table</a></li>
+<li class="chapter" data-level="3.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#adjusting-for-nonresponse-bias"><i class="fa fa-check"></i><b>3.2</b> Adjusting for Nonresponse Bias</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#setting-up-example-with-an-artificially-nonrepresentative-sample"><i class="fa fa-check"></i><b>3.2.1</b> Setting up example with an artificially nonrepresentative sample</a></li>
+<li class="chapter" data-level="3.2.2" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#standard-mrp"><i class="fa fa-check"></i><b>3.2.2</b> Standard MRP</a></li>
+<li class="chapter" data-level="3.2.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#non-census-mrp-with-partisanship-as-a-predictor"><i class="fa fa-check"></i><b>3.2.3</b> Non-census MRP with partisanship as a predictor</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="mrp-with-noncensus-variables.html"><a href="mrp-with-noncensus-variables.html#obtaining-estimates-for-non-census-variable-subgroups"><i class="fa fa-check"></i><b>3.3</b> Obtaining Estimates for Non-census Variable Subgroups</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html"><i class="fa fa-check"></i><b>4</b> Ideal Point MRP</a><ul>
+<li class="chapter" data-level="4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#introduction-and-literature"><i class="fa fa-check"></i><b>4.1</b> Introduction and Literature</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abc-of-irt"><i class="fa fa-check"></i><b>4.1.1</b> The ABC of IRT</a></li>
+<li class="chapter" data-level="4.1.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#ideal-point-models-and-estimating-public-opinion"><i class="fa fa-check"></i><b>4.1.2</b> Ideal point models and estimating public opinion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-two-parameter-irt-model-with-latent-multilevel-regression"><i class="fa fa-check"></i><b>4.2</b> A Two-Parameter IRT Model with Latent Multilevel Regression</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#bayesian-estimation"><i class="fa fa-check"></i><b>4.2.1</b> Bayesian estimation</a></li>
+<li class="chapter" data-level="4.2.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#initial-results"><i class="fa fa-check"></i><b>4.2.2</b> Initial Results</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#the-abortion-opposition-index-for-us-states"><i class="fa fa-check"></i><b>4.3</b> The Abortion Opposition Index for US States</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparison-with-simple-sum"><i class="fa fa-check"></i><b>4.3.1</b> Comparison with simple sum</a></li>
+<li class="chapter" data-level="4.3.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#fake-data-simulation"><i class="fa fa-check"></i><b>4.3.2</b> Fake-data simulation</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#estimating-support-for-individual-questions"><i class="fa fa-check"></i><b>4.4</b> Estimating Support for Individual Questions</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#mind-the-jensens-gap"><i class="fa fa-check"></i><b>4.4.1</b> Mind the (Jensen’s) gap</a></li>
+<li class="chapter" data-level="4.4.2" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#results-from-standard-and-ideal-point-mrp"><i class="fa fa-check"></i><b>4.4.2</b> Results from Standard and Ideal Point MRP</a></li>
+<li class="chapter" data-level="4.4.3" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#comparing-ideal-point-and-standard-mrp-using-fake-data-simulation"><i class="fa fa-check"></i><b>4.4.3</b> Comparing ideal point and standard MRP using fake-data simulation</a></li>
+<li class="chapter" data-level="4.4.4" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#a-note-of-caution"><i class="fa fa-check"></i><b>4.4.4</b> A note of caution</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#concluding-remarks"><i class="fa fa-check"></i><b>4.5</b> Concluding remarks</a></li>
+<li class="chapter" data-level="4.6" data-path="ideal-point-mrp.html"><a href="ideal-point-mrp.html#appendix"><i class="fa fa-check"></i><b>4.6</b> Appendix</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Multilevel Regression and Poststratification Case Studies</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ideal-point-mrp" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Ideal Point MRP</h1>
+<p>This chapter introduces ideal point MRP, an alternative to standard MRP that can be used when a survey contains at least two related questions that reflect the same attitude or ability. We will present how this method can be used for obtaining sub-national estimates of the latent attitude and also for improving estimates with respect to the individual questions.</p>
+<div id="introduction-and-literature" class="section level2">
+<h2><span class="header-section-number">4.1</span> Introduction and Literature</h2>
+<div id="the-abc-of-irt" class="section level3">
+<h3><span class="header-section-number">4.1.1</span> The ABC of IRT</h3>
+<p>Being developed in educational research, ideal point models (also called Item Response Theory models) assume that each participant <span class="math inline">\(j\)</span> has a latent ability <span class="math inline">\(\alpha_j\)</span>. In the context of a math exam, this ability parameter reflects how good a certain student is at math. Of course, <span class="math inline">\(\alpha_j\)</span> is said to be latent because we do not observe it directly, but only through the student’s answers to <span class="math inline">\(k\)</span> math-related questions. The ideal point model maps the unobserved ability <span class="math inline">\(\alpha_j\)</span> to the probability that subject <span class="math inline">\(j\)</span> answers correctly question <span class="math inline">\(k\)</span>:</p>
+<p><span class="math display">\[
+P(y = 1) = logit^{-1}(\alpha_j - \beta_k)
+\]</span>
+The probability of correctly answering question <span class="math inline">\(k\)</span> does not only depend on the student ability<span class="math inline">\(\alpha_j\)</span>, but also on the question difficulty <span class="math inline">\(\beta_k\)</span>. Let’s imagine one student with <span class="math inline">\(\alpha_1 = 2\)</span> that answers two questions with difficulties <span class="math inline">\(\beta_1 = 0\)</span> and <span class="math inline">\(\beta_2 = 3\)</span>. If the case of her answering the first question, we have that there is a <span class="math inline">\(logit^{-1}(2 - 0) = 88\%\)</span> probability of answering it correctly. In the case of the second question, she has a lower probability of getting it right, in this case <span class="math inline">\(logit^{-1}(2 - 3) = 27\%\)</span>. This is because the second question is much more difficult than the first. If we know take a second student with a lower ability <span class="math inline">\(\alpha_2 = -1.5\)</span>, his probabilities of getting these questions correctly are <span class="math inline">\(logit^{-1}(-1.5 - 0) = 18\%\)</span> and <span class="math inline">\(logit^{-1}(-1.5 - 3) = 1\%\)</span>.</p>
+<p>In some situations not every individuals encounters every question. In this case, the ideal point model can be written as <span class="math inline">\(P(y_i = 1) = logit^{-1}(\alpha_{j[i]} - \beta_{k[i]})\)</span>. In this case, the index <span class="math inline">\(i\)</span> corresponds to the question <span class="math inline">\(k[i]\)</span> responded by the student <span class="math inline">\(j[i]\)</span>. Although we will conserve this notation, the data we will use during this case all individuals have responded to all of the questions considered.</p>
+<p>The above model, which is usually referred as Rasch model or one-parameter model, assumes each question is equally relevant (or discriminatory) to measure the latent ability <span class="math inline">\(\alpha_j\)</span>. Although in educational testing it is desirable to construct questions that are able to discriminate between a student with a low ability and another one with high ability, in practice not all items achieve this to the same extent. This is exactly what the discrimination parameter <span class="math inline">\(\gamma_k\)</span> reflects. Thus, this extended version that is often called two-parameter ideal point model becomes:</p>
+<p><span class="math display">\[
+P(y_i = 1) = \gamma_{k[i]} (logit^{-1}(\alpha_{j[i]} - \beta_{k[i]}))
+\]</span></p>
+<p>Let’s consider two questions with equal difficulty <span class="math inline">\(\beta_1 = 0\)</span> and <span class="math inline">\(\beta_2 = 0\)</span>, but with different discrimination <span class="math inline">\(\gamma_1 = 0.1\)</span> and <span class="math inline">\(\gamma_2 = 2.5\)</span>. The high-ability student described previously has a <span class="math inline">\(logit^{-1}(0.1 \times (2 - 0) = 55\%\)</span> probability of responding correctly to the first question, while the low-ability participant has a <span class="math inline">\(logit^{-1}(0.1 \times (-1.5 - 0) = 46\%\)</span> chance. These probabilities are close because this question has a low discrimination parameter, and is therefore not particularly good at distinguishing between high-ability and low-ability individuals. Conversely, the second question has a high discrimination parameter, and therefore the probabilities for these two students are <span class="math inline">\(logit^{-1}(1.7 \times (2 - 0) = 97\%\)</span> and <span class="math inline">\(logit^{-1}(1.7 \times (-1.5 - 0) = 7\%\)</span>, respectively.</p>
+<p>It is sometimes useful to think about the ideal point model as a function that transforms a latent ability <span class="math inline">\(\alpha_j\)</span> into the probably of answering correctly a certain question. This mapping depends on the characteristics of the question, which in the case of the two-parameter ideal point model are the difficulty <span class="math inline">\(\beta_k\)</span> and the discrimination <span class="math inline">\(\gamma_k\)</span>. We can visualize how different values for <span class="math inline">\(\beta_k\)</span> and <span class="math inline">\(\gamma_k\)</span> influence this transformation.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-52-1.png" width="1344" style="display: block; margin: auto;" /></p>
+<div id="multilevel-structure-and-identification" class="section level4">
+<h4><span class="header-section-number">4.1.1.1</span> Multilevel structure and identification</h4>
+<p>The parameters used in the ideal point model are often assumed to follow a multilevel structure that assigns normal distributions to the abilities, difficulties, and discriminations:</p>
+<p><span class="math display">\[
+\begin{align}
+\alpha_j &amp;\sim \text{normal}(\mu_{\alpha}, \sigma_{\sigma}) \text{ for } j = 1, ..., J \\
+\beta_k &amp;\sim \text{normal}(\mu_{\beta}, \sigma_{\beta}) \text{ for } k = 1, ..., K \\
+\gamma_k &amp;\sim \text{normal}(\mu_{\gamma}, \sigma_{\gamma}) \text{ for } k = 1, ..., K \\ 
+\end{align}
+\]</span></p>
+<p>However, the two-parameter ideal point model is not identified. In particular, it suffers from three problems (see <span class="citation">Bafumi et al. (<a href="#ref-bafumi2005practical" role="doc-biblioref">2005</a>)</span> for a more detailed discussion on identification problems and solutions):</p>
+<ol style="list-style-type: decimal">
+<li>Additive aliasing: Adding a constant to <span class="math inline">\(\alpha_j\)</span> and <span class="math inline">\(\beta_k\)</span> will not change its predictions.</li>
+<li>Multiplicative aliasing: Similarly, multiplying <span class="math inline">\(\gamma_k\)</span> by a constant and dividing <span class="math inline">\((\alpha_j - beta_j)\)</span> by the same constant will keep the predictions unchanged.</li>
+<li>Reflection invariance: Lastly, multiplying the ability, difficulty, and discrimination parameter by -1 will also result in identical predictions.</li>
+</ol>
+<p>The first two issues can be resolved by creating standardized parameters <span class="math inline">\(\alpha_j^{\rm adj} = \frac{\alpha_j - \bar{\alpha}}{s_{\alpha}}\)</span>, <span class="math inline">\(\beta_k^{\rm adj} = \frac{\beta_k - \bar{\alpha}}{s_{\alpha}}\)</span>, and <span class="math inline">\(\gamma_k^{\rm adj} = \gamma_k s_{\alpha}\)</span>. The new ability, difficulty, and discrimination parameters are well defined and preserve the likelihood as <span class="math inline">\(P(y_i = 1) = logit^{-1}(\gamma_{k[i]}(\alpha_{j[i]} - \beta_{k[i]})) = logit^{-1}(\gamma_{k[i]}^{\rm adj}(\alpha_{j[i]}^{\rm adj} - \beta_{k[i]}^{\rm adj}))\)</span>. Reflection invariance can be avoided by restricting <span class="math inline">\(\gamma_k \gt 0\)</span> (and consequently <span class="math inline">\(\mu_{\gamma} \gt 0\)</span> and also <span class="math inline">\(\gamma_k^{adj} \gt 0\)</span>), which in turn requires precoding the questions so they are in the same direction (i.e. indicating conservative positions).</p>
+</div>
+<div id="including-predictors-for-alpha_j" class="section level4">
+<h4><span class="header-section-number">4.1.1.2</span> Including predictors for <span class="math inline">\(\alpha_j\)</span></h4>
+<p>The mode we have described assumes that the abilities <span class="math inline">\(\alpha_j\)</span> follow a normal distribution centered at the population average ability <span class="math inline">\(\mu_{\alpha}\)</span> with a standard deviation <span class="math inline">\(\sigma_{\sigma}\)</span>. We can extend this by adding ability-level predictors, resulting in <span class="math inline">\(\alpha_j \sim \text{normal}(\mu_{\alpha} + X \beta)\)</span> where <span class="math inline">\(\mu_{\alpha}\)</span> now represents the regression intercept.</p>
+</div>
+</div>
+<div id="ideal-point-models-and-estimating-public-opinion" class="section level3">
+<h3><span class="header-section-number">4.1.2</span> Ideal point models and estimating public opinion</h3>
+<p>Until now we have used the example of a math test. However, beyond educational settings an ideal point model can be used to reflect other situations in which a latent characteristic determines a dichotomous response. In the Political Science literature, these models have been famously used to reflect the ideological position of legislators based on their roll call voting records (<span class="citation">Clinton, Jackman, and Rivers (<a href="#ref-clinton2004statistical" role="doc-biblioref">2004</a>)</span>). Similarly, we can use the survey respondents support for different statements as reflecting a latent attitude based on a series of survey questions. There have been two main bodies of work that have combined ideal-point models and MRP.</p>
+<p><span class="citation">Tausanovitch and Warshaw (<a href="#ref-tausanovitch2013ideal" role="doc-biblioref">2013</a>)</span> follow a two-step process to estimate policy preferences across states and cities in the US. First, they fit a unidimensional ideal point model such as the one described by <span class="citation">Clinton, Jackman, and Rivers (<a href="#ref-clinton2004statistical" role="doc-biblioref">2004</a>)</span> based on dichotomous responses from the CCES and the ACS, obtaining estimates of the liberalness-conservativeness for 270,000 Americans. Instead of using dissaggregation, the second step involves using an MRP approach that instead of considering the response to any individual question as the outcome they predict this estimated ideal point for each participant. In a later work, <span class="citation">Tausanovitch and Warshaw (<a href="#ref-tausanovitch2014representation" role="doc-biblioref">2014</a>)</span> correlate the city-level policy preference estimates obtained using this method with the policies enacted at the municipal level, finding a clear correspondence.</p>
+<p>In a related line of work, <span class="citation">Caughey and Warshaw (<a href="#ref-caughey2015dynamic" role="doc-biblioref">2015</a>)</span> use a conceptually different approach in order to estimate latent abilities over time. First, they model survey responses not at the individual level, but rather at the level of subpopulation groups defined by demographic and geographic characteristics. This has the advantage of using highly sparse data without requiring ‘linking’ questions that bridge across all the surveys. Second, they extend the model to borrow information across time, which allows to create time-specific estimates of average group opinion. They use this dynamic group-level IRT framework to estimate policy liberalism at the U.S. state level in each year between 1972 and 2012 (for other applications, see <span class="citation">Bergquist and Warshaw (<a href="#ref-bergquist2019does" role="doc-biblioref">2019</a>)</span> and <span class="citation">Bergquist and Warshaw (<a href="#ref-bergquist2019does" role="doc-biblioref">2019</a>)</span>).</p>
+</div>
+</div>
+<div id="a-two-parameter-irt-model-with-latent-multilevel-regression" class="section level2">
+<h2><span class="header-section-number">4.2</span> A Two-Parameter IRT Model with Latent Multilevel Regression</h2>
+<p>In the previous two chapters we have only considered one of the questions in the CCES. However, this survey includes six support/oppose statements about abortion:</p>
+<ul>
+<li>CC18_321a: Always allow a woman to obtain an abortion as a matter of choice.</li>
+<li>CC18_321b: Permit abortion ONLY in case of rape, incest or when the woman’s life is in danger.</li>
+<li>CC18_321c: Ban abortions after the 20th week of pregnancy.</li>
+<li>CC18_321d: Allow employers to decline coverage of abortions in insurance plans.</li>
+<li>CC18_321e: Prohibit the expenditure of funds authorized or appropriated by federal law for any abortion.</li>
+<li>CC18_321f: Make abortions illegal in all circumstances.</li>
+</ul>
+<p>We can use a two-parameter logistic item response model with a latent (multilevel) regression to model <span class="math inline">\(k\)</span> questions based on <span class="math inline">\(j\)</span> respondents:</p>
+<p><span class="math display">\[
+\begin{equation*}
+P(y_i = 1) = logit^{-1}(\gamma_{k[i]}^{adj}(\alpha_{j[i]}^{adj} - \beta_{k[i]}^{adj}))
+\end{equation*}
+\]</span>
+where:</p>
+<p><span class="math display">\[
+\begin{align*}
+\alpha_j &amp;\sim {\rm normal}(\mu^{\alpha} + A_{\rm s[j]}^{\rm state}
++ A_{\rm a[j]}^{\rm age}
++ A_{\rm r[j]}^{\rm ethnicity}
++ A_{\rm e[j]}^{\rm education}
++ B^{\rm male} \cdot {\rm Male}_{\rm j}, \sigma^{\alpha}) {\rm \ for} \ j = 1,...,J \\
+\beta_k &amp;\sim {\rm normal}(\mu^{\beta}, \sigma^{\beta}) {\rm \ for} \ k = 1,...,K \\
+\gamma_k &amp;\sim {\rm normal_{+}}(\mu^{\gamma}, \sigma^{\gamma}) {\rm \ for} \ k = 1,...,K
+\end{align*}
+\]</span>
+and:</p>
+<p><span class="math display">\[
+\begin{align*}
+A_{\rm s}^{\rm state} &amp;\sim {\rm normal}(A^{\rm region}_{n[s]} + B^{\rm repvote} \cdot {\rm RepVote}_{\rm s}, \sigma^{\rm state}) \textrm{ for s = 1,...,50}\\
+A_{\rm a}^{\rm age} &amp; \sim {\rm normal}(0,\sigma^{\rm age}) \textrm{ for a = 1,...,6}\\
+A_{\rm r}^{\rm ethnicity} &amp; \sim {\rm normal}(0,\sigma^{\rm ethnicity}) \textrm{ for r = 1,...,4}\\
+A_{\rm e}^{\rm education} &amp; \sim {\rm normal}(0,\sigma^{\rm education}) \textrm{ for e = 1,...,5}\\
+A_{\rm n}^{\rm region} &amp; \sim {\rm normal}(0,\sigma^{\rm region}) \textrm{ for a = 1,...,4}\\
+\end{align*}
+\]</span></p>
+<p>Note that our model is fundamentally different from the two-step approach used by <span class="citation">Tausanovitch and Warshaw (<a href="#ref-tausanovitch2013ideal" role="doc-biblioref">2013</a>)</span>. By first estimating the ideal point of each individual and then using MRP, their method is not propagating the uncertainty about the estimated ideal points into the final national or subnational estimates. Considering one of the essential advantages of Bayesian inference is to properly quantify uncertainty, we include the multilevel stage of the MRP within the ideal point model model. Thus, in our model the multilevel regression serves as a prior for <span class="math inline">\(\alpha_j\)</span>. In this example we have included the same predictors introduced in first chapter, excluding the interaction terms for simplicity.</p>
+<p>As we already introduced in the previous section, identification can be achieved by transforming the ability, difficulty, and discrimination parameters by <span class="math inline">\(\alpha_j^{\rm adj} = \frac{\alpha_j - \bar{\alpha}}{s_{\alpha}}\)</span>, <span class="math inline">\(\beta_k^{\rm adj} = \frac{\beta_k - \bar{\alpha}}{s_{\alpha}}\)</span>, <span class="math inline">\(\gamma_k^{\rm adj} = \gamma_k s_{\alpha}\)</span>. We also restricted <span class="math inline">\(\gamma_k &gt; 0\)</span>, which in turn requires precoding all the questions. The first question was reversed in order for all the outcomes to reflect a supporting perspective on restricting abortion rights. Therefore, a high ability <span class="math inline">\(\alpha_j^{\rm adj}\)</span> will represent a strong opposition to abortion.</p>
+<div id="bayesian-estimation" class="section level3">
+<h3><span class="header-section-number">4.2.1</span> Bayesian estimation</h3>
+<p>In this initial experiment we analyzed the six abortion responses for a random sample of 5,000 CCES participants. The Stan code we used is shown below, and was fitted using 5 chains with 2,000 iterations (500 warmup).</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="co"># We skip reading the data, as the process is exactly the same as in chapter 1 except for reading six questions</span></a>
+<a class="sourceLine" id="cb31-2" title="2"><span class="co"># in the CCES instead of only one. See Github repo for the entire code.</span></a>
+<a class="sourceLine" id="cb31-3" title="3"></a>
+<a class="sourceLine" id="cb31-4" title="4"><span class="co"># Melt df for Stan</span></a>
+<a class="sourceLine" id="cb31-5" title="5">df_melted &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(<span class="kw">starts_with</span>(<span class="st">&quot;abortion&quot;</span>), state, ethnicity, age, educ, male, region, subject) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb31-6" title="6"><span class="st">  </span><span class="kw">melt</span>(<span class="dt">id.vars =</span> <span class="kw">c</span>(<span class="st">&quot;state&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;ethnicity&quot;</span>, <span class="st">&quot;educ&quot;</span>, <span class="st">&quot;male&quot;</span>, <span class="st">&quot;region&quot;</span>, <span class="st">&quot;subject&quot;</span>))</a>
+<a class="sourceLine" id="cb31-7" title="7"></a>
+<a class="sourceLine" id="cb31-8" title="8"><span class="co"># Prepare data for Stan </span></a>
+<a class="sourceLine" id="cb31-9" title="9">data &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">J =</span> <span class="kw">length</span>(<span class="kw">unique</span>(df_melted<span class="op">$</span>subject)), </a>
+<a class="sourceLine" id="cb31-10" title="10">             <span class="dt">K =</span> <span class="kw">length</span>(<span class="kw">unique</span>(df_melted<span class="op">$</span>variable)), </a>
+<a class="sourceLine" id="cb31-11" title="11">             <span class="dt">N =</span> <span class="kw">nrow</span>(df_melted), </a>
+<a class="sourceLine" id="cb31-12" title="12">             <span class="dt">S =</span> <span class="kw">nrow</span>(statelevel_predictors),</a>
+<a class="sourceLine" id="cb31-13" title="13">             <span class="dt">P =</span> <span class="kw">nrow</span>(postrat_df),</a>
+<a class="sourceLine" id="cb31-14" title="14">             <span class="dt">participant =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>subject), </a>
+<a class="sourceLine" id="cb31-15" title="15">             <span class="dt">question =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>variable), </a>
+<a class="sourceLine" id="cb31-16" title="16">             <span class="dt">state =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>state),</a>
+<a class="sourceLine" id="cb31-17" title="17">             <span class="dt">age =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>age),</a>
+<a class="sourceLine" id="cb31-18" title="18">             <span class="dt">ethnicity =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>ethnicity),</a>
+<a class="sourceLine" id="cb31-19" title="19">             <span class="dt">educ =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>educ),</a>
+<a class="sourceLine" id="cb31-20" title="20">             <span class="dt">male =</span> <span class="kw">as.numeric</span>(df_melted<span class="op">$</span>male),</a>
+<a class="sourceLine" id="cb31-21" title="21">             <span class="dt">region =</span> <span class="kw">as.numeric</span>(statelevel_predictors<span class="op">$</span>region),</a>
+<a class="sourceLine" id="cb31-22" title="22">             <span class="dt">repvote =</span> statelevel_predictors<span class="op">$</span>repvote,</a>
+<a class="sourceLine" id="cb31-23" title="23">             <span class="dt">postrat_state =</span> <span class="kw">as.numeric</span>(postrat_df<span class="op">$</span>state),</a>
+<a class="sourceLine" id="cb31-24" title="24">             <span class="dt">postrat_age =</span> <span class="kw">as.numeric</span>(postrat_df<span class="op">$</span>age),</a>
+<a class="sourceLine" id="cb31-25" title="25">             <span class="dt">postrat_ethnicity =</span> <span class="kw">as.numeric</span>(postrat_df<span class="op">$</span>ethnicity),</a>
+<a class="sourceLine" id="cb31-26" title="26">             <span class="dt">postrat_educ =</span> <span class="kw">as.numeric</span>(postrat_df<span class="op">$</span>educ),</a>
+<a class="sourceLine" id="cb31-27" title="27">             <span class="dt">postrat_male =</span> postrat_df<span class="op">$</span>male,</a>
+<a class="sourceLine" id="cb31-28" title="28">             <span class="dt">y =</span> df_melted<span class="op">$</span>value)</a>
+<a class="sourceLine" id="cb31-29" title="29"></a>
+<a class="sourceLine" id="cb31-30" title="30"><span class="co"># Only train if train = TRUE; if not, load from fit_idealpoint.rds</span></a>
+<a class="sourceLine" id="cb31-31" title="31">train =<span class="st"> </span><span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb31-32" title="32"><span class="cf">if</span>(train){</a>
+<a class="sourceLine" id="cb31-33" title="33">  fit_id &lt;-<span class="st"> </span><span class="kw">stan_model</span>(<span class="st">&quot;idealpoint.stan&quot;</span>)</a>
+<a class="sourceLine" id="cb31-34" title="34">  fit &lt;-<span class="st"> </span><span class="kw">sampling</span>(fit_id, <span class="dt">data =</span> data, <span class="dt">iter =</span> <span class="dv">2000</span>, <span class="dt">warmup =</span> <span class="dv">1000</span>, <span class="dt">chains =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb31-35" title="35">                     <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">adapt_delta =</span> <span class="fl">0.99</span>, <span class="dt">max_treedepth =</span> <span class="dv">12</span>),</a>
+<a class="sourceLine" id="cb31-36" title="36">                     <span class="dt">refresh =</span> <span class="dv">25</span>)</a>
+<a class="sourceLine" id="cb31-37" title="37">  <span class="kw">saveRDS</span>(fit, <span class="dt">file =</span> <span class="st">&quot;fit_idealpoint.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb31-38" title="38">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb31-39" title="39">  fit &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;fit_idealpoint.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb31-40" title="40">}</a>
+<a class="sourceLine" id="cb31-41" title="41"></a>
+<a class="sourceLine" id="cb31-42" title="42"><span class="co"># Extract draws as dataframe</span></a>
+<a class="sourceLine" id="cb31-43" title="43">df_fit &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit)</a></code></pre></div>
+</div>
+<div id="initial-results" class="section level3">
+<h3><span class="header-section-number">4.2.2</span> Initial Results</h3>
+<p>We can visualize the posterior distribution for the estimated <span class="math inline">\(\alpha_j^{adj}\)</span> of the first five participants:</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-57-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Conversely, we can visualize the distribution of <span class="math inline">\(\alpha_j^{adj}\)</span> for a random subset of the posterior draws:</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-58-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>As a first check that the ideal points <span class="math inline">\(\alpha_j^{adj}\)</span> estimated by the model are capturing a meaningful latent variable, we correlate them with the reported ideology in the CCES by each participant <span class="math inline">\(j\)</span>. This results in a correlation of 0.53.</p>
+<p>We can plot the distribution for a one single draw of <span class="math inline">\(\alpha_j^{adj}\)</span>, but selecting only CCES respondents from California and Tennessee, which provides an approximation of the between-state and within-state variations. Not surprisingly, individuals from Tennessee tend to have higher ideal points.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-59-1.png" width="576" style="display: block; margin: auto;" /></p>
+<p>Lastly, we can also visualize the probability of supporting each statement for the potential values of <span class="math inline">\(\alpha_j^{adj}\)</span>.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-60-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="the-abortion-opposition-index-for-us-states" class="section level2">
+<h2><span class="header-section-number">4.3</span> The Abortion Opposition Index for US States</h2>
+<p>Assuming our poststratification table has <span class="math inline">\(T\)</span> cells that reflect different geographic-demographic combinations, the ideal point model allows to estimate the expected ability <span class="math inline">\(\mu_{\alpha_t}\)</span> for each of these combinations. Before poststratification, we need to transform this <span class="math inline">\(\mu_{\alpha_t}\)</span> into <span class="math inline">\(\mu_{\alpha^{adj}_t}\)</span> by considering that <span class="math inline">\(\mu_{\alpha^{adj}_t} = \frac{\mu_{\alpha_t} - \bar{\alpha}}{s_{\alpha}}\)</span>. In order to do this we:</p>
+<ol style="list-style-type: decimal">
+<li>Draw with replacement <span class="math inline">\(L\)</span> individuals from the poststratification table (weighting by <span class="math inline">\(N\)</span>, the number of people in each cell).</li>
+<li>Calculate <span class="math inline">\(\mu_{\alpha_l}\)</span> for each subject <span class="math inline">\(l\)</span>, and then add some random noise centered at zero and with standard deviation <span class="math inline">\(\sigma_\alpha\)</span> (which was estimated in the model). This simulates the <span class="math inline">\(\alpha_l\)</span> for a random sample of <span class="math inline">\(L\)</span> subjects that come from the population defined by the poststratification table.</li>
+<li>Given <span class="math inline">\(\alpha_l\)</span>, calculate <span class="math inline">\(\bar{\alpha}_l\)</span> and <span class="math inline">\(s_{\alpha_l}\)</span>. These values correspond to the estimated average and standard deviation for the abilities in the population defined by the poststratification table.</li>
+<li>Calculate <span class="math inline">\(\mu_{\alpha^{adj}_t} = \frac{\mu_{\alpha_t} - \bar{\alpha}_l}{s_{\alpha_l}}\)</span></li>
+</ol>
+<p>This process is repeated for each draw of the posterior distribution. If we have <span class="math inline">\(D\)</span> draws and <span class="math inline">\(T\)</span> poststratification cells, <span class="math inline">\(\mu_{\alpha^{adj}_t}\)</span> will be a <span class="math inline">\(D \times T\)</span> matrix.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" title="1"><span class="co"># Calculating mu_alpha_adj</span></a>
+<a class="sourceLine" id="cb32-2" title="2">ndraws &lt;-<span class="st"> </span><span class="kw">nrow</span>(df_fit<span class="op">$</span>alpha_pred_raw)</a>
+<a class="sourceLine" id="cb32-3" title="3">L &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb32-4" title="4"></a>
+<a class="sourceLine" id="cb32-5" title="5">mu_alpha_adj &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> ndraws, <span class="dt">ncol =</span> <span class="dv">12000</span>)</a>
+<a class="sourceLine" id="cb32-6" title="6"><span class="cf">for</span>(d <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ndraws){</a>
+<a class="sourceLine" id="cb32-7" title="7">    mu_alpha &lt;-<span class="st"> </span>df_fit<span class="op">$</span>mu_alpha[d] <span class="op">+</span><span class="st"> </span>df_fit<span class="op">$</span>alpha_pred_raw[d,]</a>
+<a class="sourceLine" id="cb32-8" title="8">    sample_alphas_pop &lt;-<span class="st"> </span><span class="kw">sample</span>(mu_alpha, <span class="dt">size =</span> L, <span class="dt">prob =</span> postrat_df<span class="op">$</span>n<span class="op">/</span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n), <span class="dt">replace =</span> <span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb32-9" title="9">    sample_alphas_pop &lt;-<span class="st"> </span>sample_alphas_pop <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(L, <span class="dv">0</span>, df_fit<span class="op">$</span>sigma_alpha[d])</a>
+<a class="sourceLine" id="cb32-10" title="10">    mean_alpha &lt;-<span class="st"> </span><span class="kw">mean</span>(sample_alphas_pop)</a>
+<a class="sourceLine" id="cb32-11" title="11">    sd_alpha &lt;-<span class="st"> </span><span class="kw">sd</span>(sample_alphas_pop)</a>
+<a class="sourceLine" id="cb32-12" title="12">    </a>
+<a class="sourceLine" id="cb32-13" title="13">    mu_alpha_adj[d,] &lt;-<span class="st"> </span>(mu_alpha <span class="op">-</span><span class="st"> </span>mean_alpha) <span class="op">/</span><span class="st"> </span>sd_alpha</a>
+<a class="sourceLine" id="cb32-14" title="14">}</a></code></pre></div>
+<p><span class="math inline">\(\mu_{\alpha^{adj}_t}\)</span> can be poststratified as usual in order to obtain state-level ideal points that reflect what we may refer as the ‘Abortion Opposition Index’. It is important to clarify that these final sub-national estimates are relative to the national level (which is, as defined in the model, equal to zero).</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="co">### Poststratification</span></a>
+<a class="sourceLine" id="cb33-2" title="2">national_level &lt;-<span class="st"> </span>mu_alpha_adj <span class="op">%*%</span><span class="st"> </span>postrat_df<span class="op">$</span>n <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n)</a>
+<a class="sourceLine" id="cb33-3" title="3"></a>
+<a class="sourceLine" id="cb33-4" title="4">df_state_idealpoint &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">state =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="kw">length</span>(<span class="kw">levels</span>(df<span class="op">$</span>state))),</a>
+<a class="sourceLine" id="cb33-5" title="5">                       <span class="dt">idealpoint_mean =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb33-6" title="6">                       <span class="dt">idealpoint_sd =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb33-7" title="7"></a>
+<a class="sourceLine" id="cb33-8" title="8">i =<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb33-9" title="9"><span class="cf">for</span>(s <span class="cf">in</span> <span class="kw">levels</span>(df<span class="op">$</span>state)){</a>
+<a class="sourceLine" id="cb33-10" title="10">  state_estimates &lt;-<span class="st"> </span>(mu_alpha_adj[, <span class="kw">which</span>(postrat_df<span class="op">$</span>state<span class="op">==</span>s)] <span class="op">%*%</span><span class="st"> </span>postrat_df<span class="op">$</span>n[<span class="kw">which</span>(postrat_df<span class="op">$</span>state<span class="op">==</span>s)]<span class="op">/</span></a>
+<a class="sourceLine" id="cb33-11" title="11"><span class="st">    </span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n[<span class="kw">which</span>(postrat_df<span class="op">$</span>state<span class="op">==</span>s)]) )</a>
+<a class="sourceLine" id="cb33-12" title="12">  df_state_idealpoint<span class="op">$</span>state[i] &lt;-<span class="st"> </span>s</a>
+<a class="sourceLine" id="cb33-13" title="13">  df_state_idealpoint<span class="op">$</span>idealpoint_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(state_estimates)</a>
+<a class="sourceLine" id="cb33-14" title="14">  df_state_idealpoint<span class="op">$</span>idealpoint_sd[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(state_estimates)</a>
+<a class="sourceLine" id="cb33-15" title="15">  i =<span class="st"> </span>i <span class="op">+</span><span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb33-16" title="16">}</a></code></pre></div>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-63-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>The correlation between these state-level estimates and Republican voteshare in the 2016 election is 0.99.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-64-1.png" width="768" style="display: block; margin: auto;" /></p>
+<div id="comparison-with-simple-sum" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Comparison with simple sum</h3>
+<p>A simpler approach for obtaining estimates about the latent abortion opposition is to consider the sum of the six questions for each respondent as the outcome, fitting a multilevel linear regression and poststratifying as usual.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" title="1">df<span class="op">$</span>abortion_score &lt;-<span class="st"> </span><span class="kw">rowSums</span>(<span class="kw">select</span>(df, abortion1, abortion2, abortion3, abortion4, abortion5, abortion6))</a>
+<a class="sourceLine" id="cb34-2" title="2"></a>
+<a class="sourceLine" id="cb34-3" title="3">train =<span class="st"> </span><span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb34-4" title="4"><span class="cf">if</span>(train){</a>
+<a class="sourceLine" id="cb34-5" title="5">  fit_sum &lt;-<span class="st"> </span><span class="kw">stan_glmer</span>(abortion_score <span class="op">~</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>state) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>ethnicity) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>age) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>educ) <span class="op">+</span><span class="st"> </span>male <span class="op">+</span><span class="st"> </span>repvote <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>region),</a>
+<a class="sourceLine" id="cb34-6" title="6">                        <span class="dt">data =</span> df,</a>
+<a class="sourceLine" id="cb34-7" title="7">                        <span class="dt">prior =</span> <span class="kw">normal</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">autoscale =</span> <span class="ot">TRUE</span>),</a>
+<a class="sourceLine" id="cb34-8" title="8">                        <span class="dt">prior_covariance =</span> <span class="kw">decov</span>(<span class="dt">scale =</span> <span class="fl">0.50</span>),</a>
+<a class="sourceLine" id="cb34-9" title="9">                        <span class="dt">adapt_delta =</span> <span class="fl">0.99</span>,</a>
+<a class="sourceLine" id="cb34-10" title="10">                        <span class="dt">seed =</span> <span class="dv">1010</span>)</a>
+<a class="sourceLine" id="cb34-11" title="11">  <span class="kw">saveRDS</span>(fit_sum, <span class="dt">file =</span> <span class="st">&quot;fit_sum.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb34-12" title="12">} <span class="cf">else</span> {</a>
+<a class="sourceLine" id="cb34-13" title="13">  fit_sum &lt;-<span class="st"> </span><span class="kw">readRDS</span>(<span class="dt">file =</span> <span class="st">&quot;fit_sum.rds&quot;</span>)</a>
+<a class="sourceLine" id="cb34-14" title="14">}</a>
+<a class="sourceLine" id="cb34-15" title="15"></a>
+<a class="sourceLine" id="cb34-16" title="16">P &lt;-<span class="st"> </span><span class="kw">posterior_epred</span>(fit_sum, <span class="dt">newdata =</span> <span class="kw">left_join</span>(postrat_df, statelevel_predictors))</a>
+<a class="sourceLine" id="cb34-17" title="17">df_state_sum &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">state =</span> <span class="kw">levels</span>(postrat_df<span class="op">$</span>state), </a>
+<a class="sourceLine" id="cb34-18" title="18">                           <span class="dt">sum_mean =</span> <span class="ot">NA</span>, </a>
+<a class="sourceLine" id="cb34-19" title="19">                           <span class="dt">sum_sd =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb34-20" title="20">                           <span class="dt">sum_mean_relative =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb34-21" title="21"></a>
+<a class="sourceLine" id="cb34-22" title="22">national_level &lt;-<span class="st"> </span>P <span class="op">%*%</span><span class="st"> </span>postrat_df<span class="op">$</span>n <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n)</a>
+<a class="sourceLine" id="cb34-23" title="23"></a>
+<a class="sourceLine" id="cb34-24" title="24"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(<span class="kw">levels</span>(postrat_df<span class="op">$</span>state))) {</a>
+<a class="sourceLine" id="cb34-25" title="25">  filtering_condition &lt;-<span class="st"> </span><span class="kw">which</span>(postrat_df<span class="op">$</span>state <span class="op">==</span><span class="st"> </span><span class="kw">as.character</span>(df_state_sum<span class="op">$</span>state[i]))</a>
+<a class="sourceLine" id="cb34-26" title="26">  P_filtered &lt;-<span class="st"> </span>P[ ,filtering_condition]</a>
+<a class="sourceLine" id="cb34-27" title="27">  k_filtered &lt;-<span class="st"> </span>postrat_df[filtering_condition, ]<span class="op">$</span>n</a>
+<a class="sourceLine" id="cb34-28" title="28">  poststrat_prob_state &lt;-<span class="st"> </span>P_filtered <span class="op">%*%</span><span class="st"> </span>k_filtered <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(k_filtered)</a>
+<a class="sourceLine" id="cb34-29" title="29">  df_state_sum<span class="op">$</span>sum_mean[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(poststrat_prob_state)</a>
+<a class="sourceLine" id="cb34-30" title="30">  df_state_sum<span class="op">$</span>sum_sd[i] &lt;-<span class="st"> </span><span class="kw">sd</span>(poststrat_prob_state)</a>
+<a class="sourceLine" id="cb34-31" title="31">}</a></code></pre></div>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-66-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>These results are very similar to what we obtained with the ideal-point model. In fact, the state-level point estimates produced by the two methods have a correlation of 0.9985. Still, the ideal point model results in more precise results, with an average absolute <span class="math inline">\(t\)</span> of 3.06 that is higher than the 1.58 produced by naive sum of question outcomes.</p>
+</div>
+<div id="fake-data-simulation" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Fake-data simulation</h3>
+<p>We expect the ideal point model to be similar to the naive sum approach when all the questions are equally relevant to the latent variable. Conversely, when some of the questions are more relevant than others we expect the ideal point model will perform better both in terms of reduced error and tighter standard error. To demostrate this we use fake data simulation. We draw 2,500 individuals according to the weights provided by the poststratification table, calculate their true ideal point based on pre-specified values for the multilevel predictors, and then define six questions. In one case we will use six questions which are approximately equally relevant (<span class="math inline">\(\mu^{\gamma} = 2\)</span>, <span class="math inline">\(\sigma^{\gamma} = 0.2\)</span>), while in the other we will use six questions with very different discrimination parameters (<span class="math inline">\(\mu^{\gamma} = 2\)</span>, <span class="math inline">\(\sigma^{\gamma} = 0.8\)</span>).</p>
+<div id="questions-with-similar-discrimination-parameters" class="section level4">
+<h4><span class="header-section-number">4.3.2.1</span> Questions with similar discrimination parameters</h4>
+<p>When we consider six questions with little variation across their discrimination parameters, the results for the ideal point MRP and the sum MRP are very similar both in terms of MAE and mean SE. The ideal point MRP estimates and the true values are in the same scale, but the naive sum MRP are not. In order to compare them we standarize the subnational estimates that result from the three methods.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-68-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="questions-with-different-discrimination-values" class="section level4">
+<h4><span class="header-section-number">4.3.2.2</span> Questions with different discrimination values</h4>
+<p>When the questions have very different <span class="math inline">\(\gamma_k\)</span>, the advantage of ideal point MRP is more remarkable, both in terms of lower mean SE and smaller Mean Absolute Error.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-70-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>Lastly, we see that the ideal point MRP has been able to recover the true <span class="math inline">\(\gamma_k\)</span> and <span class="math inline">\(\beta_k\)</span> for each question.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">true_gamma</th>
+<th align="right">estimated_gamma</th>
+<th align="right">true_beta</th>
+<th align="right">estimated_beta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2.3</td>
+<td align="right">2.41</td>
+<td align="right">0.0</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="even">
+<td align="right">3.0</td>
+<td align="right">2.89</td>
+<td align="right">1.0</td>
+<td align="right">0.98</td>
+</tr>
+<tr class="odd">
+<td align="right">1.3</td>
+<td align="right">1.33</td>
+<td align="right">-1.0</td>
+<td align="right">-0.89</td>
+</tr>
+<tr class="even">
+<td align="right">0.3</td>
+<td align="right">0.26</td>
+<td align="right">0.5</td>
+<td align="right">0.33</td>
+</tr>
+<tr class="odd">
+<td align="right">2.8</td>
+<td align="right">2.74</td>
+<td align="right">-0.5</td>
+<td align="right">-0.46</td>
+</tr>
+<tr class="even">
+<td align="right">1.7</td>
+<td align="right">1.60</td>
+<td align="right">0.0</td>
+<td align="right">-0.01</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="estimating-support-for-individual-questions" class="section level2">
+<h2><span class="header-section-number">4.4</span> Estimating Support for Individual Questions</h2>
+<p>Based on the estimated <span class="math inline">\(\mu^{\alpha}\)</span>, <span class="math inline">\(A_{\rm s[j]}^{\rm state}\)</span>, <span class="math inline">\(A_{\rm a[j]}^{\rm age}\)</span>, <span class="math inline">\(A_{\rm r[j]}^{\rm ethnicity}\)</span>, <span class="math inline">\(A_{\rm e[j]}^{\rm education}\)</span>, and <span class="math inline">\(B^{\rm male}\)</span> we can estimate <span class="math inline">\(\mu_{\alpha_j}\)</span>, the average ability for each cell <span class="math inline">\(j\)</span> in the poststratification table. This was the quantity that previously we standardized into <span class="math inline">\(\mu_{\alpha^{adj}_j}\)</span> and used in the poststratification step, obtaining state-level estimates for the ideal points. These average ability estimates can instead be transformed with <span class="math inline">\(logit^{-1}(\gamma_{k}^{adj}(\mu_{\alpha_j}^{adj} - \beta_{k}^{adj}))\)</span>. The result is an estimate of the probability of supporting question <span class="math inline">\(k\)</span> for the average ability corresponding to each poststratification cell.</p>
+<div id="mind-the-jensens-gap" class="section level3">
+<h3><span class="header-section-number">4.4.1</span> Mind the (Jensen’s) gap</h3>
+<p><span class="math inline">\(\mu_{\alpha^{adj}_j}\)</span> reflects the (standardized) average ideal point position for each poststratification cell, which can be transformed into the probability of the average person in this cell <span class="math inline">\(j\)</span> supporting a given statement <span class="math inline">\(k\)</span>. However, this quantity is not particularly interesting for us. What we really need to estimate is the average probability that the individuals in cell <span class="math inline">\(j\)</span> support statement <span class="math inline">\(k\)</span>. In a simplified example, what we have estimated is the probability that the average Texan supports a given statement. However, our goal is to obtain the average support of that statement for the people in Texas. For this, we need to consider that, for each poststratification cell <span class="math inline">\(j\)</span>, <span class="math inline">\(\alpha_j \sim N(\mu_{\alpha_j} \sigma_\alpha)\)</span>.</p>
+<p>Naively using <span class="math inline">\(\mu_{\alpha_j}\)</span> or its standardized version, as we have done in the previous subsection, results in estimates that are too extreme. As a result of Jensen’s inequality and the properties of the logistic function, if we use a nonlinear transformation <span class="math inline">\(f(x) = logit^{-1}(g(x - b))\)</span> (where <span class="math inline">\(g&gt;0\)</span>) on a random variable <span class="math inline">\(X\)</span> we will obtain that <span class="math inline">\(f(E[X]) \leq E[f(X)]\)</span> when <span class="math inline">\(f(x)\)</span> is convex (i.e. when <span class="math inline">\(X - b &lt; 0\)</span>) and <span class="math inline">\(f(E[x]) \geq E[f(x)]\)</span> when it is concave (i.e. when <span class="math inline">\(X - b &gt; 0\)</span>). We can show this by simulating multiple draws from <span class="math inline">\(X \sim N(0, \sigma)\)</span> and transforming them with <span class="math inline">\(f(x) = logit^{-1}(x)\)</span> (i.e. in our example, <span class="math inline">\(b = 0\)</span> and <span class="math inline">\(g = 1\)</span>):</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-72-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>In essence, using <span class="math inline">\(\mu_{\alpha_j}\)</span> or its standardized version will result in more extreme estimates due to the nonlinearity in the transformation. However, obtaining reliable estimates of the probability of support of question <span class="math inline">\(k\)</span> for each poststratification cell <span class="math inline">\(j\)</span> is still possible:</p>
+<ol style="list-style-type: decimal">
+<li>Draw with replacement <span class="math inline">\(L\)</span> individuals from the poststratification table (weighting by <span class="math inline">\(N\)</span>, the number of people in each cell).</li>
+<li>Calculate <span class="math inline">\(\mu_{\alpha_l}\)</span> for each subject <span class="math inline">\(l\)</span>, and then add some random noise centered at zero and with standard deviation <span class="math inline">\(\sigma_\alpha\)</span> (which was estimated in the model). This simulates the <span class="math inline">\(\alpha_l\)</span> for a random sample of <span class="math inline">\(L\)</span> subjects that come from the population defined by the poststratification table.</li>
+<li>Given <span class="math inline">\(\alpha_l\)</span>, calculate <span class="math inline">\(\bar{\alpha}_l\)</span> and <span class="math inline">\(s_{\alpha_l}\)</span>. These values correspond to the estimated average and standard deviation for the abilities in the population defined by the poststratification table.</li>
+<li>For each poststratification cell <span class="math inline">\(t\)</span>:
+<ol style="list-style-type: lower-roman">
+<li>Simulate <span class="math inline">\(s\)</span> draws from the distribution of alphas <span class="math inline">\(\alpha_s \sim \text{normal}(\mu_{\alpha_t}, \sigma_\alpha)\)</span>. These <span class="math inline">\(s\)</span> draws correspond to individuals with the demographic-geographic factors defined in cell <span class="math inline">\(t\)</span>.</li>
+<li>Standardize <span class="math inline">\(\alpha_s^{adj} = \frac{\alpha_s - \bar{\alpha}_l}{s_{\alpha_l}}\)</span></li>
+<li>Considering <span class="math inline">\(\alpha_s^{adj}\)</span> is a vector with <span class="math inline">\(s\)</span> elements, obtain <span class="math inline">\(P(y_{k,t} = 1) = \text{Mean}(logit^{-1}(\gamma_k^{adj}\times(\alpha_s^{adj} - \beta_k^{adj})))\)</span></li>
+</ol></li>
+</ol>
+<p><span class="math inline">\(P(y_{k,t} = 1)\)</span> represents the average support for question <span class="math inline">\(k\)</span> among individuals in cell <span class="math inline">\(t\)</span>. To propagate the uncertainty about the parameters in the model, these steps must be repeated once for every posterior draw <span class="math inline">\(d\)</span>, obtaining a <span class="math inline">\(D \times T\)</span> matrix that can be poststratified as usual.</p>
+</div>
+<div id="results-from-standard-and-ideal-point-mrp" class="section level3">
+<h3><span class="header-section-number">4.4.2</span> Results from Standard and Ideal Point MRP</h3>
+<p>We compare the individual-question estimates for the ideal point model and the standard model. As expected, the results from both methods are similar, although there are also some differences.</p>
+<div id="question-6" class="section level4">
+<h4><span class="header-section-number">4.4.2.1</span> Question 6</h4>
+<blockquote>
+<p>Make abortions illegal in all circumstances</p>
+</blockquote>
+<p>The following code implements the algorithm described above that results in the <span class="math inline">\(D \times T\)</span> matrix <span class="math inline">\(P(y_{k,t} = 1)\)</span>. Instead of considering the <span class="math inline">\(D\)</span> posterior draws, we only use 25 for computational efficiency. This <span class="math inline">\(P(y_{k,t} = 1)\)</span> matrix is then poststratified and, ultimately, we obtain the national and state-level estimates.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1">question_number &lt;-<span class="st"> </span><span class="dv">6</span></a>
+<a class="sourceLine" id="cb35-2" title="2">df_fit &lt;-<span class="st"> </span>rstan<span class="op">::</span><span class="kw">extract</span>(fit)</a>
+<a class="sourceLine" id="cb35-3" title="3">ndraws &lt;-<span class="st"> </span><span class="dv">25</span> <span class="co"># sample of draws to reduce computation time</span></a>
+<a class="sourceLine" id="cb35-4" title="4">nsims &lt;-<span class="st"> </span><span class="dv">50</span></a>
+<a class="sourceLine" id="cb35-5" title="5">L &lt;-<span class="st"> </span><span class="dv">1000</span></a>
+<a class="sourceLine" id="cb35-6" title="6">sample_draws &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(df_fit<span class="op">$</span>alpha_pred_raw), <span class="dt">size =</span> ndraws)</a>
+<a class="sourceLine" id="cb35-7" title="7">question_pred &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">ncol =</span> <span class="dv">12000</span>, <span class="dt">nrow =</span> ndraws)</a>
+<a class="sourceLine" id="cb35-8" title="8"><span class="cf">for</span>(d <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>ndraws){</a>
+<a class="sourceLine" id="cb35-9" title="9">    mu_alpha &lt;-<span class="st"> </span>df_fit<span class="op">$</span>mu_alpha[sample_draws[d]] <span class="op">+</span><span class="st"> </span>df_fit<span class="op">$</span>alpha_pred_raw[sample_draws[d],]</a>
+<a class="sourceLine" id="cb35-10" title="10">    sample_alphas_pop &lt;-<span class="st"> </span><span class="kw">sample</span>(mu_alpha, <span class="dt">size =</span> L, <span class="dt">prob =</span> postrat_df<span class="op">$</span>n<span class="op">/</span><span class="kw">sum</span>(postrat_df<span class="op">$</span>n), <span class="dt">replace =</span> <span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb35-11" title="11">    sample_alphas_pop &lt;-<span class="st"> </span>sample_alphas_pop <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(L, <span class="dv">0</span>, df_fit<span class="op">$</span>sigma_alpha[sample_draws[d]])</a>
+<a class="sourceLine" id="cb35-12" title="12">    mean_alpha &lt;-<span class="st"> </span><span class="kw">mean</span>(sample_alphas_pop)</a>
+<a class="sourceLine" id="cb35-13" title="13">    sd_alpha &lt;-<span class="st"> </span><span class="kw">sd</span>(sample_alphas_pop)</a>
+<a class="sourceLine" id="cb35-14" title="14">    </a>
+<a class="sourceLine" id="cb35-15" title="15">    <span class="cf">for</span>(t <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">12000</span>){</a>
+<a class="sourceLine" id="cb35-16" title="16">      alpha_pred &lt;-<span class="st"> </span>mu_alpha[t] <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(nsims, <span class="dv">0</span>, df_fit<span class="op">$</span>sigma_alpha[sample_draws[d]])</a>
+<a class="sourceLine" id="cb35-17" title="17">      alpha_pred &lt;-<span class="st"> </span>(alpha_pred <span class="op">-</span><span class="st"> </span>mean_alpha)<span class="op">/</span>sd_alpha</a>
+<a class="sourceLine" id="cb35-18" title="18">      question_pred[d,t] &lt;-<span class="st"> </span><span class="kw">mean</span>(<span class="kw">plogis</span>(df_fit<span class="op">$</span>gamma_adj[sample_draws[d], question_number]<span class="op">*</span>(alpha_pred <span class="op">-</span><span class="st"> </span>df_fit<span class="op">$</span>beta_adj[sample_draws[d], question_number])))</a>
+<a class="sourceLine" id="cb35-19" title="19">    }</a>
+<a class="sourceLine" id="cb35-20" title="20">}</a>
+<a class="sourceLine" id="cb35-21" title="21"></a>
+<a class="sourceLine" id="cb35-22" title="22">national_level_idealpoint &lt;-<span class="st"> </span>question_pred <span class="op">%*%</span><span class="st"> </span>postrat_df_numeric<span class="op">$</span>n <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(postrat_df_numeric<span class="op">$</span>n)</a>
+<a class="sourceLine" id="cb35-23" title="23">df_state_idealpoint &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">state =</span> <span class="dv">1</span><span class="op">:</span><span class="kw">max</span>(postrat_df_numeric<span class="op">$</span>state),</a>
+<a class="sourceLine" id="cb35-24" title="24">                       <span class="dt">idealpoint_mean =</span> <span class="ot">NA</span>,</a>
+<a class="sourceLine" id="cb35-25" title="25">                       <span class="dt">idealpoint_sd =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb35-26" title="26"><span class="cf">for</span>(s <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">max</span>(postrat_df_numeric<span class="op">$</span>state)){</a>
+<a class="sourceLine" id="cb35-27" title="27">  state_estimates &lt;-<span class="st"> </span>question_pred[, <span class="kw">which</span>(postrat_df_numeric<span class="op">$</span>state<span class="op">==</span>s)] <span class="op">%*%</span><span class="st"> </span>postrat_df<span class="op">$</span>n[<span class="kw">which</span>(postrat_df_numeric<span class="op">$</span>state<span class="op">==</span>s)]<span class="op">/</span></a>
+<a class="sourceLine" id="cb35-28" title="28"><span class="st">    </span><span class="kw">sum</span>(postrat_df_numeric<span class="op">$</span>n[<span class="kw">which</span>(postrat_df_numeric<span class="op">$</span>state<span class="op">==</span>s)])</a>
+<a class="sourceLine" id="cb35-29" title="29">  df_state_idealpoint<span class="op">$</span>state[s] &lt;-<span class="st"> </span>s</a>
+<a class="sourceLine" id="cb35-30" title="30">  df_state_idealpoint<span class="op">$</span>idealpoint_mean[s] &lt;-<span class="st"> </span><span class="kw">mean</span>(state_estimates)</a>
+<a class="sourceLine" id="cb35-31" title="31">  df_state_idealpoint<span class="op">$</span>idealpoint_sd[s] &lt;-<span class="st"> </span><span class="kw">sd</span>(state_estimates)</a>
+<a class="sourceLine" id="cb35-32" title="32">}</a>
+<a class="sourceLine" id="cb35-33" title="33">df_state_idealpoint<span class="op">$</span>state &lt;-<span class="st"> </span>statelevel_predictors<span class="op">$</span>state</a></code></pre></div>
+<p>The results are plotted along the full-CCES disaggregated estimates and the estimates obtained with standard MRP.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-75-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>The mean SE for the state-level ideal point MRP estimates is 1.16%, while the standard MRP produces an average SE of 2.24%. Measuring the error of the point estimates is trickier, as there is no clear ground-truth in this case. The closest we can consider are the estimates from the full-sample CCES. If we compare the state-level ideal point MRP estimates to the results from full-sample CCES, we obtain a MAE of 2.09%, while if the comparison is made with the standard MRP we obtain a MAE of 2.17%.</p>
+</div>
+<div id="question-5" class="section level4">
+<h4><span class="header-section-number">4.4.2.2</span> Question 5</h4>
+<blockquote>
+<p>Prohibit the expenditure of funds authorized or appropriated by federal law for any abortion</p>
+</blockquote>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-76-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Ideal point MRP mean SE: 2.44%,</li>
+<li>Standard MRP mean SE: 2.27%.</li>
+<li>Ideal point MRP MAE with respect to results from full-sample CCES:3.26%</li>
+<li>Standard MRP MAE with respect to results from full-sample CCES: 3.68%.</li>
+</ul>
+</div>
+<div id="question-4" class="section level4">
+<h4><span class="header-section-number">4.4.2.3</span> Question 4</h4>
+<blockquote>
+<p>Allow employers to decline coverage of abortions in insurance plans</p>
+</blockquote>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-77-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Ideal point MRP mean SE: 2.28%,</li>
+<li>Standard MRP mean SE: 2.61%.</li>
+<li>Ideal point MRP MAE with respect to results from full-sample CCES:3.19%</li>
+<li>Standard MRP MAE with respect to results from full-sample CCES: 3.13%.</li>
+</ul>
+</div>
+<div id="question-3" class="section level4">
+<h4><span class="header-section-number">4.4.2.4</span> Question 3</h4>
+<blockquote>
+<p>Ban abortions after the 20th week of pregnancy</p>
+</blockquote>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-78-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Ideal point MRP mean SE: 2.11%,</li>
+<li>Standard MRP mean SE: 2.12%.</li>
+<li>Ideal point MRP MAE with respect to results from full-sample CCES:2.37%</li>
+<li>Standard MRP MAE with respect to results from full-sample CCES: 2.14%.</li>
+</ul>
+</div>
+<div id="question-2" class="section level4">
+<h4><span class="header-section-number">4.4.2.5</span> Question 2</h4>
+<blockquote>
+<p>Permit abortion ONLY in case of rape, incest or when the woman’s life is in danger</p>
+</blockquote>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-79-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Ideal point MRP mean SE: 2.07%,</li>
+<li>Standard MRP mean SE: 2.14%.</li>
+<li>Ideal point MRP MAE with respect to results from full-sample CCES:3.28%</li>
+<li>Standard MRP MAE with respect to results from full-sample CCES: 4.41%.</li>
+</ul>
+</div>
+<div id="question-1" class="section level4">
+<h4><span class="header-section-number">4.4.2.6</span> Question 1</h4>
+<blockquote>
+<p>Always allow a woman to obtain an abortion as a matter of choice (reversed)</p>
+</blockquote>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-80-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Ideal point MRP mean SE: 2.17%,</li>
+<li>Standard MRP mean SE: 2.31%.</li>
+<li>Ideal point MRP MAE with respect to results from full-sample CCES:3.15%</li>
+<li>Standard MRP MAE with respect to results from full-sample CCES: 3.43%.</li>
+</ul>
+</div>
+</div>
+<div id="comparing-ideal-point-and-standard-mrp-using-fake-data-simulation" class="section level3">
+<h3><span class="header-section-number">4.4.3</span> Comparing ideal point and standard MRP using fake-data simulation</h3>
+<p>Although with some exceptions, the ideal point MRP estimates seem to have lower standard errors and tend to be closer to the full-sample CCES. To compare these two methods in a more controlled setting we use fake data simulation. The DGP assumess each of the 9 questions reflects a (unique) true ideal point with varying difficulty and discrimination. The ideal point is in turn determined by a set of demographic-geographic predictors and some normally-distributed random error. We simulate a population of 10 million individuals based on the weights in the poststratification table, and then obtain a sample of 3,000 participants that is then used for the ideal point MRP and standard MRP state-level estimation for each question. These state-level estimates are evaluated in terms of their average standard error and mean absolute error with respect to the true support in the population.</p>
+<p>Below the plot the estimates for three of the simulated questions.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-84-1.png" width="864" style="display: block; margin: auto;" /></p>
+<p>Instead of focusing solely on the results from the 3,000 person sample, we will take samples between <span class="math inline">\(N = 1000\)</span> and <span class="math inline">\(N = 5000\)</span> from the simulated population and compare the results of the ideal point MRP and standard MRP on each of the 9 questions.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-85-1.png" width="1152" /></p>
+<p>With very few exceptions, the estimates from the ideal point MRP result in a lower MAE and mean SE for all the question and for all the different sample sizes. To further emphasize this point, we plot the average MAE and mean SE across questions as a function of method and sample size.</p>
+<p><img src="MRP-case-studies_files/figure-html/unnamed-chunk-86-1.png" width="864" style="display: block; margin: auto;" /></p>
+</div>
+<div id="a-note-of-caution" class="section level3">
+<h3><span class="header-section-number">4.4.4</span> A note of caution</h3>
+<p>We have shown that the ideal point MRP tends to perform better than standard MRP using both CCES data and fake data. This improvement is due to the model being able to capture useful information from other questions and, thus, provide better estimates for the question of interest. However, ideal point MRP could be detrimental relative to standard MRP if the questions were not relevant with respect to the same latent construct. Our CCES data used six questions that, although obviously slightly different in terms of the position they intend to measure, all were closely related to a general attitude towards abortion. Conversely, including unrelated questions, such as support for certain foreign policy, could negatively influence our estimates. Therefore, we would restrict the use of ideal point MRP to situations where there is a clear convergence between the survey items.</p>
+</div>
+</div>
+<div id="concluding-remarks" class="section level2">
+<h2><span class="header-section-number">4.5</span> Concluding remarks</h2>
+<p>This Chapter has introduced ideal point MRP and explored its use in two different applications:</p>
+<ul>
+<li><p>Obtaining sub-national (or sub-group) estimates of latent attitudes using multiple survey items: Based on a set of related questions about abortion, we used ideal point MRP to produce state-level estimates of an ‘Abortion Opposition Index’. This method easily handles spareness (i.e. when each respondent has not answered each question), and even when this is not an issue it can provide an advantage over naively summing the dichotomous responses when the questions have different discriminatory power – which is, in practice, always the case.</p></li>
+<li><p>Improving estimates for an individual question: Ideal point MRP can also present an advantage over standard MRP when our interest is focused in one single question as long as the surveys includes other related items. In this situation, standard MRP only considers the question of interest, ignoring the responses to the other relevant questions. Conversely, the ideal point model is able to consider the relevant information contained in the other related items, and thus provide better estimates with smaller uncertainty. This advantage can be especially consequential in surveys with a small sample size.</p></li>
+</ul>
+</div>
+<div id="appendix" class="section level2">
+<h2><span class="header-section-number">4.6</span> Appendix</h2>
+<pre class="stan"><code>//
+// Ideal Point Multilevel Modeling and Postratification
+//
+
+
+data {
+  int&lt;lower=1&gt; J; //Participants
+  int&lt;lower=1&gt; K; //Questions
+  int&lt;lower=1&gt; N; //no. of observations
+  int&lt;lower=1&gt; S; //no. of states
+  int&lt;lower=1&gt; P; //no. of states
+  int&lt;lower=1, upper=J&gt; participant[N]; // Participant for observation n
+  int&lt;lower=1, upper=K&gt; question[N]; // Question for observation n
+  int&lt;lower=1, upper=S&gt; state[N]; // State for observation n
+  int&lt;lower=1, upper=6&gt; age[N]; // Age for observation n
+  int&lt;lower=1, upper=4&gt; ethnicity[N]; // Ethnicity for observation n
+  int&lt;lower=1, upper=5&gt; educ[N]; // Education for observation n
+  real&lt;lower=-0.5, upper=0.5&gt; male[N]; // Gender for observation n
+  int&lt;lower=0, upper=4&gt; region[S]; // Region for state s
+  real repvote[S]; // Republican voteshare for state s
+  int&lt;lower=0, upper=1&gt; y[N]; // Support for observation n
+  int&lt;lower=1, upper=S&gt; postrat_state[P];
+  int&lt;lower=1, upper=6&gt; postrat_age[P];
+  int&lt;lower=1, upper=4&gt; postrat_ethnicity[P];
+  int&lt;lower=1, upper=5&gt; postrat_educ[P];
+  real&lt;lower=-0.5, upper=0.5&gt; postrat_male[P];
+}
+parameters {
+  vector[S] alpha_state_raw;
+  vector[6] alpha_age_raw;
+  vector[5] alpha_educ_raw;
+  vector[4] alpha_ethnicity_raw;
+  vector[4] alpha_region_raw;
+  real beta_male;
+  real beta_repvote;
+  real&lt;lower=0&gt; sigma_state;
+  real&lt;lower=0&gt; sigma_age;
+  real&lt;lower=0&gt; sigma_ethnicity;
+  real&lt;lower=0&gt; sigma_educ;
+  real&lt;lower=0&gt; sigma_region;
+
+  real mu_alpha;
+  real&lt;lower=0&gt; sigma_alpha;
+  real mu_beta;
+  real&lt;lower=0&gt; sigma_beta;
+  real&lt;lower=0&gt; mu_gamma;
+  real&lt;lower=0&gt; sigma_gamma;
+
+  vector[K] beta_raw;
+  vector[J] alpha_raw;
+  vector&lt;lower=0&gt;[K] gamma_raw;
+}
+transformed parameters{
+  vector[6] alpha_age = 0 + sigma_age*alpha_age_raw;
+  vector[5] alpha_educ = 0 + sigma_educ*alpha_educ_raw;
+  vector[4] alpha_ethnicity = 0 + sigma_ethnicity*alpha_ethnicity_raw;
+  vector[4] alpha_region = 0 + sigma_region*alpha_region_raw;
+  vector[K] beta = mu_beta + sigma_beta*beta_raw;
+  vector[K] gamma = mu_gamma + sigma_gamma*gamma_raw;
+
+  vector[S] alpha_state;
+  vector[J] alpha;
+
+  real alpha_mean;
+  real alpha_sd;
+  vector[J] alpha_adj;
+  vector[K] beta_adj;
+  vector&lt;lower=0&gt;[K] gamma_adj;
+
+  for(s in 1:S)
+    alpha_state[s] = alpha_region[region[s]] + beta_repvote*repvote[s] + sigma_state*alpha_state_raw[s];
+  for (j in 1:J)
+    alpha[j] = mu_alpha + alpha_state[state[j]] + alpha_age[age[j]] + alpha_ethnicity[ethnicity[j]] + alpha_educ[educ[j]] + beta_male*male[j] + sigma_alpha*alpha_raw[j];
+
+  alpha_mean = mean(alpha);
+  alpha_sd = sd(alpha);
+  alpha_adj = (alpha - alpha_mean)/alpha_sd;
+  beta_adj = (beta - alpha_mean)/alpha_sd;
+  gamma_adj = gamma*alpha_sd;
+}
+
+
+
+model {
+  //priors on predictors
+  sigma_state ~ exponential(0.5); // prior for sigma_state
+  sigma_age ~ exponential(0.5); // prior for sigma_age
+  sigma_ethnicity ~ exponential(0.5); // prior for sigma_ethnicity
+  sigma_educ ~ exponential(0.5); // prior for sigma_educ
+  sigma_region ~ exponential(0.5); // prior for sigma_educ
+  beta_male ~ normal(0, 2); // prior for beta_male
+  beta_repvote ~ normal(0, 2); // prior for beta_repvote
+
+  //priors on parameters
+  mu_beta ~ normal(0, 2); // prior for mu_beta
+  sigma_beta ~ exponential(1); // prior for sigma_beta
+  mu_gamma ~ normal(0, 2); // prior for mu_gamma
+  sigma_gamma ~ exponential(1); // prior for sigma_gamma
+
+  alpha_state_raw ~ std_normal(); // implies alpha_state ~ normal(alpha_region, sigma_state)
+  alpha_age_raw ~ std_normal(); // implies alpha_age ~ normal(0, sigma_age)
+  alpha_ethnicity_raw ~ std_normal(); // implies alpha_ethnicity ~ normal(0, sigma_ethnicity)
+  alpha_educ_raw ~ std_normal(); // implies alpha_educ ~ normal(0, sigma_educ)
+  alpha_region_raw ~ std_normal(); // implies alpha_region ~ normal(0, sigma_region)
+
+  gamma_raw ~ std_normal(); // implies beta ~ normal(mu_beta, sigma_beta)
+  beta_raw ~ std_normal(); // implies beta ~ normal(mu_beta, sigma_beta)
+  alpha_raw ~ std_normal(); // implies alpha ~ normal(mu_alpha + alpha_state + alpha_age + ..., sigma_alpha)
+  for (n in 1:N)
+    y[n] ~ bernoulli_logit(gamma_adj[question[n]] * (alpha_adj[participant[n]] - beta_adj[question[n]]));
+}
+
+generated quantities{
+  vector[P] alpha_pred_raw;
+  vector[P] alpha_pred;
+
+
+  for (p in 1:P)
+    alpha_pred_raw[p] = alpha_state[postrat_state[p]] + alpha_age[postrat_age[p]] + alpha_ethnicity[postrat_ethnicity[p]] + alpha_educ[postrat_educ[p]] + beta_male*postrat_male[p];
+
+}
+</code></pre>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-bafumi2005practical">
+<p>Bafumi, Joseph, Andrew Gelman, David K Park, and Noah Kaplan. 2005. “Practical Issues in Implementing and Understanding Bayesian Ideal Point Estimation.” <em>Political Analysis</em> 13 (2): 171–87.</p>
+</div>
+<div id="ref-bergquist2019does">
+<p>Bergquist, Parrish, and Christopher Warshaw. 2019. “Does Global Warming Increase Public Concern About Climate Change?” <em>The Journal of Politics</em> 81 (2): 686–91.</p>
+</div>
+<div id="ref-caughey2015dynamic">
+<p>Caughey, Devin, and Christopher Warshaw. 2015. “Dynamic Estimation of Latent Opinion Using a Hierarchical Group-Level Irt Model.” <em>Political Analysis</em>, 197–211.</p>
+</div>
+<div id="ref-clinton2004statistical">
+<p>Clinton, Joshua, Simon Jackman, and Douglas Rivers. 2004. “The Statistical Analysis of Roll Call Data.” <em>American Political Science Review</em>, 355–70.</p>
+</div>
+<div id="ref-tausanovitch2013ideal">
+<p>Tausanovitch, Chris, and Christopher Warshaw. 2013. “Measuring Constituent Policy Preferences in Congress, State Legislatures, and Cities.” <em>The Journal of Politics</em> 75 (2): 330–42.</p>
+</div>
+<div id="ref-tausanovitch2014representation">
+<p>Tausanovitch, Chris, and Christopher Warshaw. 2014. “Representation in Municipal Government.” <em>American Political Science Review</em>, 605–41.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="mrp-with-noncensus-variables.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "serif",
+"size": 1
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
